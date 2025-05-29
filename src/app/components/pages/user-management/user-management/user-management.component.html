@@ -1,0 +1,753 @@
+<div class="breadcrumb-wrapper">
+  <nav class="breadcrumb">
+    <a routerLink="/administration" class="breadcrumb-link">Administration</a>
+    <span class="breadcrumb-separator">››</span>
+    <span class="breadcrumb-current">User UserManagement</span>
+  </nav>
+</div>
+
+
+<nav class="navbar">
+
+  <div class="navbar-left">
+    <span class="navbar-title">UserManagement</span>
+  </div>
+
+  <div class="navbar-right">
+    <button class="nav-button" [routerLink]="'/role'">Role</button>
+  </div>
+</nav>
+
+<!-- <div class="modal" *ngIf="isAddUserPopupOpen">
+  <div class="modal-content">
+    <p>Add User</p>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="user.username" />
+      </div>
+
+<div class="form-group">
+  <label>Password</label>
+  <div class="password-wrapper">
+    <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="user.password" />
+    <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
+      <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
+    </button>
+  </div>
+</div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="user.email" />
+      </div>
+
+
+      <div class="form-group">
+        <label>Marshal Guard Name</label>
+        <input type="text" [(ngModel)]="user.patrolGuardName" />
+      </div>
+<div class="form-group">
+  <label>Location Name</label>
+  <select (click)="loadLocation()" [(ngModel)]="user.locationName"> 
+    <option *ngFor="let location of locationList" [value]="location.description">
+      {{ location.description }}
+    </option>
+  </select>
+</div>
+
+      
+      <div class="form-group">
+        <label>Designation</label>
+        <input type="text" [(ngModel)]="user.designation" />
+      </div>
+
+      <div class="form-group">
+        <label>Department</label>
+        <input type="text" [(ngModel)]="user.department" />
+      </div>
+
+
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="text" [(ngModel)]="user.mobileNumber" />
+      </div>
+
+
+<div class="form-group">
+  <label>Role</label>
+  <select [(ngModel)]="user.roleId">
+    <option *ngFor="let role of roles" [value]="role.roleId">
+      {{ role.roleName }}-{{ role.roleId }}
+    </option>
+  </select>
+</div>
+
+    </div>
+
+    <div class="modal-buttons">
+      <button (click)="closeAddUserPopup()">Cancel</button>
+      <button (click)="createUser()">Save</button>
+    </div>
+  </div>
+</div> -->
+
+
+<form #formRef="ngForm" (ngSubmit)="createUser()" novalidate>
+  <div class="modal" *ngIf="isAddUserPopupOpen">
+    <div class="modal-content">
+      <p>Add User</p>
+      <div class="form-grid">
+        <!-- Username -->
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" [(ngModel)]="user.username" name="username" required #username="ngModel" />
+          <small *ngIf="username.invalid && username.touched" class="error">Username is required</small>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label>Password</label>
+          <div class="password-wrapper">
+            <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="user.password" name="password" required
+              minlength="4" #password="ngModel" />
+            <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
+              <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
+            </button>
+          </div>
+          <small *ngIf="password.invalid && password.touched" class="error">Password (min 4 chars) is required</small>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="user.email" name="email" required email #email="ngModel" />
+          <small *ngIf="email.invalid && email.touched" class="error">Valid email is required</small>
+        </div>
+
+        <!-- Guard Name -->
+        <div class="form-group">
+          <label>Marshal Guard Name</label>
+          <input type="text" [(ngModel)]="user.patrolGuardName" name="patrolGuardName" required #guard="ngModel" />
+          <small *ngIf="guard.invalid && guard.touched" class="error">Guard Name is required</small>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+          <label>Location Name</label>
+          <select (click)="loadLocation()" [(ngModel)]="user.locationName" name="locationName" required
+            #location="ngModel">
+            <option value="" disabled selected>Select Location</option>
+            <option *ngFor="let location of locationList" [value]="location.description">{{ location.description }}
+            </option>
+          </select>
+          <small *ngIf="location.invalid && location.touched" class="error">Location is required</small>
+        </div>
+
+        <!-- Designation -->
+        <div class="form-group">
+          <label>Designation</label>
+          <input type="text" [(ngModel)]="user.designation" name="designation" required #designation="ngModel" />
+          <small *ngIf="designation.invalid && designation.touched" class="error">Designation is required</small>
+        </div>
+
+        <!-- Department -->
+        <div class="form-group">
+          <label>Department</label>
+          <input type="text" [(ngModel)]="user.department" name="department" required #department="ngModel" />
+          <small *ngIf="department.invalid && department.touched" class="error">Department is required</small>
+        </div>
+
+        <!-- Mobile Number -->
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="text" [(ngModel)]="user.mobileNumber" name="mobileNumber" required pattern="^[0-9]{10}$"
+            #mobile="ngModel" />
+          <small *ngIf="mobile.invalid && mobile.touched" class="error">Valid 10-digit mobile number required</small>
+        </div>
+
+        <!-- Role -->
+        <div class="form-group">
+          <label>Role</label>
+          <select [(ngModel)]="user.roleId" name="roleId" required #role="ngModel">
+            <option value="" disabled selected>Select Role</option>
+            <option *ngFor="let role of roles" [value]="role.roleId">{{ role.roleName }}-{{ role.roleId }}</option>
+          </select>
+          <small *ngIf="role.invalid && role.touched" class="error">Role is required</small>
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button type="button" (click)="closeAddUserPopup()">Cancel</button>
+        <button type="submit" [disabled]="formRef.invalid">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<div class="modal" *ngIf="isUpdateUserPopupOpen">
+  <div class="modal-content">
+    <p>Update User</p>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="updateUserData.username" />
+      </div>
+
+      <!-- <div class="form-group">
+        <label>New Password</label>
+        <div class="password-wrapper">
+          <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="updateUserData.password" />
+          <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
+            <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
+          </button>
+        </div>
+      </div> -->
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="updateUserData.email" />
+      </div>
+
+      <div class="form-group">
+        <label>Marshal Guard Name</label>
+        <input type="text" [(ngModel)]="updateUserData.patrolGuardName" />
+      </div>
+
+      <div class="form-group">
+        <label>Location Name</label>
+        <select (click)="loadLocation()" [(ngModel)]="updateUserData.locationName">
+          <option *ngFor="let location of locationList" [value]="location.description">
+            {{ location.description }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Designation</label>
+        <input type="text" [(ngModel)]="updateUserData.designation" />
+      </div>
+
+      <div class="form-group">
+        <label>Department</label>
+        <input type="text" [(ngModel)]="updateUserData.department" />
+      </div>
+
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="text" [(ngModel)]="updateUserData.mobileNumber" />
+      </div>
+
+    </div>
+
+    <div class="modal-buttons">
+      <button (click)="closeUpdateUserPopup()">Cancel</button>
+      <button (click)="updateUser()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<div class="modal" *ngIf="isEditUserPopupOpen">
+  <div class="modal-content">
+    <p>Upadate  User</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="user.username" />
+      </div>
+
+ <div class="form-group">
+  <label>Password</label>
+  <div class="password-wrapper">
+    <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="user.password" />
+    <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
+      <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
+    </button>
+  </div>
+</div>
+
+      <div class="form-group">
+        <label>Marshal Guard Name</label>
+        <input type="text" [(ngModel)]="user.patrolGuardName" />
+      </div>
+
+      <div class="form-group">
+        <label>Designation</label>
+        <input type="text" [(ngModel)]="user.designation" />
+      </div>
+
+      <div class="form-group">
+        <label>Department</label>
+        <input type="text" [(ngModel)]="user.department" />
+      </div>
+
+      <div class="form-group">
+  <label>Location details</label>
+  <select (click)="loadLocation()" [(ngModel)]="user.locationName">  
+    <option *ngFor="let location of locationList" [value]="location.description">
+      {{ location.description }}
+    </option>
+  </select>
+</div>
+
+
+
+
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="text" [(ngModel)]="user.mobileNumber" />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="user.email" />
+      </div>
+
+
+
+<div class="form-group">
+  <label>Role</label>
+  <select [(ngModel)]="user.roleId">
+    <option *ngFor="let role of roles" [value]="role.roleId">
+      {{ role.roleName }} - {{ role.roleId }}
+    </option>
+  </select>
+</div>
+
+
+ </div>
+
+    <div class="modal-buttons">
+      <button (click)="closeEditUserPopup()">Cancel</button>
+      <button (click)="updateUser()">Update</button>
+    </div>
+  </div>
+</div> -->
+
+
+<!-- 
+<div class="modal" *ngIf="isEditAdminPopupOpen">
+  <div class="modal-content">
+    <p>Update Admin User</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="adminUser.username" />
+      </div>
+
+
+
+  <div class="form-group">
+  <label>Password</label>
+  <div class="password-wrapper">
+    <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="adminUser.password" />
+    <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
+      <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
+    </button>
+  </div>
+</div>
+
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="text" [(ngModel)]="adminUser.mobileNumber" />
+      </div>
+
+      <div class="form-group">
+        <label>Designation</label>
+        <input type="text" [(ngModel)]="adminUser.designation" />
+      </div>
+
+            <div class="form-group">
+  <label>Location details</label>
+  <select (click)="loadLocation()" [(ngModel)]="adminUser.locationName">  
+    <option *ngFor="let location of locationList" [value]="location.description">
+      {{ location.description }}
+    </option>
+  </select>
+</div>
+
+      <div class="form-group">
+        <label>Department</label>
+        <input type="text" [(ngModel)]="adminUser.department" />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="adminUser.email" />
+      </div>
+
+      <div class="form-group">
+        <label>Company Code</label>
+        <input type="text" [(ngModel)]="adminUser.companyCode" />
+      </div>
+
+      <div class="form-group">
+        <label>Role</label>
+        <select [(ngModel)]="adminUser.role" disabled>
+          <option value="Admin">Admin</option>
+          <option value="Patrol">Patrol</option>
+        </select>
+      </div>
+          </div>
+
+
+
+
+
+
+    <div class="modal-buttons">
+      <button (click)="closeEditAdminPopup()">Cancel</button>
+      <button (click)="updateAdminUser()">Update</button>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+<div class="user-management-container">
+
+  <div class="user-tabs">
+
+    <div class="tab" [ngClass]="{ active: selectedRole === 'User' }" (click)="selectedRole = 'User'">
+      User
+    </div>
+
+    <!-- <div class="tab" [ngClass]="{ active: selectedRole === 'Marshal' }" (click)="selectedRole = 'Marshal'">
+      Marshal
+    </div> -->
+    <div class="tab" [ngClass]="{ active: selectedRole === 'Location' }" (click)="selectedRole = 'Location'">
+      Location
+    </div>
+
+
+  </div>
+
+
+
+
+
+  <nav class="navbar1">
+    <!-- Left Side -->
+    <div class="navbar-left">
+      <span class="navbar-title">{{ selectedRole }}</span>
+    </div>
+
+    <div class="navbar-right" *ngIf="selectedRole !== 'Location'">
+
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/refresh.png" (click)="reloadPage()" alt="Refresh"></button>
+        <span class="tooltip-text">Refresh</span>
+      </div>
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/add.png" (click)="openAddUserPopup()" alt="Add"></button>
+        <span class="tooltip-text">Add</span>
+      </div>
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
+        <span class="tooltip-text">Download</span>
+      </div>
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/columns-3.png" (click)="toggleAdminColumnPicker()"></button>
+        <span class="tooltip-text">Column Picker</span>
+      </div>
+    </div>
+
+    <div class="navbar-right" *ngIf="selectedRole === 'Location'">
+
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/refresh.png" alt="Refresh" (click)="reloadPage()"></button>
+        <span class="tooltip-text">Refresh</span>
+      </div>
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/add.png" (click)="openAddLocPopup()" alt="Add"></button>
+        <span class="tooltip-text">Add</span>
+      </div>
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
+        <span class="tooltip-text">Download</span>
+      </div>
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/columns-3.png" (click)="toggleColumnPickerModal()"></button>
+        <span class="tooltip-text">Column Picker</span>
+      </div>
+    </div>
+
+  </nav>
+
+
+  <div class="box">
+    <!-- <table class="company-table" *ngIf="selectedRole === 'Admin' ">
+      <thead>
+        <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Mobile</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Designation</th>
+        <th>Location</th>
+        <th>Role</th>
+        <th>Action</th>
+       
+        </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let user of users">
+        <td>{{ user.userId }}</td>
+        <td>{{ user.patrolGuardName }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.mobileNumber }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.department }}</td>
+        <td>{{ user.designation }}</td>
+        <td>{{ user.locationName }}</td>
+        <td>{{ user.role }}</td>
+          <td>
+            <div class="tab">
+              <div class="tooltip-container">
+                <img src="assets/edit.png" alt="Edit"  (click)="openUpdateUserPopup(user)" class="tab-icon">
+                <span class="tooltip-text">Edit</span>
+              </div>
+              <div class="tooltip-container">
+                <img src="assets/delete.png" alt="Delete" class="tab-icon">
+                <span class="tooltip-text">Delete</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table> -->
+
+
+    <table class="company-table" *ngIf="selectedRole === 'User'">
+      <thead>
+        <tr>
+          <th *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ col.label }}</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ user[col.key] }}</td>
+          <td>
+            <div class="tab">
+              <div class="tooltip-container">
+                <img src="assets/edit.png" alt="Edit" (click)="openUpdateUserPopup(user)" class="tab-icon" />
+                <span class="tooltip-text">Edit</span>
+              </div>
+              <div class="tooltip-container">
+                <img src="assets/delete.png" alt="Delete" (click)="openDeletePopup(user.userId)" class="tab-icon" />
+                <span class="tooltip-text">Delete</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="column-picker-popup" [ngClass]="{ 'show': showAdminColumnPicker, 'hide': !showAdminColumnPicker }">
+      <div class="popup-header">
+        <span>Admin Column Picker</span>
+        <button class="close-btn" (click)="toggleAdminColumnPicker()">×</button>
+      </div>
+      <div class="column-list">
+        <label *ngFor="let col of adminColumns" class="column-item">
+          <input type="checkbox" [(ngModel)]="col.visible" />
+          {{ col.label }}
+        </label>
+      </div>
+    </div>
+
+
+    <!-- <table class="company-table" *ngIf="selectedRole === 'Marshal' && patrolUsers.length > 0">
+      <thead>
+        <tr>
+          <th>Marshal Name</th>
+          <th>Email</th>
+          <th>PatrolId</th>
+          <th>Designation</th>
+          <th>Department</th>
+          <th>Location</th>
+          <th>Contact Number</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of patrolUsers">
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.patrolId }}</td>
+          <td>{{ user.designation }}</td>
+          <td>{{ user.department }}</td>
+          <td>{{ user.locationName }}</td>
+          <td>{{ user.mobileNumber }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <div class="tab">
+              <div class="tooltip-container">
+                <img src="assets/edit.png" alt="Edit" (click)="openEditUserPopup(user)" class="tab-icon">
+                <span class="tooltip-text">Edit</span>
+              </div>
+              <div class="tooltip-container">
+                <img src="assets/delete.png" alt="Delete" (click)="openDeletePopup(user.patrolId)" class="tab-icon">
+                <span class="tooltip-text">Delete</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table> -->
+
+
+
+
+    <table class="company-table" *ngIf="selectedRole === 'Location'">
+      <thead>
+        <tr>
+          <th *ngFor="let col of columns" [hidden]="!col.visible">{{ col.label }}</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let loc of locationList">
+          <td *ngFor="let col of columns" [hidden]="!col.visible">{{ loc[col.key] }}</td>
+          <td>
+            <div class="tab">
+              <div class="tooltip-container">
+                <img src="assets/edit.png" alt="Edit" (click)="openUpdateLocPopup(loc)" class="tab-icon">
+                <span class="tooltip-text">Edit</span>
+              </div>
+              <div class="tooltip-container">
+                <img src="assets/delete.png" alt="Delete" (click)="openDeleteModal(loc.locationId)" class="tab-icon">
+                <span class="tooltip-text">Delete</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+  <div class="delete-modal" *ngIf="isDeletePopupOpen">
+    <div class="delete-modal-content">
+      <p>Are you sure you want to delete this user?</p>
+      <div class="delete-modal-buttons">
+
+        <button class="delete-no-btn" (click)="closeDeletePopup()">No</button>
+        <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal" *ngIf="isAddLoc">
+    <div class="modal-content">
+      <p>Add Location</p>
+
+      <div class="form-grid">
+
+
+        <div class="form-group">
+          <label>Location Code</label>
+          <input type="text" [(ngModel)]="location.locationCode" />
+        </div>
+
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="text" [(ngModel)]="location.latitude" />
+        </div>
+
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="text" [(ngModel)]="location.longitude" />
+        </div>
+
+        <div class="form-group">
+          <label>Loocation Name</label>
+          <input type="text" [(ngModel)]="location.description" />
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button (click)="cancelLoc()">Cancel</button>
+        <button (click)="addLoc()">Add</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal" *ngIf="isUpdateLoc">
+    <div class="modal-content">
+      <p>Update Location</p>
+
+      <div class="form-grid">
+
+
+        <div class="form-group">
+          <label>Location Code</label>
+          <input type="password" [(ngModel)]="location.locationCode" />
+        </div>
+
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="text" [(ngModel)]="location.latitude" />
+        </div>
+
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="text" [(ngModel)]="location.longitude" />
+        </div>
+
+        <div class="form-group">
+          <label>Loocation Name</label>
+          <input type="text" [(ngModel)]="location.description" />
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button (click)="cancelUpdateLoc()">Cancel</button>
+        <button (click)="updateLoc()">Update</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="delete-modal" *ngIf="isDeleteLoc">
+    <div class="delete-modal-content">
+      <p>Are you sure you want to delete this Location?</p>
+      <div class="delete-modal-buttons">
+
+        <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
+        <button class="delete-yes-btn" (click)="deleteLoc()">Yes</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- column picker for location -->
+
+  <div class="column-picker-popup" [ngClass]="{ 'show': showColumnPicker, 'hide': !showColumnPicker }">
+    <div class="popup-header">
+      <span>Column Picker</span>
+      <button class="close-btn" (click)="toggleColumnPickerModal()">×</button>
+    </div>
+    <div class="column-list">
+      <label *ngFor="let col of columns" class="column-item">
+        <input type="checkbox" [(ngModel)]="col.visible" />
+        {{ col.label }}
+      </label>
+    </div>
+  </div>

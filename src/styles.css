@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'RedHatDisplay-Black';
+    src: url('assets/font/RedHatDisplay-Black.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'RedHatDisplay-Bold';
+    src: url('assets/font/RedHatDisplay-Bold.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'RedHatDisplay-Medium';
+    src: url('assets/font/RedHatDisplay-Medium.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'RedHatDisplay-Regular';
+    src: url('assets/font/RedHatDisplay-Regular.ttf') format('truetype');
+  }
+  
+
+  

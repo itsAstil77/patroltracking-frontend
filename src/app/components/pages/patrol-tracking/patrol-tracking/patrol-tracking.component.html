@@ -1,0 +1,452 @@
+<nav class="navbar">
+
+  <div class="navbar-left">
+    <span class="navbar-title">Assignment</span>
+  </div>
+
+
+
+  <div class="navbar-right">
+    <!-- <button class="nav-button" [routerLink]="'/schedules'">Schedules</button> -->
+
+    <button class="nav-button" (click)="assignTaskOpen()">Assign</button>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/refresh.png" alt="Refresh" (click)="reloadPage()"></button>
+      <span class="tooltip-text">Refresh</span>
+    </div>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/add.png" (click)="openPopup()" alt="Add"></button>
+      <span class="tooltip-text">Add</span>
+    </div>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
+      <span class="tooltip-text">Download</span>
+    </div>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/columns-3.png"></button>
+      <span class="tooltip-text">Pagination</span>
+    </div>
+  </div>
+</nav>
+
+
+<div class="workflow-summary">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Assignment ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>AssignStart</th>
+        <th>AssignEnd</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Created By</th>
+        <th>Status</th>
+        <th>Assignment Status</th>
+        <th>Active</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let workflow of workflows">
+        <tr>
+          <td (click)="toggleChecklist(workflow.workflowId)">
+            <div class="tab">
+              <img src="assets/dropdown1.png" class="tab-icon"
+                [ngClass]="{ 'rotated': expandedRows[workflow.workflowId] }">
+            </div>
+          </td>
+          <td>{{ workflow.workflowId }}</td>
+          <td>{{ workflow.workflowTitle.trim() }}</td>
+          <td>{{ workflow.description }}</td>
+
+          <td>{{ workflow.assignedStart ? (workflow.assignedStart | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+          <td>{{ workflow.assignedEnd ? (workflow.assignedEnd | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+
+          <td>{{ workflow.startDateTime ? (workflow.startDateTime | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+          <td>{{ workflow.endDateTime ? (workflow.endDateTime | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+          <td>{{ workflow.createdBy }}</td>
+          <td>{{ workflow.status }}</td>
+          <td>{{ workflow.workflowStatus }}</td>
+
+          <td>
+            <div class="toggle-container">
+              <label class="switch">
+                <input type="checkbox" [checked]="workflow.isActive" disabled>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <!-- <div class="tab">
+              <img src="assets/plus-small.png" (click)="showChecklistPopup(workflow) " class="tab-icon" />
+              <img src="assets/edit.png" class="tab-icon" (click)="openEditWorkflowPopup(workflow)" />
+              <img src="assets/delete.png" class="tab-icon" />
+            </div> -->
+
+            <div class="tab">
+              <img src="assets/plus-small.png" class="tab-icon"
+                [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
+                [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
+                (click)="showChecklistPopup(workflow)" />
+
+              <img src="assets/edit.png" class="tab-icon"
+                [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
+                [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
+                (click)="openEditWorkflowPopup(workflow)" />
+
+              <img src="assets/delete.png" class="tab-icon"
+                [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
+                [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
+            </div>
+
+
+          </td>
+        </tr>
+        <tr *ngIf="expandedRows[workflow.workflowId]">
+          <td colspan="11">
+            <table class="nested-table">
+              <thead>
+                <tr>
+                  <th>Task ID</th>
+                  <th>Title</th>
+                  <th>Remarks</th>
+                  <th>Assigned To</th>
+                  <th>Assigned By</th>
+                  <th>Start</th>
+                  <th>End</th>
+                  <th>Status</th>
+                  <th>Active</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let checklist of checklistData[workflow.workflowId]">
+                  <td>{{ checklist.checklistId }}</td>
+                  <td>{{ checklist.title }}</td>
+                  <td>{{ checklist.remarks }}</td>
+                  <td>{{ checklist.assignedTo }}</td>
+                  <td>{{ checklist.createdBy }}</td>
+                  <td>{{ checklist.scanStartDate ? (checklist.scanStartDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
+                  </td>
+                  <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-'}}</td>
+                  <td>{{ checklist.status }}</td>
+                  <td>
+                    <div class="toggle-container">
+                      <label class="switch">
+                        <input type="checkbox" [checked]="checklist.isActive" disabled>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td>
+                    <!-- <div class="tab">
+
+                      <img src="assets/edit.png" (click)="openUpdateChecklistPopup(checklist)" class="tab-icon" />
+                      <img src="assets/delete.png" class="tab-icon" />
+                    </div> -->
+
+
+                    <div class="tab">
+                      <img src="assets/edit.png" class="tab-icon"
+                        [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
+                        [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
+                        (click)="openUpdateChecklistPopup(checklist)" />
+
+                      <img src="assets/delete.png" class="tab-icon"
+                        [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
+                        [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
+                    </div>
+
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="modal" *ngIf="showPopupAssign">
+  <div class="modal-content">
+    <p>Assign Task</p>
+
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Assignment :</label>
+        <select [(ngModel)]="selectedWorkflowId" name="workflowId" (change)="loadChecklist(selectedWorkflowId)">
+          <option *ngFor="let workflow of workflows" [value]="workflow.workflowId">
+            {{ workflow.workflowId }} - {{ workflow.workflowTitle }}
+          </option>
+        </select>
+      </div>
+
+
+      <!-- <div class="form-group">  
+      <label>Task Name:</label>
+      <select   [(ngModel)]="selectedChecklistId" name="checklistId">
+        <option *ngFor="let checklist of checklistData[selectedWorkflowId]" [value]="checklist.checklistId">
+          {{ checklist.checklistId }} - {{ checklist.title }}
+        </option>
+      </select>
+    </div> -->
+
+
+      <div class="form-group">
+        <label for="taskDropdown">Select Task Name</label>
+        <div id="taskDropdown" class="dropdown-container" (click)="toggleTaskDropdown($event)">
+
+          <div class="selected-chips-container" *ngIf="selectedChecklistIds.length > 0">
+            <span class="selected-chip" *ngFor="let id of selectedChecklistIds">
+              {{ getChecklistTitle(id) }}
+              <span class="remove-chip" (click)="removeSelectedChecklist($event, id)">×</span>
+            </span>
+          </div>
+
+
+          <div class="dropdown-selected">
+            {{ selectedChecklistIds.length === 0 ? 'Select tasks' : '' }}
+          </div>
+
+          <div class="dropdown-options" *ngIf="taskDropdownOpen">
+            <div *ngFor="let checklist of checklistData[selectedWorkflowId]" class="checkbox-row">
+              <label class="checkbox-label">
+                <input type="checkbox" [value]="checklist.checklistId"
+                  (change)="onTaskToggle($event, checklist.checklistId)"
+                  [checked]="selectedChecklistIds.includes(checklist.checklistId)" />
+                {{ checklist.checklistId }} - {{ checklist.title }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <!-- <div class="form-group">
+        <label>Assigned To:</label>
+        <select (click)="loadPatrolUsers()" [(ngModel)]="assignedTo">
+          <option *ngFor="let user of patrolUsers" [value]="user.patrolId">
+            {{ user.patrolId }} - {{ user.patrolGuardName }}
+          </option>
+        </select>
+   </div> -->
+
+      <div class="form-group">
+        <label>Assigned To:</label>
+        <select (click)="loadPatrolUsers()" [(ngModel)]="assignedTo">
+          <option *ngFor="let user of patrolUsers" [value]="user.userId">
+            {{ user.userId }} - {{ user.patrolGuardName }}
+          </option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="modal-buttons">
+
+      <button (click)="closeTask()">Cancel</button>
+      <button (click)="  assignTask()">Assign</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal" *ngIf="showPopup">
+  <div class="modal-content">
+    <p>Create Assignment</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Title:</label>
+        <input type="text" [(ngModel)]="workflowTitle" />
+      </div>
+
+      <div class="form-group">
+        <label>Description:</label>
+        <input type="text" [(ngModel)]="description" />
+      </div>
+
+      <div class="form-group">
+        <label>Assign Start:</label>
+        <input type="datetime-local" [(ngModel)]="assignedStart">
+
+      </div>
+
+      <div class="form-group">
+        <label>Assign End:</label>
+        <input type="datetime-local" [(ngModel)]="assignedEnd">
+      </div>
+      <div class="status-container">
+        <label>Active:</label>
+        <label class="switch">
+          <input type="checkbox" [(ngModel)]="isActive">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-buttons">
+
+      <button (click)="closePopup()">Cancel</button>
+      <button (click)="createWorkflow()">Create</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" *ngIf="showEditPopup">
+  <div class="modal-content">
+    <p>Update Assignment</p>
+
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Assignment ID:</label>
+        <input type="text" [(ngModel)]="workflowId" readonly />
+      </div>
+
+
+      <div class="form-group">
+        <label>Title:</label>
+        <input type="text" [(ngModel)]="workflowTitle" />
+      </div>
+
+      <div class="form-group">
+        <label>Description:</label>
+        <input type="text" [(ngModel)]="description" />
+      </div>
+
+      <div class="form-group">
+        <label>Assign Start:</label>
+        <input type="datetime-local" [(ngModel)]="assignedStart" />
+      </div>
+
+      <div class="form-group">
+        <label>Assign End:</label>
+        <input type="datetime-local" [(ngModel)]="assignedEnd" />
+      </div>
+
+      <div class="status-container">
+        <label>Status:</label>
+        <label class="switch">
+          <input type="checkbox" [(ngModel)]="isActive">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+
+    <div class="modal-buttons">
+
+      <button (click)="closeEditWorkflowPopup()">Cancel</button>
+      <button (click)="updateWorkflow()">Update</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal" *ngIf="checklistPopupVisible">
+  <div class="modal-content">
+    <p>Create Task</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Workflow ID:</label>
+        <input type="text" [(ngModel)]="workflowId" readonly>
+      </div>
+
+      <!-- <div class="form-group">
+        <label>Location details</label>
+        <select (click)="loadLocation()" [(ngModel)]="locationCode">
+          <option *ngFor="let location of locationList" [value]="location.locationCode">
+            {{ location.locationCode }} - {{ location.description }}
+          </option>
+        </select>
+   </div> -->
+
+      <div class="form-group">
+        <label>Title:</label>
+        <input type="text" [(ngModel)]="title">
+      </div>
+
+      <div class="form-group">
+        <label>Remarks:</label>
+        <input type="text" [(ngModel)]="remarks">
+      </div>
+
+    </div>
+    <div class="modal-buttons">
+
+      <button (click)="hideChecklistPopup()">Cancel</button>
+      <button (click)="createChecklist()">Create</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" *ngIf="updatechecklistPopupVisible">
+  <div class="modal-content">
+    <p>Update Task</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Workflow ID:</label>
+        <input type="text" [(ngModel)]="workflowId" readonly>
+      </div>
+
+      <!-- <div class="form-group">
+        <label>Location details</label>
+        <select (click)="loadLocation()" [(ngModel)]="locationCode">
+          <option *ngFor="let location of locationList" [value]="location.locationCode">
+            {{ location.locationCode }} - {{ location.description }}
+          </option>
+        </select>
+   </div> -->
+
+      <!-- <div class="form-group">
+    <label>Assigned To:</label>
+    <select (click)="loadPatrolUsers()" [(ngModel)]="assignedTo">
+      <option *ngFor="let user of patrolUsers" [value]="user.patrolId">
+        {{ user.patrolId }} - {{ user.patrolGuardName }}
+      </option>
+    </select>
+</div> -->
+
+      <div class="form-group">
+        <label>User:</label>
+        <select (click)="loadPatrolUsers()" [(ngModel)]="assignedTo">
+          <option *ngFor="let user of patrolUsers" [value]="user.userId">
+            {{ user.userId }} - {{ user.patrolGuardName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Title:</label>
+        <input type="text" [(ngModel)]="title">
+      </div>
+
+      <div class="form-group">
+        <label>Remarks:</label>
+        <input type="text" [(ngModel)]="remarks">
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button (click)="hideUpdateChecklistPopup()">Cancel</button>
+      <button (click)="updateChecklist()">Update</button>
+    </div>
+  </div>
+</div>

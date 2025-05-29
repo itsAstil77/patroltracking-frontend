@@ -1,0 +1,530 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Red Hat Display';
+  }
+
+
+
+  
+  /* Full Container */
+  .container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Navbar */
+  .navbar {
+    width: 100%;
+    min-height: 50px;
+    background-color: #7030a0;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    justify-content: space-between;
+    color: white;
+    font-size: 22px;
+    font-family: 'RedHatDisplay-Bold';
+    font-weight: bold;
+    
+  }
+
+  /* Toggle Button */
+  .menu-button {
+    font-size: 24px;
+    font-family: 'RedHatDisplay-Bold';
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+
+
+   /* Navbar Title */
+   .navbar-title {
+    text-align: center;
+    font-family: 'RedHatDisplay-Bold';
+    flex-grow: 1;
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+  }
+  
+  /* Logo */
+  .navbar-logo {
+    height: 50px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    margin-right: 20px;
+  }
+  
+  /* Wrapper (Sidebar + Content) */
+  .wrapper {
+    display: flex;
+    flex: 1;
+    transition: margin-left 0.3s ease-in-out;
+
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 70px; 
+    height: 100vh;
+    background-color: #7030a0;
+    color: white;
+    padding: 20px 10px;
+    transition: width 0.4s ease-in-out;
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+  }
+
+ 
+  
+  /* Expand sidebar when not collapsed */
+  .sidebar:not(.collapsed) {
+    width: 250px;
+  }
+  
+  /* Sidebar Menu */   
+  .menu {
+    font-size: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    color: white;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Icons */
+  .menu-icon {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) invert(1); /* White icons */
+    transition: margin 0.3s ease-in-out;    
+    margin-left: 0px;
+    
+  }
+
+
+.menu-item.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+  
+  /* Text */
+  .menu-text {
+    margin-left: 15px;
+    font-size: 13px; 
+    font-family: 'RedHatDisplay-Regular';
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    text-decoration: none; 
+    color: white;
+   
+  }
+  
+  /* Hide text when sidebar is collapsed */
+  .sidebar.collapsed .menu-text {
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+  }
+  
+  /* Move icons left when sidebar is collapsed */
+  .sidebar.collapsed .menu-icon {
+    margin-left: -5px;
+  }
+  
+  /* Content */
+  .content {
+    flex-grow: 1;
+    background-color: #ecf0f1;
+    padding: 20px;
+  }
+
+
+
+
+
+  .sub-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-left: 20px; /* Adjust this value to move more to the right */
+  }
+  
+  /* Sub-menu Items */
+  .sub-menu-item {
+    padding: 10px;
+    text-align: left; /* Aligns text to the right */
+    font-size: 16px;
+    font-weight: normal;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  
+  
+  
+  .sub-menu-item.active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  
+  
+  /* Sidebar Collapsed: Hide Sub-menu */
+  .sidebar.collapsed .sub-menu {
+    display: none;
+  }
+  .sub-menu-item a {
+    color: white; /* Makes text white */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Optional: Makes text bold */
+  
+  }
+  
+
+
+
+
+  .username {
+
+    color: #fff; /* or your navbar text color */
+    font-weight: lighter;
+    font-size: medium;
+    font-family: 'RedHatDisplay-Regular';
+  }
+
+.logout-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.navbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between username and icon */
+}
+
+
+
+.logout-icon {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+.navbar-logo1 {
+  height: 20px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  margin-right: 20px;
+}
+
+
+.navbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.user-icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.user-dropdown-container {
+  position: relative;
+}
+
+.user-dropdown {
+  position: absolute;
+  right: 0;
+  top: 40px;
+
+  border: 1px solid #7030a0;
+  
+  border-radius: 5px;
+  padding: 10px 0;
+  width: 150px;
+  z-index: 100;
+  font-size: small;
+  background-color: #7030a0;
+  color: #fff;
+  padding: auto;
+}
+
+.user-dropdown a {
+  display: block;
+  padding: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #333;
+  color: #fff;
+
+}
+
+.user-dropdown a:hover {
+  background-color: #f0f0f0;
+  color: #7030a0;
+}
+
+/* Popup Background */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+
+}
+
+h2{
+  font-weight: lighter;
+}
+
+/* Popup Content */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 600px; /* Adjust width */
+  text-align: center;
+
+  /* height: 700px; */
+
+}
+
+/* Grid Layout for Two Columns */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 15px; /* Space between fields */
+  margin-top: 5%;
+ 
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* Labels */
+.form-group label {
+  font-weight: lighter;
+  font-size: small;
+  margin-bottom: 5px;
+}
+
+/* Input Fields */
+.form-group input {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  background-color: #7030a0;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  width:30%;
+}
+
+.modal-buttons button:hover {
+  background-color: #5a2580;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .form-grid {
+      grid-template-columns: 1fr; /* Switch to one column on small screens */
+  }
+}
+
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Keeps it above all other content */
+}
+.sidebar {
+  position: fixed;
+  top: 60px; /* Match your navbar height */
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+}
+.content {
+  margin-left: 250px; /* Match sidebar width when expanded */
+  margin-top: 60px; /* Match navbar height */
+  padding: 20px;
+  background-color: #ecf0f1;
+  min-height: calc(100vh - 60px); /* Account for navbar height */
+  transition: margin-left 0.3s ease-in-out;
+  font-family: 'RedHatDisplay-bold';
+}
+
+/* When sidebar is collapsed */
+.sidebar.collapsed ~ .content {
+  margin-left: 70px; /* Adjust according to collapsed sidebar width */
+}
+.sidebar,
+.content {
+  transition: all 0.3s ease-in-out;
+}
+
+
+
+
+.admin-right-panel {
+  position: fixed;
+  top: 60px; 
+  left: 220px; 
+  width: 250px;
+  background-color: #ffffff;
+  border-left: 1px solid #ddd;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  padding: 0; 
+  height: 100vh; 
+  margin-top: 11px;
+}
+
+
+
+
+.admin-sub-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+.admin-sub-menu .sub-menu-item {
+  margin-top: 10px;
+  padding: 0;
+
+}
+
+.admin-sub-menu .sub-menu-item a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #5a2580;
+  padding: 15px 20px;
+  background-color: #f9f9f9; /* light background */
+  width: 100%;
+  box-sizing: border-box;
+  /* border-bottom: 1px solid #eee; thin line between items */
+  /* font-weight: bolder; */
+  font-size: 14px;
+  font-family: 'RedHatDisplay-Regular';
+}
+
+.admin-sub-menu .sub-menu-item a:hover {
+  background-color: #ececec; /* nice hover effect */
+}
+
+
+.admin-title {
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  background-color: #ffffff;
+  font-weight: 600;
+  color: #5a2580;
+  font-size: 18px;
+  border-bottom: 1px solid #eee;
+ 
+ 
+}
+
+.admin-icon {
+  margin-right: 25px;
+
+  
+}
+
+.admin-text {
+  flex-grow: 1;
+  padding-top: 10px;
+  font-size: 14px;
+  font-family: 'RedHatDisplay-Regular';
+}
+
+
+
+.menu-item.active {
+  background: rgba(255, 255, 255, 0.2);
+
+  color: white;
+  border-radius: 5px;
+}
+
+.menu-item.active img {
+  filter: brightness(0) invert(4); /* Inverts icon color to white */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,146 @@
+<nav class="navbar">
+  <button class="menu-button" (click)="toggleSidebar()">&#9776;</button>
+  <div class="navbar-title">Patrol Tracking</div>
+
+  <div class="navbar-right">
+    <span class="username">{{ loggedInUsername }}</span>
+
+    <div class="user-dropdown-container" (click)="toggleUserDropdown()" tabindex="0" (blur)="hideUserDropdown()">
+      <img src="assets/user.png" alt="User Icon" class="navbar-logo1" />
+
+
+      <div class="user-dropdown" *ngIf="showUserDropdown">
+        <a (click)="changePassword()">Change Password</a>
+        <a (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+  <img src="assets/PurpleIQ.png" alt="Logo" class="navbar-logo" />
+</nav>
+
+
+<!-- Sidebar and Main Content -->
+<div class="wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+    <ul class="menu">
+      <li class="menu-item" (click)="setActive('dashboard')" [class.active]="activeMenuItem === 'dashboard'">
+        <img src="assets/dashboard.png" routerLink="/dashboard" alt="Dashboard Icon" class="menu-icon" />
+        <a routerLink="/dashboard" [class.hidden]="isSidebarCollapsed" class="menu-text">Dashboard</a>
+
+      </li>
+      <li class="menu-item" (click)="setActive('events')" [class.active]="activeMenuItem === 'events'">
+        <img src="assets/event.png" routerLink="/events" alt="Dashboard Icon" class="menu-icon" />
+        <a routerLink="/events" [class.hidden]="isSidebarCollapsed" class="menu-text">Events</a>
+
+      </li>
+
+
+      <li class="menu-item admin-dropdown" [class.active]="activeMenuItem === 'report'" (click)="toggleReports()">
+        <img src="assets/reports.png" alt="Reports Icon" class="menu-icon" />
+        <span class="menu-text" [class.hidden]="isSidebarCollapsed">Reports</span>
+      </li>
+
+
+      <div class="admin-right-panel" *ngIf="isReportsExpanded"
+        [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">
+        <div class="admin-title">
+          <img src="assets/reports.png" alt="Reports Icon" class="admin-icon" />
+          <span class="admin-text">Reports</span>
+        </div>
+        <ul class="admin-sub-menu">
+          <li class="sub-menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="/report" (click)="closeReportsPanel()">Patrol Report</a>
+          </li>
+          <li class="sub-menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="/consolidated-report" (click)="closeReportsPanel()">Consolidated Report</a>
+          </li>
+        </ul>
+      </div>
+
+
+      <li class="menu-item" (click)="setActive('process-and-automation')"
+        [class.active]="activeMenuItem === 'process-and-automation'">
+        <img src="assets/automation.png" routerLink="/process-and-automation" alt="Dashboard Icon" class="menu-icon" />
+        <a routerLink="/process-and-automation" [class.hidden]="isSidebarCollapsed" class="menu-text">Process &
+          Automation </a>
+      </li>
+
+      <li class="menu-item" (click)="setActive('insights')" [class.active]="activeMenuItem === 'insights'">
+        <img src="assets/insight.png" routerLink="/insights" alt="Dashboard Icon" class="menu-icon" />
+        <a routerLink="/insights" [class.hidden]="isSidebarCollapsed" class="menu-text">Insights</a>
+      </li>
+
+
+      <li class="menu-item admin-dropdown" (click)="toggleAdministration()"
+        [class.active]="activeMenuItem === 'administration'">
+        <img src="assets/administration.png" alt="Administration Icon" class="menu-icon" />
+        <span class="menu-text" [class.hidden]="isSidebarCollapsed">Administration</span>
+        <!-- <span class="arrow" [class.rotate]="isAdminExpanded">&#x25BC;</span> -->
+      </li>
+      <div class="admin-right-panel" *ngIf="isAdminExpanded"
+        [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">
+
+        <div class="admin-title">
+
+          <img src="assets/administration.png" alt="Administration Icon" class="admin-icon" />
+          <span class="admin-text">Administration</span>
+        </div>
+        <ul class="admin-sub-menu">
+          <li class="sub-menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="/configuration" (click)="closeAdminPanel()">Configuration</a>
+          </li>
+          <li class="sub-menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="/license-management" (click)="closeAdminPanel()">License Management</a>
+          </li>
+          <li class="sub-menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="/user-management" (click)="closeAdminPanel()">User Management</a>
+          </li>
+        </ul>
+      </div>
+
+      <li class="menu-item" (click)="setActive('patrol-tracking')"
+        [class.active]="activeMenuItem === 'patrol-tracking'">
+        <img src="assets/patrol.png" routerLink="/patrol-tracking" alt="patrol Icon" class="menu-icon" />
+        <a routerLink="/patrol-tracking" routerLinkActive="active" class="menu-text"
+          [class.hidden]="isSidebarCollapsed">Patrol Tracking</a>
+      </li>
+    </ul>
+  </aside>
+
+
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>
+
+
+
+<!-- Update Password Modal -->
+<!-- <div class="modal" *ngIf="isUpdate">
+      <div class="modal-content">
+        <p>Update Password</p>
+        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Current Password:</label>
+              <input type="password" formControlName="currentPassword" />
+            </div>
+            <div class="form-group">
+              <label>New Password:</label>
+              <input type="password" formControlName="newPassword" />
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password:</label>
+              <input type="password" formControlName="confirmNewPassword" />
+            </div>
+          </div>
+          <div class="modal-buttons">
+            <button type="submit">Update</button>
+            <button type="button" (click)="closePopup()">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+     -->

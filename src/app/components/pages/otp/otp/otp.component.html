@@ -1,0 +1,41 @@
+<div class="auth-container">
+    <div class="auth-box">
+        <div class="auth-left">
+            <img [src]="'assets/otp.svg'" alt="Auth Image">
+        </div>
+        <div class="auth-right">
+            <h2>OTP Verification</h2>
+            <p>Please enter the OTP sent to your email.</p>
+            <form [formGroup]="otpForm" (ngSubmit)="onSubmit()">
+                <div class="input-group">
+
+                    <!-- <input id="otp" formControlName="otp" type="text" class="otp-input" placeholder="" maxlength="6" /> -->
+                    <div class="otp-input-group">
+                        <input type="text" maxlength="1" class="otp-box" (input)="moveFocus($event, 0)"
+                            (keydown)="handleBackspace($event, 0)" #otp0>
+                        <input type="text" maxlength="1" class="otp-box" (input)="moveFocus($event, 1)"
+                            (keydown)="handleBackspace($event, 1)" #otp1>
+                        <input type="text" maxlength="1" class="otp-box" (input)="moveFocus($event, 2)"
+                            (keydown)="handleBackspace($event, 2)" #otp2>
+                        <input type="text" maxlength="1" class="otp-box" (input)="moveFocus($event, 3)"
+                            (keydown)="handleBackspace($event, 3)" #otp3>
+                        <!-- <input type="text" maxlength="1" class="otp-box" (input)="moveFocus($event, 4)" (keydown)="handleBackspace($event, 4)" #otp4>
+                      <input type="text" maxlength="1" class="otp-box" (input)="moveFocus($event, 5)" (keydown)="handleBackspace($event, 5)" #otp5> -->
+                    </div>
+
+                    <div *ngIf="otpForm.controls['otp'].invalid && otpForm.controls['otp'].touched"
+                        class="error-message">
+                        OTP should be exactly 6 digits.
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Verify OTP</button>
+            </form>
+            <div class="resend-container">
+                <button (click)="onResendOTP()" class="resend-btn" [disabled]="isResending">
+                    {{ isResending ? 'Resending...' : 'Resend OTP' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div *ngIf="show" class="alert-overlay">
+    <div class="alert-box" [ngClass]="alertType">
+      <div class="alert-icon">
+        <span *ngIf="alertType === 'success'">✅</span>
+        <span *ngIf="alertType === 'error'">❌</span>
+        <span *ngIf="alertType === 'warning'">⚠️</span>
+      </div>
+      <p class="alert-title">{{ message }}</p>
+      <!-- <button class="alert-btn" (click)="close()">OK</button> -->
+      <button class="alert-btn" *ngIf="alertType !== 'success'" (click)="close()">OK</button>
+  
+    </div>
+  </div>
+  

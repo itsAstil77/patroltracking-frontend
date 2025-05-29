@@ -1,0 +1,550 @@
+/* Navbar */
+.navbar {
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  /* color: black; */
+  font-size: 20px;
+  font-weight: bolder;
+
+}
+
+
+/* Left Side */
+.navbar-left {
+  font-size: 15px;
+  font-family: 'RedHatDisplay-Bold';
+}
+
+/* Right Side */
+
+.navbar-right {
+  display: flex;
+  gap: 10px;
+  /* Space between icons */
+}
+
+.icon-button {
+  background: #7030a0;
+  border: 1px solid #7030a0;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 40px;
+  /* Slightly increased */
+  height: 40px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-button img {
+  width: 16px;
+  /* Increased from 17px */
+  height: 16px;
+  filter: brightness(0) invert(1);
+  /* Converts icon color to white */
+  font-weight: bold;
+  /* Ensures bold effect */
+}
+
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+  z-index: auto;
+
+}
+
+.tooltip-container .tooltip-text {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  visibility: hidden;
+  opacity: 0;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 9999;
+  width: 70px;
+}
+
+/* table */
+
+.workflow-summary {
+  margin: 70px;
+  padding: 50px;
+  /* Adds space inside the container */
+  background-color: white;
+  /* Sets background to white */
+  border-radius: 5px;
+  /* Optional rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Optional subtle shadow */
+  overflow-x: auto;
+}
+
+/* Target the main table */
+.workflow-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  /* One outer border */
+}
+
+.workflow-summary th,
+.workflow-summary td {
+  border: none;
+  /* No vertical or internal borders */
+  padding: 10px;
+  text-align: left;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+  font-family: 'RedHatDisplay-Regular'
+
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  font-family: 'RedHatDisplay-Regular';
+  gap: 10px;
+  /* Adjust spacing between label and toggle */
+  font-size: 13px;
+}
+
+.nav-button {
+  background-color: white;
+  color: black;
+  margin: 0 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+  height: 35px;
+  width: 89px;
+  background: #ddd;
+  font-family: 'RedHatDisplay-Regular';
+
+  border: none;
+  margin-top: 3px;
+}
+
+/* table {
+    width: 100%; 
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #ccc;
+    
+    
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'RedHatDisplay-Regular';
+
+    
+  }
+
+  th {
+    background-color: white;
+    color: black;
+   
+  } */
+
+/* Alternating row colors for better readability */
+/* tr:nth-child(even) {
+    background-color: #f9f9f9;
+  } */
+
+/* Image Styling */
+img {
+  border-radius: 5px;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+
+  th,
+  td {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+
+
+
+
+/*Action icon design */
+.tab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  transition: background 0.3s ease-in-out;
+}
+
+
+.tab i {
+  margin-left: 5px;
+  font-size: 12px;
+  color: gray;
+}
+
+
+/* Icons inside tabs */
+.tab-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+
+
+
+.nested-table {
+  width: 70%;
+  /* reduce this percentage to decrease the width */
+  min-width: 600px;
+  /* optional minimum width for better readability */
+  border-collapse: collapse;
+  margin-left: 6%;
+  border-radius: 8px;
+
+}
+
+
+.nested-table th,
+.nested-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  font-family: 'RedHatDisplay-Regular';
+
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+
+
+}
+
+
+
+/* Switch Container */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Centers horizontally */
+  gap: 10px;
+}
+
+/* Switch Toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+/* Hide the default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* Slider circle */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Toggle ON (Checked) */
+.switch input:checked+.slider {
+  background-color: #7030a0;
+}
+
+.switch input:checked+.slider:before {
+  transform: translateX(20px);
+}
+
+
+
+
+/* Popup Background */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+
+}
+
+h2 {
+  font-weight: lighter;
+}
+
+/* Popup Content */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 600px;
+  /* Adjust width */
+  text-align: center;
+  font-family: 'RedHatDisplay-Regular';
+
+  /* height: 700px; */
+
+}
+
+/* Grid Layout for Two Columns */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Two equal columns */
+  gap: 15px;
+  /* Space between fields */
+  margin-top: 5%;
+
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* Labels */
+.form-group label {
+  font-weight: lighter;
+  font-size: small;
+  margin-bottom: 5px;
+  font-family: 'RedHatDisplay-Regular';
+}
+
+/* Input Fields */
+.form-group input {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+/* Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  background-color: #7030a0;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 30%;
+}
+
+.modal-buttons button:hover {
+  background-color: #5a2580;
+}
+
+
+
+select {
+  padding: 4px;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+
+}
+
+
+.modal {
+  z-index: 1000;
+}
+
+.modal-content {
+  z-index: 1001;
+}
+
+
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+
+
+/* Override toggle-container inside nested table to align left */
+.workflow-summary .nested-table .toggle-container {
+  justify-content: flex-start;
+}
+
+/* Align icon container in nested table to the left */
+.workflow-summary .nested-table .tab {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+}
+
+.workflow-summary .nested-table .tab-icon {
+  margin-left: 0;
+  margin-right: 10px;
+  /* Optional: spacing between icons */
+}
+
+
+.dropdown-container {
+  border: 1px solid #ccc;
+  padding: 4px;
+  position: relative;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.dropdown-selected {
+  font-size: 14px;
+  color: #333;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.checkbox-row {
+  padding: 4px 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  width: 100%;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin-right: 8px;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+
+/* Selected chips styling */
+.selected-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+}
+
+.selected-chip {
+  background: #B399D4;
+  /* border-radius: 16px; */
+  padding: 2px;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  color: black;
+}
+
+.remove-chip {
+  margin-left: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.remove-chip {
+  color: black;
+}
+
+.tab-icon {
+  transition: transform 0.3s ease;
+}
+
+.rotated {
+  transform: rotate(270deg);
+}

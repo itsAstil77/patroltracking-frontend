@@ -1,0 +1,177 @@
+<div class="breadcrumb-wrapper">
+  <nav class="breadcrumb">
+    <a routerLink="/administration" class="breadcrumb-link">Administration</a>
+    <span class="breadcrumb-separator">››</span>
+    <a routerLink="/devices" class="breadcrumb-link" [routerLink]="'/user-management'">UserManagement</a>
+    <span class="breadcrumb-separator">››</span>
+    <span class="breadcrumb-current">Role</span>
+  </nav>
+</div>
+<nav class="navbar">
+
+  <div class="navbar-left">
+    <span class="navbar-title">Role</span>
+  </div>
+
+  <div class="navbar-right">
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/refresh.png" (click)="reloadPage()" alt="Refresh"></button>
+      <span class="tooltip-text">Refresh</span>
+    </div>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/add.png" (click)="openRolePopup()" alt="Add"></button>
+      <span class="tooltip-text">Add</span>
+    </div>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
+      <span class="tooltip-text">Download</span>
+    </div>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/columns-3.png" (click)="toggleRoleColumnPicker()"></button>
+      <span class="tooltip-text">Column Picker</span>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+<!-- <table class="company-table">
+  <thead>
+    <tr>
+       <th>#</th>
+      <th>Role ID</th>
+      <th>Role Name</th>
+      <th>Description</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let role of roles; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ role.roleId }}</td>
+      <td>{{ role.roleName }}</td>
+      <td>{{ role.description }}</td>
+      <td>
+        <div class="tab">
+          <div class="tooltip-container">
+            <img src="assets/edit.png" alt="Edit" class="tab-icon">
+            <span class="tooltip-text">Edit</span>
+          </div>
+          <div class="tooltip-container">
+            <img src="assets/delete.png" alt="Delete" class="tab-icon">
+            <span class="tooltip-text">Delete</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+
+  </tbody>
+</table> -->
+
+
+<table class="company-table">
+  <thead>
+    <tr>
+      <th *ngFor="let col of roleColumns" [hidden]="!col.visible">{{ col.label }}</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let role of roles">
+      <td *ngFor="let col of roleColumns" [hidden]="!col.visible">{{ role[col.key] }}</td>
+      <td>
+        <div class="tab">
+          <div class="tooltip-container">
+            <img src="assets/edit.png" alt="Edit" (click)="openUpdateRolePopup(role)" class="tab-icon">
+            <span class="tooltip-text">Edit</span>
+          </div>
+          <div class="tooltip-container">
+            <img src="assets/delete.png" alt="Delete" (click)="openDeletePopup(role)" class="tab-icon">
+            <span class="tooltip-text">Delete</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+<div class="modal" *ngIf="showRolePopup">
+  <div class="modal-content">
+    <p>Create Role</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Role Name:</label>
+        <input type="text" [(ngModel)]="roleName" />
+      </div>
+
+      <div class="form-group">
+        <label>Description:</label>
+        <input type="text" [(ngModel)]="description" />
+      </div>
+
+    </div>
+
+    <div class="modal-buttons">
+      <button (click)="closeRolePopup()">Cancel</button>
+      <button (click)="createRole()">Create</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="column-picker-popup" [ngClass]="{ 'show': showRoleColumnPicker, 'hide': !showRoleColumnPicker }">
+  <div class="popup-header">
+    <span>Role Column Picker</span>
+    <button class="close-btn" (click)="toggleRoleColumnPicker()">×</button>
+  </div>
+  <div class="column-list">
+    <label *ngFor="let col of roleColumns" class="column-item">
+      <input type="checkbox" [(ngModel)]="col.visible" />
+      {{ col.label }}
+    </label>
+  </div>
+</div>
+
+
+
+
+<div class="modal" *ngIf="showUpdateRolePopup">
+  <div class="modal-content">
+    <p>Update Role</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Role Name:</label>
+        <input type="text" [(ngModel)]="roleName" />
+      </div>
+
+      <div class="form-group">
+        <label>Description:</label>
+        <input type="text" [(ngModel)]="description" />
+      </div>
+
+    </div>
+
+    <div class="modal-buttons">
+      <button (click)="closeUpdateRolePopup()">Cancel</button>
+      <button (click)="confirmUpdateRole()">Update</button>
+    </div>
+  </div>
+</div>
+
+<div class="delete-modal" *ngIf="showDeletePopup">
+  <div class="delete-modal-content">
+    <p>Are you sure you want to delete this Role?</p>
+    <div class="delete-modal-buttons">
+      <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
+      <button class="delete-no-btn" (click)="CloseDeletePopup()">No</button>
+    </div>
+  </div>
+</div>

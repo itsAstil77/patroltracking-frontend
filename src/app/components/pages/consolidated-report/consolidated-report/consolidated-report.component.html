@@ -1,0 +1,263 @@
+<div class="report-container">
+  <h2 class="report-heading">Consolidated Report</h2>
+
+  <form class="report-form" #reportForm="ngForm">
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label for="reportType">Type</label>
+        <select id="reportType" [(ngModel)]="type" name="reportType">
+          <option value="regular">Regular</option>
+          <option value="media">Media</option>
+        </select>
+      </div>
+
+      <!-- <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" required />
+      </div> -->
+
+
+      <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" [max]="currentDate" required />
+      </div>
+
+      <div class="form-group">
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" [max]="currentDate" required />
+      </div>
+
+      <button type="submit" class="apply-btn" (click)="applyReport($event)">View Report</button>
+      <button type="button" class="clear-btn" (click)="onClear()">Clear</button>
+    </div>
+  </form>
+</div>
+
+
+<nav class="navbar" *ngIf="showTable">
+  <div class="navbar-left">
+    <span class="navbar-title">View Report</span>
+  </div>
+  <div class="navbar-right">
+    <div class="tooltip-container">
+      <button class="icon-button">
+        <img src="assets/download.png" (click)="downloadCSV()" alt="Download">
+      </button>
+      <span class="tooltip-text">Download</span>
+    </div>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/columns-3.png"></button>
+      <span class="tooltip-text">Pagination</span>
+    </div>
+  </div>
+</nav>
+
+<table class="workflow-summary" *ngIf="showTable">
+  <thead>
+    <tr>
+      <th>Actions</th>
+      <th>User ID</th>
+      <th>Assignment Title</th>
+      <th>Status</th>
+      <th>Assigned Start</th>
+      <th>Assigned End</th>
+      <th>Start</th>
+      <th>End</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let patrol of reportData.report">
+      <ng-container *ngFor="let workflowItem of patrol.workflows">
+        <tr (click)="toggleWorkflow(workflowItem)">
+          <td>
+            <img src="assets/dropdown1.png" (click)="toggleWorkflow(workflowItem); $event.stopPropagation()"
+              class="tab-icon">
+          </td>
+          <td>{{ patrol.userId }}</td>
+          <td>{{ workflowItem.workflow.workflowTitle }}</td>
+          <td>{{ workflowItem.workflow.status }}</td>
+          <td>{{ workflowItem.workflow.assignedStart ? (workflowItem.workflow.assignedStart | date: 'dd-MM-yyyy , hh:mm
+            a') : '-' }}</td>
+          <td>{{ workflowItem.workflow.assignedEnd ? (workflowItem.workflow.assignedEnd | date: 'dd-MM-yyyy , hh:mm a')
+            : '-' }}</td>
+          <td>{{ workflowItem.workflow.startDateTime ? (workflowItem.workflow.startDateTime | date: 'dd-MM-yyyy , hh:mm
+            a') : '-' }}</td>
+          <td>{{ workflowItem.workflow.endDateTime ? (workflowItem.workflow.endDateTime | date: 'dd-MM-yyyy , hh:mm a')
+            : '-' }}</td>
+        </tr>
+
+        <!-- Checklist Table -->
+        <tr *ngIf="workflowItem.expanded">
+          <td colspan="8">
+            <table class="nested-table">
+              <thead>
+                <tr>
+                  <th>Actions</th>
+                  <th>Task Title</th>
+                  <th>Remarks</th>
+                  <th>Start</th>
+                  <th>End</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let checklist of workflowItem.checklists">
+                  <tr (click)="toggleChecklist(checklist, $event)">
+                    <td>
+                      <img src="assets/dropdown1.png" (click)="toggleChecklist(checklist, $event)" class="tab-icon">
+                    </td>
+                    <td>{{ checklist.title }}</td>
+                    <td>{{ checklist.remarks }}</td>
+                    <td>{{ checklist.scanStartDate ? (checklist.scanStartDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
+                    </td>
+                    <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+                    <td>{{ checklist.status }}</td>
+                  </tr>
+
+                  <!-- Media Table -->
+                  <tr *ngIf="checklist.expanded">
+                    <td colspan="6">
+                      <table class="nested-table">
+                        <thead>
+                          <tr>
+                            <th>Actions</th>
+                            <th>Media Description</th>
+                            <th>Media Type</th>
+                            <th>Created By</th>
+                            <th>Created Date</th>
+                            <th>Media URL</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let media of checklist.media">
+                            <tr (click)="toggleMedia(media, $event)">
+                              <td>
+                                <img src="assets/dropdown1.png" (click)="toggleMedia(media, $event)" class="tab-icon">
+                              </td>
+                              <td>{{ media.description }}</td>
+                              <td>{{ media.mediaType }}</td>
+                              <td>{{ media.userId }}</td>
+                              <td>{{ media.createdDate ? (media.createdDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
+                              </td>
+                              <td>
+                                <a href="#"
+                                  (click)="openMediaPopup(media.mediaUrl, media.mediaType); $event.preventDefault()">
+                                  View
+                                </a>
+                              </td>
+                            </tr>
+
+                            <!-- Signature Table -->
+                            <tr *ngIf="media.expanded">
+                              <td colspan="6">
+                                <table class="nested-table">
+                                  <thead>
+                                    <tr>
+                                      <th>Signature ID</th>
+                                      <th>Created By</th>
+                                      <th>Created Date</th>
+                                      <th>Signature URL</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let sig of checklist.signatures">
+                                      <td>{{ sig.signatureId }}</td>
+                                      <td>{{ sig.userId }}</td>
+                                      <td>{{ sig.createdDate ? (sig.createdDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
+                                      </td>
+                                      <td>
+                                        <a href="#"
+                                          (click)="openMediaPopup(sig.signatureUrl, 'image'); $event.preventDefault()">
+                                          View Signature
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+    </ng-container>
+  </tbody>
+</table>
+
+
+<nav class="navbar" *ngIf="showTableMedia && type === 'media'">
+  <div class="navbar-left">
+    <span class="navbar-title">View Media Report</span>
+  </div>
+  <div class="navbar-right">
+    <div class="tooltip-container">
+      <button class="icon-button">
+        <img src="assets/download.png" (click)="downloadMediaCSV()" alt="Download"></button>
+      <span class="tooltip-text">Download</span>
+    </div>
+    <div class="tooltip-container">
+      <button class="icon-button"><img src="assets/columns-3.png"></button>
+      <span class="tooltip-text">Pagination</span>
+    </div>
+  </div>
+</nav>
+
+<!-- <table class="media-table" *ngIf="showTableMedia && type === 'media'  "> -->
+<table class="media-table" *ngIf="showTableMedia && type === 'media'">
+  <thead>
+    <tr colspan="6">
+      <th>#</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Created By</th>
+      <th>Preview</th>
+      <th>Created Date</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- <tr *ngFor="let item of reportData?.mediaByPatrol; let i = index"> -->
+    <tr *ngFor="let item of mediaList; let i = index">
+
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.mediaType }}</td>
+      <td>{{ item.description }}</td>
+      <td>{{item.createdBy}}</td>
+
+      <td>
+        <a href="#" (click)="openMediaPopup(item.mediaUrl, item.mediaType); $event.preventDefault()">
+          <ng-container [ngSwitch]="item.mediaType">
+            <span *ngSwitchCase="'image'">View Image</span>
+            <span *ngSwitchCase="'video'">Play Video</span>
+            <span *ngSwitchCase="'audio'">Play Audio</span>
+            <span *ngSwitchDefault>Open Media</span>
+          </ng-container>
+        </a>
+
+      </td>
+
+
+      <td>{{ item.createdDate ? (item.createdDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<div class="media-modal" *ngIf="showMediaPopup" (click)="closeMediaPopup()">
+  <div class="media-content" (click)="$event.stopPropagation()">
+    <video *ngIf="mediaType === 'video'" [src]="mediaUrl" controls autoplay></video>
+    <audio *ngIf="mediaType === 'audio'" [src]="mediaUrl" controls autoplay></audio>
+    <img *ngIf="mediaType === 'image'" [src]="mediaUrl" alt="Signature Image" class="signature-img" />
+    <button class="close-btn" (click)="closeMediaPopup()">Close</button>
+  </div>
+</div>
