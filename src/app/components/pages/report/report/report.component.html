@@ -115,6 +115,8 @@
 
       </tr>
 
+
+
       <!-- Checklist Table -->
       <tr *ngIf="workflow.expanded">
         <td colspan="7">
@@ -222,8 +224,26 @@
         </td>
       </tr>
     </ng-container>
+    <tr class="pagination-row" *ngIf="showTable">
+  <td colspan="7">
+    <div class="pagination-container">
+      <label>Items per page:
+        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      </label>
+
+      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+    </div>
+  </td>
+</tr>
   </tbody>
 </table>
+
+
 
 
 <nav class="navbar" *ngIf="showTableMedia && type === 'media'">
@@ -279,6 +299,30 @@
 
       <td>{{ item.createdDate ? (item.createdDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
     </tr>
+
+
+
+
+
+<tr class="pagination-row">
+  <td colspan="6">
+    <div class="pagination-container">
+      <label>Items per page:
+        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      </label>
+
+      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+    </div>
+  </td>
+</tr>
+
+
+
   </tbody>
 </table>
 

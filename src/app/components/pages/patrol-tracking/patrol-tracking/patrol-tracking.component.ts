@@ -79,18 +79,34 @@ export class PatrolTrackingComponent implements OnInit {
 
 
 
+  // getWorkflowSummary(): void {
+
+  //   this.workflowService.getWorkflows().subscribe({
+  //     next: (res) => {
+  //       if (res.success) {
+  //         this.workflows = res.workflows;
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching workflows:', err);
+  //     }
+  //   });
+  // }
+
   getWorkflowSummary(): void {
-    this.workflowService.getWorkflows().subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.workflows = res.workflows;
-        }
-      },
-      error: (err) => {
-        console.error('Error fetching workflows:', err);
+  this.workflowService.getWorkflows(this.currentPage, this.itemsPerPage).subscribe({
+    next: (res) => {
+      if (res.success) {
+        this.workflows = res.workflows;
+        this.totalItems = res.pagination?.totalRecords ?? 0; 
       }
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Error fetching workflows:', err);
+    }
+  });
+}
+
 
 
 
@@ -444,5 +460,40 @@ export class PatrolTrackingComponent implements OnInit {
   reloadPage() {
     window.location.reload();
   }
+
+
+itemsPerPage = 10;
+currentPage = 1;
+pageSizeOptions = [5, 10, 20];
+totalItems: number = 0;
+
+
+get startItem(): number {
+  return (this.currentPage - 1) * this.itemsPerPage + 1;
+}
+
+get endItem(): number {
+  const end = this.currentPage * this.itemsPerPage;
+  return end > this.totalItems ? this.totalItems : end;
+}
+onItemsPerPageChange(): void {
+  this.currentPage = 1;
+  this.getWorkflowSummary(); // should fetch current page data
+}
+
+prevPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.getWorkflowSummary();
+  }
+}
+
+nextPage(): void {
+  if (this.endItem < this.totalItems) {
+    this.currentPage++;
+    this.getWorkflowSummary();
+  }
+}
+
 }
 

@@ -13,13 +13,14 @@ export class WorkflowService {
   constructor(private http: HttpClient) { }
 
 
-  getWorkflows(): Observable<any> {
+  getWorkflows(page: number, limit: number): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get(`${this.baseUrl}/workflow`, { headers });
+
+     return this.http.get(`${this.baseUrl}/workflow?page=${page}&limit=${limit}`, { headers });
   }
 
   getChecklistByWorkflowId(workflowId: string): Observable<any> {

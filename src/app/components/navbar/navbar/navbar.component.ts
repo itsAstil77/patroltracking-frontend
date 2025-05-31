@@ -2,19 +2,20 @@ import { Component, ElementRef, HostListener } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AlertService } from '../../services/alert/alert.service';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {  FormBuilder, FormGroup, FormsModule, ReactiveFormsModule,Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule,FormsModule,ReactiveFormsModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
 
 
-  constructor(private eRef: ElementRef,private router: Router,   private alertService: AlertService,private http:HttpClient,private fb: FormBuilder) {}
+  constructor(private eRef: ElementRef,private router: Router,   private alertService: AlertService,
+    private http:HttpClient,private fb: FormBuilder) {}
 
 
   isReportsExpanded = false;
@@ -28,7 +29,9 @@ export class NavbarComponent {
     this.isReportsExpanded = false;
   }
   
-  passwordForm!: FormGroup;
+passwordForm!: FormGroup;
+  loggedInUsername: string = '';
+
 
   isSidebarCollapsed: boolean = true; // Default: Only icons are visible
   isAdminExpanded: boolean = false;
@@ -54,26 +57,34 @@ export class NavbarComponent {
     this.isDropdownOpen = false;
   }
 
-    loggedInUsername: string = '';
+
   
     ngOnInit(): void {
-      // this.loggedInUsername = localStorage.getItem('userEmail') || 'Guest';
+    //   this.loggedInUsername = localStorage.getItem('userEmail') || 'Guest';
 
-      // this.passwordForm = this.fb.group({
-      //   currentPassword: ['', Validators.required],
-      //   newPassword: ['', [Validators.required, Validators.minLength(6)]],
-      //   confirmNewPassword: ['', Validators.required]
+    //   this.passwordForm = this.fb.group({
+    //     currentPassword: ['', Validators.required],
+    //     newPassword: ['', [Validators.required, Validators.minLength(6)]],
+    //     confirmNewPassword: ['', Validators.required]
     //   }
     // );
 
+    this.loggedInUsername = localStorage.getItem('userEmail') || 'Guest';
 
-    //   const userId = localStorage.getItem("userId");
-    //   console.log("User ID from localStorage in update-password:", userId);
+  this.passwordForm = this.fb.group({
+    currentPassword: ['', Validators.required],
+    newPassword: ['', [Validators.required, Validators.minLength(6)]],
+    confirmNewPassword: ['', Validators.required]
+  });
+
+
+      const userId = localStorage.getItem("userId");
+      console.log("User ID from localStorage in update-password:", userId);
     
-    //   if (!userId) {
-    //     this.alertService.showAlert("User ID not found. Please log in again.", "error");
-    //     this.router.navigateByUrl("login");
-    //   }
+      if (!userId) {
+        this.alertService.showAlert("User ID not found. Please log in again.", "error");
+        this.router.navigateByUrl("login");
+      }
     }
 
 
@@ -131,7 +142,7 @@ export class NavbarComponent {
     //   console.log("Password update payload:", payload); // ✅ Log the payload
     
       
-    //   this.http.put("http://172.16.100.66:5221/api/user/change-password", payload)
+    //   this.http.put("http://172.16.100.68:5000/signup/change-password", payload)
     //     .subscribe({
     //       next: (res: any) => {
     //         console.log("Password change response:", res); // ✅ Log the response
@@ -145,6 +156,49 @@ export class NavbarComponent {
     //     });
     // }
     
+updatePassword() {
+  const username = localStorage.getItem("userEmail");
+  const token = localStorage.getItem("token"); // Assuming token is stored under "token"
+
+  if (!username || !token) {
+    alert("Missing username or token. Please log in again.");
+    this.router.navigateByUrl("login");
+    return;
+  }
+
+  const formValues = this.passwordForm.value;
+
+  if (formValues.newPassword !== formValues.confirmNewPassword) {
+    alert("New password and confirm password do not match.");
+    return;
+  }
+
+  const payload = {
+    username: username,
+    oldPassword: formValues.currentPassword,
+    password: formValues.newPassword,
+    confirmPassword: formValues.confirmNewPassword
+  };
+
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  this.http.post("http://172.16.100.68:5000/signup/change-password", payload, headers)
+    .subscribe({
+      next: (res: any) => {
+        console.log("Password change response:", res);
+        alert(res.message || "Password changed successfully.");
+        this.router.navigateByUrl("login");
+      },
+      error: (err) => {
+        console.error("Password change error:", err);
+        alert(err.error?.message || "Failed to change password.");
+      }
+    });
+}
 
     closeAdminPanel() {
       this.isAdminExpanded = false;

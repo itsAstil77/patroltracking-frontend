@@ -55,6 +55,17 @@ deleteLocation(locationId: string, deletedBy: string): Observable<any> {
   return this.http.delete(url, { headers, body });
 }
 
+
+
+  getLocationSummary(page: number, limit: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<any>(`${this.apiUrl}?page=${page}&limit=${limit}`, { headers });
+  }
+
 }
 
 

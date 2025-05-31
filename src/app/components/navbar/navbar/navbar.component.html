@@ -117,7 +117,7 @@
 
 
 
-<!-- Update Password Modal -->
+
 <!-- <div class="modal" *ngIf="isUpdate">
       <div class="modal-content">
         <p>Update Password</p>
@@ -144,3 +144,34 @@
       </div>
     </div>
      -->
+
+
+    <div class="modal" *ngIf="isUpdate">
+  <div class="modal-content">
+    <p>Update Password</p>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Current Password:</label>
+          <input type="password" formControlName="currentPassword" required />
+        </div>
+        <div class="form-group">
+          <label>New Password:</label>
+          <input type="password" formControlName="newPassword" required />
+        </div>
+        <div class="form-group">
+          <label>Confirm New Password:</label>
+          <input type="password" formControlName="confirmNewPassword" required />
+        </div>
+      </div>
+
+
+      <div class="modal-buttons">
+        
+        <button type="button" (click)="closePopup()">Close</button>
+        <button type="submit" [disabled]="passwordForm.invalid">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

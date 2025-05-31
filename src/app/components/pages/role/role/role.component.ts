@@ -22,9 +22,10 @@ export class RoleComponent implements OnInit {
   roles: any[] = [];
 
   getRoles(): void {
-    this.roleService.getRoles().subscribe({
+    this.roleService.getRoles(this.roleCurrentPage, this.roleItemsPerPage).subscribe({
       next: (res) => {
         this.roles = res.roles;
+          this.roleTotalItems = res.totalCount ?? 0;
       },
       error: (err) => {
         console.error('Error fetching roles:', err);
@@ -171,4 +172,39 @@ export class RoleComponent implements OnInit {
   testClick() {
     console.log('Test Click works');
   }
+
+
+roleItemsPerPage = 10;
+roleCurrentPage = 1;
+rolePageSizeOptions = [5, 10, 20];
+roleTotalItems: number = 0;
+
+get roleStartItem(): number {
+  return (this.roleCurrentPage - 1) * this.roleItemsPerPage + 1;
+}
+
+get roleEndItem(): number {
+  const end = this.roleCurrentPage * this.roleItemsPerPage;
+  return end > this.roleTotalItems ? this.roleTotalItems : end;
+}
+
+onRoleItemsPerPageChange(): void {
+  this.roleCurrentPage = 1;
+  this.getRoles();
+}
+
+prevRolePage(): void {
+  if (this.roleCurrentPage > 1) {
+    this.roleCurrentPage--;
+    this.getRoles();
+  }
+}
+
+nextRolePage(): void {
+  if (this.roleEndItem < this.roleTotalItems) {
+    this.roleCurrentPage++;
+    this.getRoles();
+  }
+}
+
 }

@@ -115,17 +115,24 @@ export class ReportComponent {
     this.showTable = false; // Hide table initially
     this.showTableMedia = false;
 
+
+     const page = this.currentPage;
+     const limit = this.itemsPerPage;
+
+
     const observable = this.startDate && this.endDate
-      ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type)
-      : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate);
+      ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type,page, limit)
+      : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate,page, limit);
 
     observable.subscribe({
       next: (res) => {
         if (this.type === 'media') {
 
           if (res?.media?.length > 0) {  // ✅ check res.media directly
-            this.reportData = res;
+            this.reportData = res; 
+            this.totalItems = res.pagination?.totalMedia || res.media?.length || 0;
             this.alertService.showAlert('Media Report generated successfully!')
+
             this.showTableMedia = true;
           } else {
             this.alertService.showAlert('No media report data found.');
@@ -133,6 +140,7 @@ export class ReportComponent {
         } else {
           if (res?.completedWorkflows?.length > 0) {
             this.reportData = res;
+             this.totalItems = res.pagination?.totalWorkflows || res.completedWorkflows.length || 0;
             this.alertService.showAlert('Report generated successfully!')
             this.showTable = true; // show regular table
           } else {
@@ -391,7 +399,54 @@ export class ReportComponent {
     window.location.reload();
   }
 
+
+
+
+currentPage: number = 1;
+itemsPerPage: number = 10;
+totalItems: number = 0;
+pageSizeOptions: number[] = [5, 10, 20]; // customize as needed
+
+get startItem(): number {
+  return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
 }
+
+get endItem(): number {
+  const possibleEnd = this.currentPage * this.itemsPerPage;
+  return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
+}
+
+
+onItemsPerPageChange() {
+  this.currentPage = 1;
+  this.applyReport(new Event('submit')); // re-fetch on size change
+}
+
+prevPage() {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.applyReport(new Event('submit'));
+  }
+}
+
+nextPage() {
+  const totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+  if (this.currentPage < totalPages) {
+    this.currentPage++;
+    this.applyReport(new Event('submit'));
+  }
+}
+get totalPages(): number {
+  return Math.ceil(this.totalItems / this.itemsPerPage);
+}
+
+}
+
+
+
+
+
+
 
 
 

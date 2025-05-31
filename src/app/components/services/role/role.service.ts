@@ -10,13 +10,13 @@ export class RoleService {
 
   constructor(private http: HttpClient) {}
 
-  getRoles(): Observable<any> {
+  getRoles(page: number, limit: number): Observable<any> {
     const token = localStorage.getItem('token'); // or wherever your token is stored
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
 
-    return this.http.get(this.baseUrl, { headers });
+    return this.http.get(`${this.baseUrl}?page=${page}&limit=${limit}`, { headers });
   }
 
   createRole(roleData: { roleName: string; description: string }): Observable<any> {

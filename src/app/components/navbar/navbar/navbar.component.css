@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Red Hat Display';
+
   }
 
 
@@ -275,6 +275,7 @@
   background-color: #7030a0;
   color: #fff;
   padding: auto;
+
 }
 
 .user-dropdown a {
@@ -284,6 +285,7 @@
   text-decoration: none;
   color: #333;
   color: #fff;
+   font-family: 'RedHatDisplay-Regular';
 
 }
 
@@ -340,9 +342,10 @@ h2{
 
 /* Labels */
 .form-group label {
-  font-weight: lighter;
+  color: #333;
   font-size: small;
   margin-bottom: 5px;
+   font-family: 'RedHatDisplay-Regular';
 }
 
 /* Input Fields */
@@ -351,6 +354,9 @@ h2{
   padding: 4px;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+p{
+  font-size: 15px;
 }
 
 /* Buttons */
@@ -369,6 +375,8 @@ h2{
   cursor: pointer;
   border-radius: 5px;
   width:30%;
+  font-size:14px;
+   font-family: 'RedHatDisplay-Regular';
 }
 
 .modal-buttons button:hover {

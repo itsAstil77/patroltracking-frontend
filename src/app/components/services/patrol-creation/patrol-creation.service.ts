@@ -55,15 +55,17 @@ export class PatrolCreationService {
 
   private apiUrl = 'http://172.16.100.68:5000/signup/users';
 
-  getUsers(): Observable<any> {
-    const token = localStorage.getItem('authToken'); // or get from auth service
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
 
-    return this.http.get<any>(this.apiUrl, { headers });
-  }
+  getUsers(page: number, limit: number): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get<any>(`http://172.16.100.68:5000/signup/users?page=${page}&limit=${limit}`, { headers });
+}
+
 
    private baseUrl = 'http://172.16.100.68:5000';
 
@@ -95,5 +97,18 @@ deleteUser(userId: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/signup/${userId}`, { headers });
   }
 
+
+    private roleUrl = 'http://172.16.100.68:5000/roles';
+
+
+
+  getRoles(): Observable<any> {
+    const token = localStorage.getItem('token'); // or wherever your token is stored
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get(this.roleUrl, { headers });
+  }
   
 }

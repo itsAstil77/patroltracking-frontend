@@ -550,6 +550,22 @@
             </div>
           </td>
         </tr>
+        <tr class="pagination-row"  style="height:50px;">
+  <td colspan="13">
+    <div class="pagination-container">
+      <label>Items per page:
+        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      </label>
+
+      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+    </div>
+  </td>
+</tr>
       </tbody>
     </table>
 
@@ -634,6 +650,23 @@
           </td>
         </tr>
       </tbody>
+  <tr class="pagination-row" style="height:50px;" >
+  <td colspan="13">
+    <div class="pagination-container">
+      <label>Items per page:
+        <select [(ngModel)]="locationItemsPerPage" (change)="onLocationItemsPerPageChange()">
+          <option *ngFor="let size of locationPageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      </label>
+
+      <span class="range-info">{{ locationStartItem }}–{{ locationEndItem }} of {{ locationTotalItems }}</span>
+
+      <button (click)="prevLocationPage()" [disabled]="locationCurrentPage === 1" class="arrow-btn">⏴</button>
+      <button (click)="nextLocationPage()" [disabled]="locationEndItem >= locationTotalItems" class="arrow-btn">⏵</button>
+    </div>
+  </td>
+</tr>
+
     </table>
   </div>
 

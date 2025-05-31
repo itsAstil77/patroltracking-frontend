@@ -20,19 +20,19 @@ export class ReportService {
     });
   }
 
-  getReportByPatrolId(patrolId: string , type: string,startDate: string, endDate: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/reports/${patrolId}?type=${type}&startDateTime=${startDate}&endDateTime=${endDate}`, {
+  getReportByPatrolId(patrolId: string , type: string,startDate: string, endDate: string, page: number, limit: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/reports/${patrolId}?type=${type}&startDateTime=${startDate}&endDateTime=${endDate}&page=${page}&limit=${limit}`, {
       headers: this.getTokenHeaders()
     });
   }
 
-  getFilteredReportByPatrolId(patrolId: string, startDate: string, endDate: string,type:string): Observable<any> {
-    const url = `${this.baseUrl}/reports/${patrolId}?startDateTime=${startDate}&endDateTime=${endDate}&type=${type}`;
+  getFilteredReportByPatrolId(patrolId: string, startDate: string, endDate: string,type:string, page: number, limit: number): Observable<any> {
+    const url = `${this.baseUrl}/reports/${patrolId}?startDateTime=${startDate}&endDateTime=${endDate}&type=${type}&page=${page}&limit=${limit}`;
     return this.http.get<any>(url, { headers: this.getTokenHeaders() });
   }
 
-   getConsolidatedReport(type: string, startDate: string, endDate: string): Observable<any> {
-    const url = `${this.baseUrl}/reports/all?type=${type}&startDateTime=${startDate}&endDateTime=${endDate}`;
+   getConsolidatedReport(type: string, startDate: string, endDate: string,page: number, limit: number): Observable<any> {
+    const url = `${this.baseUrl}/reports/all?type=${type}&startDateTime=${startDate}&endDateTime=${endDate}&page=${page}&limit=${limit}`;
     return this.http.get<any>(url, { headers: this.getTokenHeaders() });
   }
 }

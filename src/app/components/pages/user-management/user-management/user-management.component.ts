@@ -156,17 +156,29 @@ export class UserManagementComponent {
 
   users: any[] = [];
 
-  fetchUsers(): void {
-    this.patrolService.getUsers().subscribe({
-      next: (response) => {
-        this.users = response.users;
+  // fetchUsers(): void {
+  //   this.patrolService.getUsers().subscribe({
+  //     next: (response) => {
+  //       this.users = response.users;
 
-      },
-      error: (err) => {
-        console.error('Error fetching users:', err);
-      }
-    });
-  }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching users:', err);
+  //     }
+  //   });
+  // }
+
+  fetchUsers(): void {
+  this.patrolService.getUsers(this.currentPage, this.itemsPerPage).subscribe({
+    next: (response) => {
+      this.users = response.users;
+      this.totalItems = response.pagination?.totalRecords ?? 0;
+    },
+    error: (err) => {
+      console.error('Error fetching users:', err);
+    }
+  });
+}
 
 
   user = {
@@ -399,18 +411,34 @@ export class UserManagementComponent {
 
   locationList: any[] = []
 
-  loadLocation() {
-    this.workflowService.getLocationSummary().subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.locationList = res.locations;
-        }
-      },
-      error: (err) => {
-        console.error('Error fetching location summary:', err);
+  // loadLocation() {
+  //   this.locationService.getLocationSummary(this.currentPage, this.itemsPerPage).subscribe({
+  //     next: (res) => {
+  //       if (res.success) {
+  //         this.locationList = res.locations;
+       
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching location summary:', err);
+  //     }
+  //   });
+  // }
+
+  loadLocation(): void {
+  this.locationService.getLocationSummary(this.locationCurrentPage, this.locationItemsPerPage).subscribe({
+    next: (res) => {
+      if (res.success) {
+        this.locationList = res.locations || res.data || [];
+        this.locationTotalItems = res.pagination?.totalRecords || this.locationList.length;
       }
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Error fetching location summary:', err);
+    }
+  });
+}
+
 
 
   isAddLoc = false;
@@ -568,7 +596,7 @@ export class UserManagementComponent {
   roles: any[] = [];
 
   getRoles(): void {
-    this.roleService.getRoles().subscribe({
+    this.patrolService.getRoles().subscribe({
       next: (res) => {
         this.roles = res.roles;
       },
@@ -597,6 +625,79 @@ export class UserManagementComponent {
   toggleAdminColumnPicker() {
     this.showAdminColumnPicker = !this.showAdminColumnPicker;
   }
+
+
+
+
+itemsPerPage = 10;
+currentPage = 1;
+pageSizeOptions = [5, 10, 20];
+totalItems: number = 0;
+
+
+get startItem(): number {
+  return (this.currentPage - 1) * this.itemsPerPage + 1;
+}
+
+get endItem(): number {
+  const end = this.currentPage * this.itemsPerPage;
+  return end > this.totalItems ? this.totalItems : end;
+}
+onItemsPerPageChange(): void {
+  this.currentPage = 1;
+  this.fetchUsers(); 
+   
+}
+
+prevPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.fetchUsers();
+    
+  }
+}
+
+nextPage(): void {
+  if (this.endItem < this.totalItems) {
+    this.currentPage++;
+    this.fetchUsers();
+    
+  }
+}
+
+locationItemsPerPage = 10;
+locationCurrentPage = 1;
+locationPageSizeOptions = [5, 10, 20];
+locationTotalItems: number = 0;
+
+get locationStartItem(): number {
+  return (this.locationCurrentPage - 1) * this.locationItemsPerPage + 1;
+}
+
+get locationEndItem(): number {
+  const end = this.locationCurrentPage * this.locationItemsPerPage;
+  return end > this.locationTotalItems ? this.locationTotalItems : end;
+}
+
+
+onLocationItemsPerPageChange(): void {
+  this.locationCurrentPage = 1;
+  this.loadLocation();
+}
+
+prevLocationPage(): void {
+  if (this.locationCurrentPage > 1) {
+    this.locationCurrentPage--;
+    this.loadLocation();
+  }
+}
+
+nextLocationPage(): void {
+  if (this.locationEndItem < this.locationTotalItems) {
+    this.locationCurrentPage++;
+    this.loadLocation();
+  }
+}
 
 
 }

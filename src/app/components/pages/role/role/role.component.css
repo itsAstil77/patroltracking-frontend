@@ -484,3 +484,54 @@ select {
   transition: background 0.3s ease;
   width: 80px;
 }
+
+
+ .pagination-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+       
+        font-size: 14px;
+        gap: 10px;
+        color: #333;
+        flex-wrap: wrap; 
+      }
+
+      
+      .pagination-container label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 0;
+        white-space: nowrap;
+      }
+      
+      .pagination-container select {
+        padding: 4px 6px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 13px;
+        cursor: pointer;
+        width: 50px; 
+        height: 25px;
+      }
+      
+      .range-info {
+        min-width: 100px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      
+      .arrow-btn {
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        color: #7030a0;
+      }
+      
+      .arrow-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
