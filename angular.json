@@ -64,15 +64,20 @@
           "configurations": {
             "production": {
               "buildTarget": "patrol-tracking:build:production"
+            
             },
             "development": {
               "buildTarget": "patrol-tracking:build:development"
+             
             }
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options":{
+              "buildTarget": "patrol-tracking:build:development"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
