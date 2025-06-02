@@ -53,7 +53,7 @@ export class PatrolCreationService {
   // }
   
 
-  private apiUrl = 'http://172.16.100.68:5000/signup/users';
+  private apiUrl = 'http://172.19.9.152:5000/signup/users';
 
 
 
@@ -63,11 +63,11 @@ export class PatrolCreationService {
     'Authorization': `Bearer ${token}`
   });
 
-  return this.http.get<any>(`http://172.16.100.68:5000/signup/users?page=${page}&limit=${limit}`, { headers });
+  return this.http.get<any>(`http://172.19.9.152:5000/signup/users?page=${page}&limit=${limit}`, { headers });
 }
 
 
-   private baseUrl = 'http://172.16.100.68:5000';
+   private baseUrl = 'http://172.19.9.152:5000';
 
   createUser(userData: any): Observable<any> {
     const token = localStorage.getItem('token'); // adjust if you use sessionStorage or another key
@@ -98,7 +98,7 @@ deleteUser(userId: string): Observable<any> {
   }
 
 
-    private roleUrl = 'http://172.16.100.68:5000/roles';
+    private roleUrl = 'http://172.19.9.152:5000/roles';
 
 
 
