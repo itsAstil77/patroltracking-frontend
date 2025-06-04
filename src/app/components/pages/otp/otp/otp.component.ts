@@ -71,7 +71,7 @@ export class OtpComponent {
     this.otpObj.otp = otpValue;
 
 
-    this.http.post("http://172.16.100.68:5000/login/verify-otp", this.otpObj)
+    this.http.post("http://172.19.9.152:5000/login/verify-otp", this.otpObj)
       .subscribe({
         next: (res: any) => {
           if (res.success) {
@@ -146,7 +146,7 @@ export class OtpComponent {
 
     this.isResending = true; 
 
-    this.http.post("http://172.16.100.68:5000/api/auth/resend-otp", { email: this.otpObj.email })
+    this.http.post("http://172.19.9.152:5000/api/auth/resend-otp", { email: this.otpObj.email })
       .subscribe({
         next: (res: any) => {
           this.alertService.showAlert("OTP resent successfully! Please check your email.");
