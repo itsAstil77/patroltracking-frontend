@@ -39,7 +39,7 @@ export class LoginComponent {
 
   // ✅ Handle Login
   onLogin() {
-    this.http.post(" http://172.19.9.152:5000/login", this.loginForm.value,)
+    this.http.post(" http://172.16.100.68:5000/login", this.loginForm.value,)
       .subscribe({
         next: (res: any) => {
           if (res.success) {
@@ -47,7 +47,18 @@ export class LoginComponent {
             localStorage.setItem("authType", "login");
             this.alertService.showAlert(res.message);
 
-            this.router.navigateByUrl("otp");
+            if (res.token) {
+              localStorage.setItem('token', res.token);
+              localStorage.setItem('userId', res.user.userId);
+              localStorage.setItem('userRole', res.user.role);
+            }
+            // Now you can use the stored admin ID anywhere in your app
+            const loggedInAdminId = localStorage.getItem('userId');
+            console.log('Current admin ID:', loggedInAdminId); 
+
+
+            this.router.navigateByUrl("user-management");
+
 
           } else {
             this.alertService.showAlert("Invalid login credentials!", "error");
@@ -59,6 +70,9 @@ export class LoginComponent {
         }
       });
   }
+
+
+
 
 
   navigateToForgotPassword() {
@@ -74,7 +88,7 @@ export class LoginComponent {
 
     this.isSendingOTP = true;
 
-    this.http.post("http://172.19.9.152:5000/api/auth/forgot-password", this.forgotPasswordForm.value)
+    this.http.post("http://172.16.100.68:5000/api/auth/forgot-password", this.forgotPasswordForm.value)
       .subscribe({
         next: (res: any) => {
           this.alertService.showAlert("OTP sent! Please check your email.");

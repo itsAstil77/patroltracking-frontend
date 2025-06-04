@@ -58,52 +58,50 @@ export class OtpComponent {
       //alert("User email is missing!");
       return;
     }
+     this.otpObj.otp = "9028";
 
     const otpInputs = document.querySelectorAll('.otp-box') as NodeListOf<HTMLInputElement>;
     const otpValue = Array.from(otpInputs).map(input => input.value).join('');
 
-    if (otpValue.length < 4) {  // Adjust length based on backend requirements
+    if (otpValue.length < 4) { 
       this.alertService.showAlert("OTP must be at least 4 digits.", "error");
       return;
     }
 
     this.otpObj.otp = otpValue;
 
-    // First, verify OTP
-    this.http.post("http://172.19.9.152:5000/login/verify-otp", this.otpObj)
+
+    this.http.post("http://172.16.100.68:5000/login/verify-otp", this.otpObj)
       .subscribe({
         next: (res: any) => {
           if (res.success) {
-            if (res.user.role !== "Admin") {
-              this.alertService.showAlert("Please Use Admin Credentials", "error");
-              this.router.navigateByUrl("login");
-              return;
-            }
-
+            // if (res.user.role !== "Admin") {
+            //   this.alertService.showAlert("Please Use Admin Credentials", "error");
+            //   this.router.navigateByUrl("login");
+            //   return;
+            // }
             this.alertService.showAlert(res.message);
 
-
-
-            // ✅ Save token to localStorage
+            
             if (res.token) {
               localStorage.setItem('token', res.token);
               localStorage.setItem('userId', res.user.userId);
               localStorage.setItem('userRole', res.user.role);
             }
-            // Now you can use the stored admin ID anywhere in your app
+           
             const loggedInAdminId = localStorage.getItem('userId');
-            console.log('Current admin ID:', loggedInAdminId); // e.g., "ADM001"
+            console.log('Current admin ID:', loggedInAdminId); 
 
             if (this.authType === "signup") {
-              localStorage.setItem("authType", ""); // Clear authType
-              this.router.navigateByUrl("login"); // ✅ Signup → OTP → Login
+              localStorage.setItem("authType", "");
+              this.router.navigateByUrl("login");
             } else if (this.authType === "login") {
-              localStorage.setItem("authType", ""); // Clear authType
+              localStorage.setItem("authType", ""); 
               // this.router.navigateByUrl("dashboard"); 
               this.router.navigateByUrl("user-management");
-            } else if (this.authType === "forgot-password") {  // ✅ Forgot Password
+            } else if (this.authType === "forgot-password") { 
               localStorage.setItem("authType", "");
-              this.router.navigateByUrl("update-password");  // ✅ Forgot Password → OTP → Update Password
+              this.router.navigateByUrl("update-password");  
             } else {
               this.alertService.showAlert("Unknown authentication type. Redirecting to login.", "error");
               this.router.navigateByUrl("login");
@@ -126,7 +124,7 @@ export class OtpComponent {
     const inputElements = document.querySelectorAll('.otp-box') as NodeListOf<HTMLInputElement>;
 
     if (event.target.value && index < inputElements.length - 1) {
-      inputElements[index + 1].focus(); // Move to next input
+      inputElements[index + 1].focus(); 
     }
   }
 
@@ -134,7 +132,7 @@ export class OtpComponent {
     const inputElements = document.querySelectorAll('.otp-box') as NodeListOf<HTMLInputElement>;
 
     if (event.key === "Backspace" && !event.target.value && index > 0) {
-      inputElements[index - 1].focus(); // Move to previous input on backspace
+      inputElements[index - 1].focus(); 
     }
   }
 
@@ -146,9 +144,9 @@ export class OtpComponent {
       return;
     }
 
-    this.isResending = true; // Disable button temporarily
+    this.isResending = true; 
 
-    this.http.post("http://172.19.9.152:5000/api/auth/resend-otp", { email: this.otpObj.email })
+    this.http.post("http://172.16.100.68:5000/api/auth/resend-otp", { email: this.otpObj.email })
       .subscribe({
         next: (res: any) => {
           this.alertService.showAlert("OTP resent successfully! Please check your email.");
