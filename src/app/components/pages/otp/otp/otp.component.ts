@@ -71,7 +71,7 @@ export class OtpComponent {
     this.otpObj.otp = otpValue;
 
 
-    this.http.post("http://172.19.9.152:5000/login/verify-otp", this.otpObj)
+    this.http.post("http://172.16.100.68:5000/login/verify-otp", this.otpObj)
       .subscribe({
         next: (res: any) => {
           if (res.success) {
@@ -83,11 +83,17 @@ export class OtpComponent {
             this.alertService.showAlert(res.message);
 
             
-            if (res.token) {
-              localStorage.setItem('token', res.token);
-              localStorage.setItem('userId', res.user.userId);
-              localStorage.setItem('userRole', res.user.role);
-            }
+            // if (res.token) {
+            //   localStorage.setItem('token', res.token);
+            //   localStorage.setItem('userId', res.user.userId);
+            //   localStorage.setItem('userRole', res.user.role);
+            // }
+
+        if (res.user?.userId) {
+            localStorage.setItem('userId', res.user.userId);
+            localStorage.setItem('userRole', res.user.role);
+            console.log('Current user ID:', res.user.userId); 
+          }
            
             const loggedInAdminId = localStorage.getItem('userId');
             console.log('Current admin ID:', loggedInAdminId); 
@@ -146,7 +152,7 @@ export class OtpComponent {
 
     this.isResending = true; 
 
-    this.http.post("http://172.19.9.152:5000/api/auth/resend-otp", { email: this.otpObj.email })
+    this.http.post("http://172.16.100.68:5000/api/auth/resend-otp", { email: this.otpObj.email })
       .subscribe({
         next: (res: any) => {
           this.alertService.showAlert("OTP resent successfully! Please check your email.");
