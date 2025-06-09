@@ -83,11 +83,11 @@ export class OtpComponent {
             this.alertService.showAlert(res.message);
 
             
-            // if (res.token) {
-            //   localStorage.setItem('token', res.token);
-            //   localStorage.setItem('userId', res.user.userId);
-            //   localStorage.setItem('userRole', res.user.role);
-            // }
+            if (res.token) {
+              localStorage.setItem('token', res.token);
+              localStorage.setItem('userId', res.user.userId);
+              localStorage.setItem('userRole', res.user.role);
+            }
 
         if (res.user?.userId) {
             localStorage.setItem('userId', res.user.userId);
