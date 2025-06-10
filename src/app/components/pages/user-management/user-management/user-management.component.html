@@ -2,7 +2,7 @@
   <nav class="breadcrumb">
     <a routerLink="/administration" class="breadcrumb-link">Administration</a>
     <span class="breadcrumb-separator">››</span>
-    <span class="breadcrumb-current">User UserManagement</span>
+    <span class="breadcrumb-current">UserManagement</span>
   </nav>
 </div>
 
@@ -18,7 +18,7 @@
   </div>
 </nav>
 
-<!-- <div class="modal" *ngIf="isAddUserPopupOpen">
+<div class="modal" *ngIf="isAddUserPopupOpen">
   <div class="modal-content">
     <p>Add User</p>
     <div class="form-grid">
@@ -91,22 +91,22 @@
       <button (click)="createUser()">Save</button>
     </div>
   </div>
-</div> -->
+</div>
 
 
-<form #formRef="ngForm" (ngSubmit)="createUser()" novalidate>
+<!-- <form #formRef="ngForm" (ngSubmit)="createUser()" novalidate>
   <div class="modal" *ngIf="isAddUserPopupOpen">
     <div class="modal-content">
       <p>Add User</p>
       <div class="form-grid">
-        <!-- Username -->
+
         <div class="form-group">
           <label>Username</label>
           <input type="text" [(ngModel)]="user.username" name="username" required #username="ngModel" />
           <small *ngIf="username.invalid && username.touched" class="error">Username is required</small>
         </div>
 
-        <!-- Password -->
+
         <div class="form-group">
           <label>Password</label>
           <div class="password-wrapper">
@@ -119,21 +119,21 @@
           <small *ngIf="password.invalid && password.touched" class="error">Password (min 4 chars) is required</small>
         </div>
 
-        <!-- Email -->
+  
         <div class="form-group">
           <label>Email</label>
           <input type="email" [(ngModel)]="user.email" name="email" required email #email="ngModel" />
           <small *ngIf="email.invalid && email.touched" class="error">Valid email is required</small>
         </div>
 
-        <!-- Guard Name -->
+
         <div class="form-group">
           <label>Marshal Guard Name</label>
           <input type="text" [(ngModel)]="user.patrolGuardName" name="patrolGuardName" required #guard="ngModel" />
           <small *ngIf="guard.invalid && guard.touched" class="error">Guard Name is required</small>
         </div>
 
-        <!-- Location -->
+
         <div class="form-group">
           <label>Location Name</label>
           <select (click)="loadLocation()" [(ngModel)]="user.locationName" name="locationName" required
@@ -145,21 +145,21 @@
           <small *ngIf="location.invalid && location.touched" class="error">Location is required</small>
         </div>
 
-        <!-- Designation -->
+  
         <div class="form-group">
           <label>Designation</label>
           <input type="text" [(ngModel)]="user.designation" name="designation" required #designation="ngModel" />
           <small *ngIf="designation.invalid && designation.touched" class="error">Designation is required</small>
         </div>
 
-        <!-- Department -->
+   
         <div class="form-group">
           <label>Department</label>
           <input type="text" [(ngModel)]="user.department" name="department" required #department="ngModel" />
           <small *ngIf="department.invalid && department.touched" class="error">Department is required</small>
         </div>
 
-        <!-- Mobile Number -->
+
         <div class="form-group">
           <label>Mobile Number</label>
           <input type="text" [(ngModel)]="user.mobileNumber" name="mobileNumber" required pattern="^[0-9]{10}$"
@@ -167,7 +167,7 @@
           <small *ngIf="mobile.invalid && mobile.touched" class="error">Valid 10-digit mobile number required</small>
         </div>
 
-        <!-- Role -->
+
         <div class="form-group">
           <label>Role</label>
           <select [(ngModel)]="user.roleId" name="roleId" required #role="ngModel">
@@ -184,7 +184,7 @@
       </div>
     </div>
   </div>
-</form>
+</form> -->
 
 
 <div class="modal" *ngIf="isUpdateUserPopupOpen">

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WorkflowService {
-  private baseUrl = 'http://172.19.9.152:5004';
+  private baseUrl = 'http://172.19.9.152:5000';
 
 
   constructor(private http: HttpClient) { }
@@ -39,10 +39,10 @@ export class WorkflowService {
       'Content-Type': 'application/json'
     });
   
-    return this.http.post('http://172.19.9.152:5004/workflow/create', data, { headers });
+    return this.http.post('http://172.19.9.152:5000/workflow/create', data, { headers });
   }
 
-  private checklistUrl = 'http://172.19.9.152:5004/checklists';
+  private checklistUrl = 'http://172.19.9.152:5000/checklists';
 
   createChecklist(data: any): Observable<any> {
     const token = localStorage.getItem('token');
@@ -59,7 +59,7 @@ export class WorkflowService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get('http://172.19.9.152:5004/signup/non-admin', { headers });
+    return this.http.get('http://172.19.9.152:5000/signup/non-admin', { headers });
   }
   
   updateWorkflow(workflowId: string, payload: any): Observable<any> {
@@ -68,11 +68,11 @@ export class WorkflowService {
       'Authorization': `Bearer ${token}`
     });
   
-    return this.http.put(`http://172.19.9.152:5004/workflow/update/${workflowId}`, payload, { headers });
+    return this.http.put(`http://172.19.9.152:5000/workflow/update/${workflowId}`, payload, { headers });
   }
 
 
-  private checkbaseUrl = 'http://172.19.9.152:5004/checklists';
+  private checkbaseUrl = 'http://172.19.9.152:5000/checklists';
 
   updateChecklist(checklistId: string, payload: any): Observable<any> {
     const token = localStorage.getItem('token');
@@ -90,12 +90,12 @@ export class WorkflowService {
       'Authorization': `Bearer ${token}`
     });
   
-    const url = `http://172.19.9.152:5004/workflow/${workflowId}/checklists`;
+    const url = `http://172.19.9.152:5000/workflow/${workflowId}/checklists`;
     return this.http.get<any>(url, { headers });
   }
   
   
-  private apiUrl = 'http://172.19.9.152:5004/locationcode';
+  private apiUrl = 'http://172.19.9.152:5000/locationcode';
   getLocationSummary(): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
@@ -106,7 +106,7 @@ export class WorkflowService {
   }
 
 
-  private assignUrl = 'http://172.19.9.152:5004/checklists/assign';
+  private assignUrl = 'http://172.19.9.152:5000/checklists/assign';
   assignChecklist(checklistId: string, requestBody: any): Observable<any> {
     const token = localStorage.getItem('token'); // or sessionStorage.getItem('token') 
     const headers = new HttpHeaders({

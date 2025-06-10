@@ -53,6 +53,8 @@
     color: white;
     font-weight: bold;
     font-size: 22px;
+    margin-left: 10%;
+
   }
   
   /* Logo */
@@ -492,8 +494,6 @@ p{
 
 .admin-icon {
   margin-right: 25px;
-
-  
 }
 
 .admin-text {
@@ -515,6 +515,22 @@ p{
 .menu-item.active img {
   filter: brightness(0) invert(4); /* Inverts icon color to white */
 }
+
+.arrow {
+  margin-left: 40%;
+  margin-top: 230%;
+  margin-bottom: 10%;
+}
+
+.arrow-icon {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.arrow-icon.rotated {
+  transform: rotate(180deg);
+}
+
 
 
 

@@ -39,7 +39,7 @@ export class LoginComponent {
 
   // ✅ Handle Login
   onLogin() {
-    this.http.post(" http://172.19.9.152:5004/login", this.loginForm.value,)
+    this.http.post(" http://172.19.9.152:5000/login", this.loginForm.value,)
       .subscribe({
         next: (res: any) => {
           if (res.success) {
@@ -88,7 +88,7 @@ export class LoginComponent {
 
     this.isSendingOTP = true;
 
-    this.http.post("http://172.19.9.152:5004/api/auth/forgot-password", this.forgotPasswordForm.value)
+    this.http.post("http://172.19.9.152:5000/api/auth/forgot-password", this.forgotPasswordForm.value)
       .subscribe({
         next: (res: any) => {
           this.alertService.showAlert("OTP sent! Please check your email.");

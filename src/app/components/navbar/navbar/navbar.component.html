@@ -74,9 +74,9 @@
 
       <li class="menu-item admin-dropdown" (click)="toggleAdministration()"
         [class.active]="activeMenuItem === 'administration'">
-        <img src="assets/administration.png" alt="Administration Icon" class="menu-icon" />
+        <img src="assets/administration.png" alt="Administration Icon" class="menu-icon"  />
         <span class="menu-text" [class.hidden]="isSidebarCollapsed">Administration</span>
-        <!-- <span class="arrow" [class.rotate]="isAdminExpanded">&#x25BC;</span> -->
+      
       </li>
       <div class="admin-right-panel" *ngIf="isAdminExpanded"
         [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">
@@ -97,7 +97,24 @@
             <a routerLink="/user-management" (click)="closeAdminPanel()">User Management</a>
           </li>
         </ul>
+
+
+        <div class="arrow">
+
+          <img src="assets/arrow.png" alt="Dropdown Arrow" class="admin-icon" (click)="closeAdminPanel()" />
+
+        </div>
+          
+
+
+
       </div>
+
+
+
+
+
+
 
       <li class="menu-item" (click)="setActive('patrol-tracking')"
         [class.active]="activeMenuItem === 'patrol-tracking'">

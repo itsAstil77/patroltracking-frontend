@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LocationService {
-  private apiUrl = 'http://172.19.9.152:5004/locationcode';
+  private apiUrl = 'http://172.19.9.152:5000/locationcode';
 
   constructor(private http: HttpClient) {}
 
@@ -30,7 +30,7 @@ export class LocationService {
     Authorization: `Bearer ${token}`
   });
 
-  const url = `http://172.19.9.152:5004/locationcode/${locationId}`;
+  const url = `http://172.19.9.152:5000/locationcode/${locationId}`;
 
   return this.http.put(url, data, { headers });
 }
@@ -42,7 +42,7 @@ export class LocationService {
   }
 
 deleteLocation(locationId: string, deletedBy: string): Observable<any> {
-  const url = `http://172.19.9.152:5004/locationcode/${locationId}`;
+  const url = `http://172.19.9.152:5000/locationcode/${locationId}`;
   const token = this.getToken();
 
   const headers = new HttpHeaders({

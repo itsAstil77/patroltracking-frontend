@@ -20,10 +20,10 @@ export class NavbarComponent {
 
   isReportsExpanded = false;
 
-  toggleReports() {
-    this.isReportsExpanded = !this.isReportsExpanded;
-    this.setActive('report');
-  }
+  // toggleReports() {
+  //   this.isReportsExpanded = !this.isReportsExpanded;
+  //   this.setActive('report');
+  // }
   
   closeReportsPanel() {
     this.isReportsExpanded = false;
@@ -42,10 +42,10 @@ passwordForm!: FormGroup;
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 
-  toggleAdministration() {
-    this.isAdminExpanded = !this.isAdminExpanded;
-    this.setActive('administration');
-  }
+  // toggleAdministration() {
+  //   this.isAdminExpanded = !this.isAdminExpanded;
+  //   this.setActive('administration');
+  // }
 
   toggleDropdown(event: Event) {
     event.stopPropagation(); // Prevent immediate closing
@@ -206,10 +206,36 @@ updatePassword() {
 
     activeMenuItem: string = 'administration'; // default active is dashboard
 
-setActive(menuItem: string): void {
-  this.activeMenuItem = menuItem; // only one active at a time
-}
-    
+// setActive(menuItem: string): void {
+//   this.activeMenuItem = menuItem; // only one active at a time
+
+
+// }
     
 
+// In your component class
+setActive(menuItem: string) {
+  this.activeMenuItem = menuItem;
+  // Close all expanded panels
+  this.isAdminExpanded = false;
+  this.isReportsExpanded = false;
+}
+
+// Keep your existing toggle methods
+toggleAdministration() {
+  this.isAdminExpanded = !this.isAdminExpanded;
+  if (this.isAdminExpanded) {
+    this.activeMenuItem = 'administration';
+  }
+}
+
+toggleReports() {
+  this.isReportsExpanded = !this.isReportsExpanded;
+  if (this.isReportsExpanded) {
+    this.activeMenuItem = 'report';
+  }
+}
+    
+
+ 
 }
