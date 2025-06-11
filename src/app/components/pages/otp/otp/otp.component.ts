@@ -39,6 +39,8 @@ export class OtpComponent {
 
 
 
+
+
   loadUserData() {
     this.authType = localStorage.getItem('authType') || '';
 

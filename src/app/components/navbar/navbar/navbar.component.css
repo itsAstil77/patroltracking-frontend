@@ -53,7 +53,7 @@
     color: white;
     font-weight: bold;
     font-size: 22px;
-    margin-left: 10%;
+    margin-left: 14%;
 
   }
   
@@ -516,39 +516,69 @@ p{
   filter: brightness(0) invert(4); /* Inverts icon color to white */
 }
 
+
 .arrow {
-  margin-left: 40%;
-  margin-top: 230%;
-  margin-bottom: 10%;
+  position: fixed;
+  bottom: 80px;
+  z-index: 1001;
+  margin-left: 80px;
 }
 
 .arrow-icon {
-  transition: transform 0.3s ease;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-}
+
+} 
 
 .arrow-icon.rotated {
   transform: rotate(180deg);
 }
 
 
+.tooltip-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 10001; 
+}
 
+.tooltip-text {
+  position: fixed; 
+  top: auto;
+  left: 70px; 
+  transform: translateY(-50%);
+  white-space: nowrap;
+  background-color: black;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 99999;
+  pointer-events: none;
+}
+.tooltip-text {
+  margin-top: 30px; 
+}
 
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.tooltip-text::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  transform: translateY(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
 
 
 

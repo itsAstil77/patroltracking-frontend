@@ -25,9 +25,9 @@ export class NavbarComponent {
   //   this.setActive('report');
   // }
   
-  closeReportsPanel() {
-    this.isReportsExpanded = false;
-  }
+  // closeReportsPanel() {
+  //   this.isReportsExpanded = false;
+  // }
   
 passwordForm!: FormGroup;
   loggedInUsername: string = '';
@@ -200,11 +200,13 @@ updatePassword() {
     });
 }
 
-    closeAdminPanel() {
-      this.isAdminExpanded = false;
-    }
+    // closeAdminPanel() {
+    //   this.isAdminExpanded = false;
+    // }
 
-    activeMenuItem: string = 'administration'; // default active is dashboard
+    // activeMenuItem: string = 'administration'; // default active is dashboard
+    activeMenuItem: string | null = 'administration';
+
 
 // setActive(menuItem: string): void {
 //   this.activeMenuItem = menuItem; // only one active at a time
@@ -222,20 +224,63 @@ setActive(menuItem: string) {
 }
 
 // Keep your existing toggle methods
+// toggleAdministration() {
+//   this.isAdminExpanded = !this.isAdminExpanded;
+//   if (this.isAdminExpanded) {
+//     this.activeMenuItem = 'administration';
+//   }
+// }
+
+// toggleReports() {
+//   this.isReportsExpanded = !this.isReportsExpanded;
+//   if (this.isReportsExpanded) {
+//     this.activeMenuItem = 'report';
+//   }
+// }
+    
+
 toggleAdministration() {
-  this.isAdminExpanded = !this.isAdminExpanded;
-  if (this.isAdminExpanded) {
-    this.activeMenuItem = 'administration';
+  // Close Reports panel if open
+  if (this.isReportsExpanded) {
+    this.isReportsExpanded = false;
   }
+
+  // Toggle Administration panel
+  this.isAdminExpanded = !this.isAdminExpanded;
+  this.activeMenuItem = this.isAdminExpanded ? 'administration' : null;
 }
 
 toggleReports() {
+  // Close Administration panel if open
+  if (this.isAdminExpanded) {
+    this.isAdminExpanded = false;
+  }
+
+  // Toggle Reports panel
   this.isReportsExpanded = !this.isReportsExpanded;
-  if (this.isReportsExpanded) {
-    this.activeMenuItem = 'report';
+  this.activeMenuItem = this.isReportsExpanded ? 'report' : null;
+}
+
+
+
+closeAdminPanel() {
+  this.isAdminExpanded = false;
+  if (this.activeMenuItem === 'administration') {
+    this.activeMenuItem = null;
   }
 }
-    
+
+closeReportsPanel() {
+  this.isReportsExpanded = false;
+  if (this.activeMenuItem === 'report') {
+    this.activeMenuItem = null;
+  }
+}
+
+
+
+
+
 
  
 }

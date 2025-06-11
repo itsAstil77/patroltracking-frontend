@@ -25,25 +25,40 @@
   <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
     <ul class="menu">
       <li class="menu-item" (click)="setActive('dashboard')" [class.active]="activeMenuItem === 'dashboard'">
-        <img src="assets/dashboard.png" routerLink="/dashboard" alt="Dashboard Icon" class="menu-icon" />
-        <a routerLink="/dashboard" [class.hidden]="isSidebarCollapsed" class="menu-text">Dashboard</a>
-
+        <div class="tooltip-container">
+          <img src="assets/dashboard.png" routerLink="/dashboard" alt="Dashboard Icon" class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed" routerLink="/dashboard" [class.hidden]="isSidebarCollapsed"
+            class="menu-text">Dashboard</a>
+           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Dashboard</span>
+        </div>
       </li>
-      <li class="menu-item" (click)="setActive('events')" [class.active]="activeMenuItem === 'events'">
-        <img src="assets/event.png" routerLink="/events" alt="Dashboard Icon" class="menu-icon" />
-        <a routerLink="/events" [class.hidden]="isSidebarCollapsed" class="menu-text">Events</a>
 
+
+
+
+      <li class="menu-item" (click)="setActive('events')" [class.active]="activeMenuItem === 'events'">
+        <div class="tooltip-container">
+          <img src="assets/event.png" routerLink="/events" alt="Dashboard Icon" class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed" routerLink="/events" [class.hidden]="isSidebarCollapsed"
+            class="menu-text">Events</a>
+          <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Events</span>
+        </div>
       </li>
 
 
       <li class="menu-item admin-dropdown" [class.active]="activeMenuItem === 'report'" (click)="toggleReports()">
-        <img src="assets/reports.png" alt="Reports Icon" class="menu-icon" />
-        <span class="menu-text" [class.hidden]="isSidebarCollapsed">Reports</span>
+        <div class="tooltip-container">
+          <img src="assets/reports.png" alt="Reports Icon" class="menu-icon" />
+          <span class="menu-text" [class.hidden]="isSidebarCollapsed">Reports</span>
+           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Reports</span>
+  
+        </div>
       </li>
 
 
       <div class="admin-right-panel" *ngIf="isReportsExpanded"
         [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">
+
         <div class="admin-title">
           <img src="assets/reports.png" alt="Reports Icon" class="admin-icon" />
           <span class="admin-text">Reports</span>
@@ -56,27 +71,44 @@
             <a routerLink="/consolidated-report" (click)="closeReportsPanel()">Consolidated Report</a>
           </li>
         </ul>
+
+        <div class="arrow" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">
+          <img src="assets/arrow3.png" alt="Dropdown Arrow" class="arrow-icon" (click)="closeReportsPanel()" />
+        </div>
       </div>
 
 
       <li class="menu-item" (click)="setActive('process-and-automation')"
         [class.active]="activeMenuItem === 'process-and-automation'">
-        <img src="assets/automation.png" routerLink="/process-and-automation" alt="Dashboard Icon" class="menu-icon" />
-        <a routerLink="/process-and-automation" [class.hidden]="isSidebarCollapsed" class="menu-text">Process &
-          Automation </a>
+        <div class="tooltip-container">
+          <img src="assets/automation.png" routerLink="/process-and-automation" alt="Dashboard Icon"
+            class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed" routerLink="/process-and-automation" [class.hidden]="isSidebarCollapsed"
+            class="menu-text">Process & Automation </a>
+          <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Process & Automation </span>
+        </div>
       </li>
 
       <li class="menu-item" (click)="setActive('insights')" [class.active]="activeMenuItem === 'insights'">
-        <img src="assets/insight.png" routerLink="/insights" alt="Dashboard Icon" class="menu-icon" />
-        <a routerLink="/insights" [class.hidden]="isSidebarCollapsed" class="menu-text">Insights</a>
+        <div class="tooltip-container">
+          <img src="assets/insight.png" routerLink="/insights" alt="Dashboard Icon" class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed" routerLink="/insights" [class.hidden]="isSidebarCollapsed"
+            class="menu-text">Insights</a>
+           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Insights</span>
+        </div>
       </li>
 
 
       <li class="menu-item admin-dropdown" (click)="toggleAdministration()"
         [class.active]="activeMenuItem === 'administration'">
-        <img src="assets/administration.png" alt="Administration Icon" class="menu-icon"  />
-        <span class="menu-text" [class.hidden]="isSidebarCollapsed">Administration</span>
-      
+        <div class=" tooltip-container">
+          <img src="assets/administration.png" alt="Administration Icon" class="menu-icon" />
+          <span class="menu-text" [class.hidden]="isSidebarCollapsed">Administration</span>
+          <!-- <span class="tooltip-text">Administration</span> -->
+          <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Administration</span>
+
+        </div>
+
       </li>
       <div class="admin-right-panel" *ngIf="isAdminExpanded"
         [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">
@@ -99,15 +131,9 @@
         </ul>
 
 
-        <div class="arrow">
-
-          <img src="assets/arrow.png" alt="Dropdown Arrow" class="admin-icon" (click)="closeAdminPanel()" />
-
+        <div class="arrow" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">
+          <img src="assets/arrow3.png" alt="Dropdown Arrow" class="arrow-icon" (click)="closeAdminPanel()" />
         </div>
-          
-
-
-
       </div>
 
 
@@ -118,10 +144,14 @@
 
       <li class="menu-item" (click)="setActive('patrol-tracking')"
         [class.active]="activeMenuItem === 'patrol-tracking'">
-        <img src="assets/patrol.png" routerLink="/patrol-tracking" alt="patrol Icon" class="menu-icon" />
-        <a routerLink="/patrol-tracking" routerLinkActive="active" class="menu-text"
-          [class.hidden]="isSidebarCollapsed">Patrol Tracking</a>
+        <div class="tooltip-container">
+          <img src="assets/patrol.png" routerLink="/patrol-tracking" alt="patrol Icon" class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed" routerLink="/patrol-tracking" routerLinkActive="active" class="menu-text"
+            [class.hidden]="isSidebarCollapsed">Patrol Tracking</a>
+           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Patrol Tracking</span>
+        </div>
       </li>
+
     </ul>
   </aside>
 
@@ -163,7 +193,7 @@
      -->
 
 
-    <div class="modal" *ngIf="isUpdate">
+<div class="modal" *ngIf="isUpdate">
   <div class="modal-content">
     <p>Update Password</p>
 
@@ -185,7 +215,7 @@
 
 
       <div class="modal-buttons">
-        
+
         <button type="button" (click)="closePopup()">Close</button>
         <button type="submit" [disabled]="passwordForm.invalid">Update</button>
       </div>
