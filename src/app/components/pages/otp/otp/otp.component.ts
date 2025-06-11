@@ -75,11 +75,11 @@ export class OtpComponent {
       .subscribe({
         next: (res: any) => {
           if (res.success) {
-            // if (res.user.role !== "Admin") {
-            //   this.alertService.showAlert("Please Use Admin Credentials", "error");
-            //   this.router.navigateByUrl("login");
-            //   return;
-            // }
+            if (res.user.role !== "Admin") {
+              this.alertService.showAlert("Please Use Admin Credentials", "error");
+              this.router.navigateByUrl("login");
+              return;
+            }
             this.alertService.showAlert(res.message);
 
             
