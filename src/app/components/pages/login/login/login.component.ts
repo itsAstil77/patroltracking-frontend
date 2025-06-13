@@ -47,16 +47,6 @@ export class LoginComponent {
             localStorage.setItem("authType", "login");
             this.alertService.showAlert(res.message);
 
-            // if (res.token) {
-            //   localStorage.setItem('token', res.token);
-            //   localStorage.setItem('userId', res.user.userId);
-            //   localStorage.setItem('userRole', res.user.role);
-            // }
-            // Now you can use the stored admin ID anywhere in your app
-            // const loggedInAdminId = localStorage.getItem('userId');
-            // console.log('Current admin ID:', loggedInAdminId); 
-
-
             this.router.navigateByUrl("otp");
 
 
