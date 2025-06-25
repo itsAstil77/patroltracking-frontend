@@ -580,5 +580,7 @@ p{
   border-color: transparent black transparent transparent;
 }
 
-
-
+.menu-item:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}

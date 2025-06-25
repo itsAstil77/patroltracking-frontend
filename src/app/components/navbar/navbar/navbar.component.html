@@ -24,22 +24,19 @@
   <!-- Sidebar -->
   <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
     <ul class="menu">
-      <li class="menu-item" (click)="setActive('dashboard')" [class.active]="activeMenuItem === 'dashboard'">
+      <li class="menu-item" routerLink="/dashboard" (click)="setActive('dashboard')" [class.active]="activeMenuItem === 'dashboard'">
         <div class="tooltip-container">
-          <img src="assets/dashboard.png" routerLink="/dashboard" alt="Dashboard Icon" class="menu-icon" />
-          <a *ngIf="!isSidebarCollapsed" routerLink="/dashboard" [class.hidden]="isSidebarCollapsed"
-            class="menu-text">Dashboard</a>
+          <img src="assets/dashboard.png"  alt="Dashboard Icon" class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed"  [class.hidden]="isSidebarCollapsed" class="menu-text">Dashboard</a>
           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Dashboard</span>
         </div>
       </li>
 
 
-
-
-      <li class="menu-item" (click)="setActive('events')" [class.active]="activeMenuItem === 'events'">
+      <li class="menu-item" routerLink="/events" (click)="setActive('events')" [class.active]="activeMenuItem === 'events'">
         <div class="tooltip-container">
-          <img src="assets/event.png" routerLink="/events" alt="Dashboard Icon" class="menu-icon" />
-          <a *ngIf="!isSidebarCollapsed" routerLink="/events" [class.hidden]="isSidebarCollapsed"
+          <img src="assets/event.png"  alt="Dashboard Icon" class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed"  [class.hidden]="isSidebarCollapsed"
             class="menu-text">Events</a>
           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Events</span>
         </div>
@@ -78,22 +75,22 @@
       </div>
 
 
-      <li class="menu-item" (click)="setActive('process-and-automation')"
+      <li class="menu-item" routerLink="/process-and-automation" (click)="setActive('process-and-automation')"
         [class.active]="activeMenuItem === 'process-and-automation'">
         <div class="tooltip-container">
-          <img src="assets/automation.png" routerLink="/process-and-automation" alt="Dashboard Icon"
+          <img src="assets/automation.png" alt="Dashboard Icon"
             class="menu-icon" />
-          <a *ngIf="!isSidebarCollapsed" routerLink="/process-and-automation" [class.hidden]="isSidebarCollapsed"
+          <a *ngIf="!isSidebarCollapsed"  [class.hidden]="isSidebarCollapsed"
             class="menu-text">Process & Automation </a>
           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Process & Automation
           </span>
         </div>
       </li>
 
-      <li class="menu-item" (click)="setActive('insights')" [class.active]="activeMenuItem === 'insights'">
+      <li class="menu-item" routerLink="/insights" (click)="setActive('insights')" [class.active]="activeMenuItem === 'insights'">
         <div class="tooltip-container">
-          <img src="assets/insight.png" routerLink="/insights" alt="Dashboard Icon" class="menu-icon" />
-          <a *ngIf="!isSidebarCollapsed" routerLink="/insights" [class.hidden]="isSidebarCollapsed"
+          <img src="assets/insight.png"  alt="Dashboard Icon" class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed"  [class.hidden]="isSidebarCollapsed"
             class="menu-text">Insights</a>
           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Insights</span>
         </div>
@@ -136,11 +133,11 @@
         </div>
       </div>
 
-      <li class="menu-item" (click)="setActive('patrol-tracking')"
+      <li class="menu-item" routerLink="/patrol-tracking" (click)="setActive('patrol-tracking')"
         [class.active]="activeMenuItem === 'patrol-tracking'">
         <div class="tooltip-container">
-          <img src="assets/patrol.png" routerLink="/patrol-tracking" alt="patrol Icon" class="menu-icon" />
-          <a *ngIf="!isSidebarCollapsed" routerLink="/patrol-tracking" routerLinkActive="active" class="menu-text"
+          <img src="assets/patrol.png"  alt="patrol Icon" class="menu-icon" />
+          <a *ngIf="!isSidebarCollapsed"  routerLinkActive="active" class="menu-text"
             [class.hidden]="isSidebarCollapsed">Patrol Tracking</a>
           <span class="tooltip-text" [ngStyle]="{ left: isSidebarCollapsed ? '70px' : '250px' }">Patrol Tracking</span>
         </div>
