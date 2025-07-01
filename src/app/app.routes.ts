@@ -14,6 +14,7 @@ import { LicenseManagementComponent } from './components/pages/license-managemen
 import { SchedulesComponent } from './components/pages/schedules/schedules/schedules.component';
 import { ConsolidatedReportComponent } from './components/pages/consolidated-report/consolidated-report/consolidated-report.component';
 import { RoleComponent } from './components/pages/role/role/role.component';
+import { MapComponent } from './components/pages/map/map/map.component';
 
 export const routes: Routes = [
 
@@ -49,7 +50,8 @@ export const routes: Routes = [
       { path:'license-management',component:LicenseManagementComponent},
       { path:'schedules',component:SchedulesComponent},
       {path:'consolidated-report',component:ConsolidatedReportComponent},
-      {path:'role',component:RoleComponent}
+      {path:'role',component:RoleComponent},
+      {path:'map/:id',component:MapComponent}
       
 
 ]}

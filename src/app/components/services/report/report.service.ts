@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ReportService {
 
-  private baseUrl = 'http://172.16.100.31:5000';
+  private baseUrl = 'http://172.19.9.152.31:5000';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,7 @@ export class ReportService {
     });
   }
 
-  getReportByPatrolId(patrolId: string , type: string,startDate: string, endDate: string, page: number, limit: number): Observable<any> {
+  getReportByPatrolId(patrolId: string , type: string,startDate: string, endDate: string,  page: number, limit: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/reports/${patrolId}?type=${type}&startDateTime=${startDate}&endDateTime=${endDate}&page=${page}&limit=${limit}`, {
       headers: this.getTokenHeaders()
     });

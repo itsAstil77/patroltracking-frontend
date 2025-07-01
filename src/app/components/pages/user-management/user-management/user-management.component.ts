@@ -169,16 +169,16 @@ export class UserManagementComponent {
   // }
 
   fetchUsers(): void {
-  this.patrolService.getUsers(this.currentPage, this.itemsPerPage).subscribe({
-    next: (response) => {
-      this.users = response.users;
-      this.totalItems = response.pagination?.totalRecords ?? 0;
-    },
-    error: (err) => {
-      console.error('Error fetching users:', err);
-    }
-  });
-}
+    this.patrolService.getUsers(this.currentPage, this.itemsPerPage).subscribe({
+      next: (response) => {
+        this.users = response.users;
+        this.totalItems = response.pagination?.totalRecords ?? 0;
+      },
+      error: (err) => {
+        console.error('Error fetching users:', err);
+      }
+    });
+  }
 
 
   user = {
@@ -416,7 +416,7 @@ export class UserManagementComponent {
   //     next: (res) => {
   //       if (res.success) {
   //         this.locationList = res.locations;
-       
+
   //       }
   //     },
   //     error: (err) => {
@@ -426,18 +426,39 @@ export class UserManagementComponent {
   // }
 
   loadLocation(): void {
-  this.locationService.getLocationSummary(this.locationCurrentPage, this.locationItemsPerPage).subscribe({
-    next: (res) => {
-      if (res.success) {
-        this.locationList = res.locations || res.data || [];
-        this.locationTotalItems = res.pagination?.totalRecords || this.locationList.length;
+    this.locationService.getLocationSummary(this.locationCurrentPage, this.locationItemsPerPage).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.locationList = res.locations || res.data || [];
+          // this.locationTotalItems = res.pagination?.totalRecords || this.locationList.length;
+          // ✅ NEW — correct based on your API
+          this.locationTotalItems = res.totalLocations || 0;
+
+          console.log('Loaded locations:', this.locationList.length);
+          console.log('Total items:', this.locationTotalItems);
+          console.log('Current page:', this.locationCurrentPage);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching location summary:', err);
       }
-    },
-    error: (err) => {
-      console.error('Error fetching location summary:', err);
-    }
-  });
-}
+    });
+  }
+  // loadLocation(): void {
+  //   this.locationService.getLocationSummary(this.locationCurrentPage, this.locationItemsPerPage).subscribe({
+  //     next: (res) => {
+  //       if (res.success) {
+  //         this.locationList = res.locations || res.data || [];
+  //         this.locationTotalItems = res.pagination?.totalRecords || 0;
+
+
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching location summary:', err);
+  //     }
+  //   });
+  // }
 
 
 
@@ -629,75 +650,78 @@ export class UserManagementComponent {
 
 
 
-itemsPerPage = 10;
-currentPage = 1;
-pageSizeOptions = [5, 10, 20];
-totalItems: number = 0;
+  itemsPerPage = 10;
+  currentPage = 1;
+  pageSizeOptions = [5, 10, 20];
+  totalItems: number = 0;
 
 
-get startItem(): number {
-  return (this.currentPage - 1) * this.itemsPerPage + 1;
-}
-
-get endItem(): number {
-  const end = this.currentPage * this.itemsPerPage;
-  return end > this.totalItems ? this.totalItems : end;
-}
-onItemsPerPageChange(): void {
-  this.currentPage = 1;
-  this.fetchUsers(); 
-   
-}
-
-prevPage(): void {
-  if (this.currentPage > 1) {
-    this.currentPage--;
-    this.fetchUsers();
-    
+  get startItem(): number {
+    return (this.currentPage - 1) * this.itemsPerPage + 1;
   }
-}
 
-nextPage(): void {
-  if (this.endItem < this.totalItems) {
-    this.currentPage++;
-    this.fetchUsers();
-    
+  get endItem(): number {
+    const end = this.currentPage * this.itemsPerPage;
+    return end > this.totalItems ? this.totalItems : end;
   }
-}
+  onItemsPerPageChange(): void {
+    this.currentPage = 1;
+    this.fetchUsers();
 
-locationItemsPerPage = 10;
-locationCurrentPage = 1;
-locationPageSizeOptions = [5, 10, 20];
-locationTotalItems: number = 0;
+  }
 
-get locationStartItem(): number {
-  return (this.locationCurrentPage - 1) * this.locationItemsPerPage + 1;
-}
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.fetchUsers();
 
-get locationEndItem(): number {
-  const end = this.locationCurrentPage * this.locationItemsPerPage;
-  return end > this.locationTotalItems ? this.locationTotalItems : end;
-}
+    }
+  }
+
+  nextPage(): void {
+    if (this.endItem < this.totalItems) {
+      this.currentPage++;
+      this.fetchUsers();
+
+    }
+  }
+
+  locationItemsPerPage = 10;
+  locationCurrentPage = 1;
+  locationPageSizeOptions = [5, 10, 20];
+  locationTotalItems: number = 0;
+
+  get locationStartItem(): number {
+    return (this.locationCurrentPage - 1) * this.locationItemsPerPage + 1;
+  }
+
+  get locationEndItem(): number {
+    const end = this.locationCurrentPage * this.locationItemsPerPage;
+    return end > this.locationTotalItems ? this.locationTotalItems : end;
+  }
 
 
-onLocationItemsPerPageChange(): void {
-  this.locationCurrentPage = 1;
-  this.loadLocation();
-}
-
-prevLocationPage(): void {
-  if (this.locationCurrentPage > 1) {
-    this.locationCurrentPage--;
+  onLocationItemsPerPageChange(): void {
+    this.locationCurrentPage = 1;
     this.loadLocation();
   }
-}
 
-nextLocationPage(): void {
-  if (this.locationEndItem < this.locationTotalItems) {
-    this.locationCurrentPage++;
-    this.loadLocation();
+  prevLocationPage(): void {
+    if (this.locationCurrentPage > 1) {
+      this.locationCurrentPage--;
+      this.loadLocation();
+    }
   }
-}
+
+  nextLocationPage(): void {
+    if (this.locationEndItem < this.locationTotalItems) {
+      this.locationCurrentPage++;
+      this.loadLocation();
+    }
+  }
+
+
+
 
 
 }

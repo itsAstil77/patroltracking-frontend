@@ -1,0 +1,32 @@
+<div class="breadcrumb-wrapper">
+  <nav class="breadcrumb">
+    <a routerLink="/patrol-tracking" class="breadcrumb-link">PatrolTracking</a>
+
+    <span class="breadcrumb-separator">››</span>
+    <span class="breadcrumb-current">Map</span>
+  </nav>
+</div>
+
+
+
+
+
+
+<div *ngIf="userLocationAvailable; else noLocation">
+  <p><strong>📍 Current Location:</strong> {{ locationName }}</p>
+  <div id="map" style="height: 400px;"></div>
+</div>
+  <div style="margin-top: 15px; text-align: right;">
+    <button (click)="onSaveLocation()" class="save-btn">
+     Use This Location
+    </button>
+  </div>
+
+<ng-template #noLocation>
+  <p>📍 User location not available.</p>
+</ng-template>
+
+
+
+
+

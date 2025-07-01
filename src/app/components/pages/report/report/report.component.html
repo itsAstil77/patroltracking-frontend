@@ -129,6 +129,8 @@
                 <th>Remarks</th>
                 <th>Start</th>
                 <th>End</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
                 <th>Status</th>
 
               </tr>
@@ -143,13 +145,15 @@
                   <td>{{ checklist.scanStartDate ? (checklist.scanStartDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
                   </td>
                   <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+                  <td>{{ checklist.geoCoordinates.latitude }}</td>
+                  <td>{{ checklist.geoCoordinates.longitude }}</td>
                   <td>{{ checklist.status }}</td>
 
                 </tr>
 
                 <!-- Media Table -->
                 <tr *ngIf="checklist.expanded">
-                  <td colspan="6">
+                  <td colspan="8">
                     <table class="nested-table">
 
                       <thead>

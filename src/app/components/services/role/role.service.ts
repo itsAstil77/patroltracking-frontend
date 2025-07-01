@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RoleService {
-  private baseUrl = 'http://172.16.100.31:5000/roles';
+  private baseUrl = 'http://172.19.9.152.31:5000/roles';
 
   constructor(private http: HttpClient) {}
 

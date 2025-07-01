@@ -110,17 +110,38 @@ export class PatrolTrackingComponent implements OnInit {
 
 
 
-  toggleChecklist(workflowId: string): void {
-    this.expandedRows[workflowId] = !this.expandedRows[workflowId];
+  // toggleChecklist(workflowId: string): void {
+  //   this.expandedRows[workflowId] = !this.expandedRows[workflowId];
 
-    if (this.expandedRows[workflowId] && !this.checklistData[workflowId]) {
-      this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
-        if (res.success) {
-          this.checklistData[workflowId] = res.checklists;
-        }
-      });
-    }
+  //   if (this.expandedRows[workflowId] && !this.checklistData[workflowId]) {
+  //     this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
+  //       if (res.success) {
+  //         this.checklistData[workflowId] = res.checklists;
+  //       }
+  //     });
+  //   }
+  // }
+
+
+  toggleChecklist(workflowId: string): void {
+  this.expandedRows[workflowId] = !this.expandedRows[workflowId];
+
+  if (this.expandedRows[workflowId] && !this.checklistData[workflowId]) {
+    this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
+      if (res.success) {
+        // ✅ Add a flag for red marker icon
+        this.checklistData[workflowId] = res.checklists.map((checklist: any) => ({
+  ...checklist,
+  hasLocation: !!checklist.geoCoordinates
+}));
+
+      }
+    });
   }
+}
+
+
+  
 
 
   showPopup = false;
@@ -206,8 +227,10 @@ export class PatrolTrackingComponent implements OnInit {
   assignedBy = "";
   createdBy = '';
   modifiedBy = '';
-
-
+  // latitude = '';
+  // longitude = '';
+  // locationName = '';
+  // ETA = '';
   createChecklist() {
     const payload = {
       workflowId: this.workflowId,
@@ -217,7 +240,12 @@ export class PatrolTrackingComponent implements OnInit {
       assignedTo: this.assignedTo,
       assignedBy: this.assignedBy,
       isActive: this.isActive,
-      createdBy: this.createdBy
+      createdBy: this.createdBy,
+      modifiedBy: this.modifiedBy,
+      // latitude: this.latitude,
+      // longitude: this.longitude,
+      // locationName: this.locationName,
+      // ETA: this.ETA
     };
 
     this.workflowService.createChecklist(payload).subscribe(
@@ -249,6 +277,11 @@ export class PatrolTrackingComponent implements OnInit {
     this.title = '';
     this.remarks = '';
     this.assignedTo = '';
+    // this.locationName = '';
+    // this.latitude="";
+    // this.longitude='';
+    // this.ETA='';
+
   }
 
   patrolUsers: any[] = [];

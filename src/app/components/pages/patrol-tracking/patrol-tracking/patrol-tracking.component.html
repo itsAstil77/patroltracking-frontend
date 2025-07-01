@@ -115,6 +115,7 @@
                   <th>Remarks</th>
                   <th>Assigned To</th>
                   <th>Assigned By</th>
+
                   <th>Start</th>
                   <th>End</th>
                   <th>Status</th>
@@ -129,6 +130,7 @@
                   <td>{{ checklist.remarks }}</td>
                   <td>{{ checklist.assignedTo }}</td>
                   <td>{{ checklist.createdBy }}</td>
+
                   <td>{{ checklist.scanStartDate ? (checklist.scanStartDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
                   </td>
                   <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-'}}</td>
@@ -158,6 +160,11 @@
                       <img src="assets/delete.png" class="tab-icon"
                         [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                         [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
+
+
+                      <!-- <img [src]="checklist.hasLocation ? 'assets/green.png' : 'assets/marker.png'" class="tab-icon"
+                        [routerLink]="['/map', checklist.checklistId]"> -->
+
                     </div>
 
 
@@ -171,29 +178,29 @@
 
 
 
-<tr class="pagination-row"  style="height:50px;">
-  <td colspan="13">
-    <div class="pagination-container">
-      <label>Items per page:
-        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-        </select>
-      </label>
+      <tr class="pagination-row" style="height:50px;">
+        <td colspan="13">
+          <div class="pagination-container">
+            <label>Items per page:
+              <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+                <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+              </select>
+            </label>
 
-      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+            <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
 
-      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
-      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
-    </div>
-  </td>
-</tr>
+            <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+            <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+          </div>
+        </td>
+      </tr>
 
 
 
     </tbody>
 
- 
-  
+
+
   </table>
 </div>
 
@@ -389,18 +396,9 @@
 
     <div class="form-grid">
       <div class="form-group">
-        <label>Workflow ID:</label>
+        <label>Assignment ID:</label>
         <input type="text" [(ngModel)]="workflowId" readonly>
       </div>
-
-      <!-- <div class="form-group">
-        <label>Location details</label>
-        <select (click)="loadLocation()" [(ngModel)]="locationCode">
-          <option *ngFor="let location of locationList" [value]="location.locationCode">
-            {{ location.locationCode }} - {{ location.description }}
-          </option>
-        </select>
-   </div> -->
 
       <div class="form-group">
         <label>Title:</label>
@@ -411,6 +409,39 @@
         <label>Remarks:</label>
         <input type="text" [(ngModel)]="remarks">
       </div>
+
+      <!-- <div class="form-group">
+        <label>Location details</label>
+        <select (click)="loadLocation()" [(ngModel)]="locationCode">
+          <option *ngFor="let location of locationList" [value]="location.locationCode">
+            {{ location.locationCode }} - {{ location.description }}
+          </option>
+        </select>
+      </div> -->
+      <!-- <div class="form-group">
+        <label>Location Name:</label>
+        <input type="text" [(ngModel)]="locationName">
+      </div>
+
+      <div class="form-group">
+        <label>Location Code:</label>
+        <input type="text" [(ngModel)]="locationCode">
+      </div>
+
+      <div class="form-group">
+        <label>Latitude:</label>
+        <input type="text" [(ngModel)]="latitude">
+      </div>
+
+      <div class="form-group">
+        <label>Longitude:</label>
+        <input type="text" [(ngModel)]="longitude">
+      </div>
+
+      <div class="form-group">
+        <label>ETA:</label>
+        <input type="text" [(ngModel)]="ETA">
+      </div> -->
 
     </div>
     <div class="modal-buttons">
@@ -428,18 +459,18 @@
 
     <div class="form-grid">
       <div class="form-group">
-        <label>Workflow ID:</label>
+        <label>Assignment ID:</label>
         <input type="text" [(ngModel)]="workflowId" readonly>
       </div>
 
-      <!-- <div class="form-group">
+      <div class="form-group">
         <label>Location details</label>
         <select (click)="loadLocation()" [(ngModel)]="locationCode">
           <option *ngFor="let location of locationList" [value]="location.locationCode">
             {{ location.locationCode }} - {{ location.description }}
           </option>
         </select>
-   </div> -->
+      </div>
 
       <!-- <div class="form-group">
     <label>Assigned To:</label>

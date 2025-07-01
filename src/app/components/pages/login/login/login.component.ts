@@ -37,9 +37,9 @@ export class LoginComponent {
     });
   }
 
-  // ✅ Handle Login
+ 
   onLogin() {
-    this.http.post(" http://172.16.100.31:5000/login", this.loginForm.value,)
+    this.http.post(" http://172.19.9.152.31:5000/login", this.loginForm.value,)
       .subscribe({
         next: (res: any) => {
           if (res.success) {
@@ -62,6 +62,53 @@ export class LoginComponent {
   }
 
 
+//   onLogin() {
+//   this.http.post("http://172.16.100.68:5000/login", this.loginForm.value)
+//     .subscribe({
+//       next: (res: any) => {
+//         if (res.success) {
+//           const username = this.loginForm.value.username;
+//           localStorage.setItem("userEmail", username);
+//           localStorage.setItem("authType", "login");
+
+//           this.alertService.showAlert(res.message);
+//            this.router.navigateByUrl("otp");
+
+//           // ✅ Get location
+//           if (navigator.geolocation) {
+//         navigator.geolocation.getCurrentPosition(
+//   (position) => {
+//     console.log("Latitude:", position.coords.latitude);
+//     console.log("Longitude:", position.coords.longitude);
+//     console.log("Accuracy (meters):", position.coords.accuracy);
+//   },
+//   (err) => {
+//     console.error("Location error:", err.message);
+//   },
+//   {
+//     enableHighAccuracy: true,
+//     timeout: 10000,
+//     maximumAge: 0
+//   }
+// );
+
+//           } else {
+//             console.warn("Geolocation not supported by browser.");
+//             localStorage.removeItem("userLocation");
+//             this.router.navigateByUrl("otp");
+//           }
+
+//         } else {
+//           this.alertService.showAlert("Invalid login credentials!", "error");
+//         }
+//       },
+//       error: (err) => {
+//         this.alertService.showAlert("Login failed! Check your email & password.", "error");
+//         console.error(err);
+//       }
+//     });
+// }
+
 
 
 
@@ -78,7 +125,7 @@ export class LoginComponent {
 
     this.isSendingOTP = true;
 
-    this.http.post("http://172.16.100.31:5000/api/auth/forgot-password", this.forgotPasswordForm.value)
+    this.http.post("http://172.19.9.152.31:5000/api/auth/forgot-password", this.forgotPasswordForm.value)
       .subscribe({
         next: (res: any) => {
           this.alertService.showAlert("OTP sent! Please check your email.");
