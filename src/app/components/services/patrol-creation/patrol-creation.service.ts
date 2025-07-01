@@ -10,25 +10,25 @@ import { Observable } from 'rxjs';
 })
 export class PatrolCreationService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
 
 
-  private apiUrl = 'http://172.19.9.152.31:5000/signup/users';
+  private apiUrl = 'http://172.19.9.152:5000/signup/users';
 
 
 
   getUsers(page: number, limit: number): Observable<any> {
-  const token = localStorage.getItem('token');
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
 
-  return this.http.get<any>(`http://172.19.9.152.31:5000/signup/users?page=${page}&limit=${limit}`, { headers });
-}
+    return this.http.get<any>(`http://172.19.9.152:5000/signup/users?page=${page}&limit=${limit}`, { headers });
+  }
 
 
-   private baseUrl = 'http://172.19.9.152.31:5000';
+  private baseUrl = 'http://172.19.9.152:5000';
 
   createUser(userData: any): Observable<any> {
     const token = localStorage.getItem('token'); // adjust if you use sessionStorage or another key
@@ -41,15 +41,15 @@ export class PatrolCreationService {
 
 
   updateUser(userId: string, userData: any): Observable<any> {
-  const token = localStorage.getItem('token'); // or use sessionStorage if needed
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`
-  });
+    const token = localStorage.getItem('token'); // or use sessionStorage if needed
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
 
-  return this.http.put(`${this.baseUrl}/signup/${userId}`, userData, { headers });
-}
+    return this.http.put(`${this.baseUrl}/signup/${userId}`, userData, { headers });
+  }
 
-deleteUser(userId: string): Observable<any> {
+  deleteUser(userId: string): Observable<any> {
     const token = localStorage.getItem('token');  // or sessionStorage if you use that
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
@@ -59,7 +59,7 @@ deleteUser(userId: string): Observable<any> {
   }
 
 
-    private roleUrl = 'http://172.19.9.152.31:5000/roles';
+  private roleUrl = 'http://172.19.9.152:5000/roles';
 
 
 
@@ -71,5 +71,7 @@ deleteUser(userId: string): Observable<any> {
 
     return this.http.get(this.roleUrl, { headers });
   }
-  
+
+
+
 }

@@ -67,8 +67,8 @@ export class UserManagementComponent {
 
   ngOnInit(): void {
     this.fetchUsers();
-    this.loadLocation();
-
+     this.loadLocation();
+   
     const currentAdminId = localStorage.getItem('userId');
 
     // Assign to variables (fallback to empty string if not found)
@@ -133,7 +133,7 @@ export class UserManagementComponent {
   isAddUserPopupOpen: boolean = false
 
   openAddUserPopup(): void {
-    this.getRoles();
+   // this.getRoles();
     this.isAddUserPopupOpen = true;
     this.user.username = "";
     this.user.password = "";
@@ -433,10 +433,6 @@ export class UserManagementComponent {
           // this.locationTotalItems = res.pagination?.totalRecords || this.locationList.length;
           // ✅ NEW — correct based on your API
           this.locationTotalItems = res.totalLocations || 0;
-
-          console.log('Loaded locations:', this.locationList.length);
-          console.log('Total items:', this.locationTotalItems);
-          console.log('Current page:', this.locationCurrentPage);
         }
       },
       error: (err) => {
@@ -444,6 +440,21 @@ export class UserManagementComponent {
       }
     });
   }
+
+
+  
+
+   loadLocations() {
+    this.locationService.getAllLocations().subscribe({
+      next: (res: any) => {
+        this.locationList = res.locations;
+      },
+      error: (err) => {
+        console.error('Failed to fetch locations:', err);
+      }
+    });
+  }
+
   // loadLocation(): void {
   //   this.locationService.getLocationSummary(this.locationCurrentPage, this.locationItemsPerPage).subscribe({
   //     next: (res) => {
@@ -626,6 +637,21 @@ export class UserManagementComponent {
       }
     });
   }
+
+
+
+  loadRoles() {
+    this.roleService.getRoleDrop().subscribe({
+      next: (res: any) => {
+        this.roles= res.roles;
+      },
+      error: (err) => {
+        console.error('Failed to fetch roles:', err);
+      }
+    });
+  }
+
+
 
 
 

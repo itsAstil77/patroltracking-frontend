@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RoleService {
-  private baseUrl = 'http://172.19.9.152.31:5000/roles';
+  private baseUrl = 'http://172.19.9.152:5000/roles';
 
   constructor(private http: HttpClient) {}
 
@@ -48,5 +48,13 @@ export class RoleService {
 
   return this.http.delete(`${this.baseUrl}/${roleId}`, { headers });
 }
+
+  getRoleDrop(): Observable<any> {
+    const token = localStorage.getItem('token'); // or wherever your token is stored
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.get(`${this.baseUrl}/drop`, { headers });
+  }
 
 }
