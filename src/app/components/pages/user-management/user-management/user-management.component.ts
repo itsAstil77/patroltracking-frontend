@@ -140,7 +140,7 @@ export class UserManagementComponent {
     this.user.patrolGuardName = "";
     this.user.mobileNumber = "";
     this.user.email = "";
-    this.user.locationName = "";
+    this.user.locationId = "";
     this.user.roleId = '';
     this.user.designation = "";
     this.user.department = "";
@@ -187,7 +187,7 @@ export class UserManagementComponent {
     email: '',
     patrolGuardName: '',
     mobileNumber: '',
-    locationName: '',
+    locationId: '',
     roleId: '',       // must be a valid roleId from your DB
     department: '',
     designation: ''
@@ -221,7 +221,7 @@ export class UserManagementComponent {
     email: '',
     patrolGuardName: '',
     mobileNumber: '',
-    locationName: '',
+    locationId: '',
     roleId: '',
     department: '',
     designation: '',
@@ -229,7 +229,6 @@ export class UserManagementComponent {
   };
 
   openUpdateUserPopup(userData: any): void {
-    this.getRoles();
     this.isUpdateUserPopupOpen = true;
     this.userIdToUpdate = userData.userId;
 
@@ -239,7 +238,7 @@ export class UserManagementComponent {
       email: userData.email || '',
       patrolGuardName: userData.patrolGuardName || '',
       mobileNumber: userData.mobileNumber || '',
-      locationName: userData.locationName || '',
+      locationId: userData.locationId || '',
       roleId: userData.roleId || '',
       department: userData.department || '',
       designation: userData.designation || '',

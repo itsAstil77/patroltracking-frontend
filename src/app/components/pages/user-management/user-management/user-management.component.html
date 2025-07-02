@@ -48,23 +48,17 @@
         <label>Marshal Guard Name</label>
         <input type="text" [(ngModel)]="user.patrolGuardName" />
       </div>
-<!-- <div class="form-group">
-  <label>Location Name</label>
-  <select (click)="loadLocations()" [(ngModel)]="user.locationName"> 
-    <option *ngFor="let location of locationList" [value]="location.description">
-      {{ location.description }}
-    </option>
-  </select>
-</div> -->
+
 
 <div class="form-group">
   <label>Location Name</label>
-  <select (mousedown)="loadLocations()" [(ngModel)]="user.locationName">
-    <option *ngFor="let location of locationList" [value]="location.description">
-      {{ location.description }}
+  <select (mousedown)="loadLocations()" [(ngModel)]="user.locationId">
+    <option *ngFor="let location of locationList" [value]="location.locationId">
+      {{ location.locationId }} - {{ location.description }}
     </option>
   </select>
 </div>
+
 
 
 
@@ -229,16 +223,23 @@
         <input type="text" [(ngModel)]="updateUserData.patrolGuardName" />
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Location Name</label>
-        <input type="text" [value]="updateUserData.locationName" readonly />
-
-        <!-- <select (click)="loadLocation()" [(ngModel)]="updateUserData.locationName" >
+        <select (mousedown)="loadLocations()" [(ngModel)]="updateUserData.locationName" >
           <option *ngFor="let location of locationList" [value]="location.description" readonly>
             {{ location.description }}
           </option>
-        </select> -->
-      </div>
+        </select>
+      </div> -->
+
+      <div class="form-group">
+  <label>Location Name</label>
+  <select (mousedown)="loadLocations()" [(ngModel)]="updateUserData.locationId">
+    <option *ngFor="let location of locationList" [value]="location.locationId">
+      {{ location.locationId }} - {{ location.description }}
+    </option>
+  </select>
+</div>
 
       <div class="form-group">
         <label>Designation</label>
