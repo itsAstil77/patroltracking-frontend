@@ -51,7 +51,7 @@ export const routes: Routes = [
       { path:'schedules',component:SchedulesComponent},
       {path:'consolidated-report',component:ConsolidatedReportComponent},
       {path:'role',component:RoleComponent},
-      {path:'map/:id',component:MapComponent}
+      // {path:'map/:id',component:MapComponent}
       
 
 ]}
