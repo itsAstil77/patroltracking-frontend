@@ -31,7 +31,7 @@
 
     <div class="form-group">
       <label>Patrol:</label>
-      <select (click)="loadPatrolUsers()" [(ngModel)]="assignedTo" name="assignedTo">
+      <select (mousedown)="loadPatrolUsers()" [(ngModel)]="assignedTo" name="assignedTo">
         <option *ngFor="let user of patrolUsers" [value]="user.userId">
           {{ user.userId }} - {{ user.patrolGuardName }}
         </option>

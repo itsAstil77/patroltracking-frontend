@@ -405,7 +405,7 @@ export class ReportComponent {
 currentPage: number = 1;
 itemsPerPage: number = 10;
 totalItems: number = 0;
-pageSizeOptions: number[] = [5, 10, 20]; // customize as needed
+pageSizeOptions: number[] = [5, 10, 20,50,100]; // customize as needed
 
 get startItem(): number {
   return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;

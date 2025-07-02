@@ -112,7 +112,7 @@
                 <tr>
                   <th>Task ID</th>
                   <th>Title</th>
-                  <th>Remarks</th>
+                  <th>Description</th>
                   <th>Assigned To</th>
                   <th>Assigned By</th>
 
@@ -406,7 +406,7 @@
       </div>
 
       <div class="form-group">
-        <label>Remarks:</label>
+        <label>Description:</label>
         <input type="text" [(ngModel)]="remarks">
       </div>
 
@@ -463,14 +463,14 @@
         <input type="text" [(ngModel)]="workflowId" readonly>
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Location details</label>
         <select (click)="loadLocation()" [(ngModel)]="locationCode">
           <option *ngFor="let location of locationList" [value]="location.locationCode">
             {{ location.locationCode }} - {{ location.description }}
           </option>
         </select>
-      </div>
+      </div> -->
 
       <!-- <div class="form-group">
     <label>Assigned To:</label>
@@ -481,14 +481,14 @@
     </select>
 </div> -->
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>User:</label>
         <select (click)="loadPatrolUsers()" [(ngModel)]="assignedTo">
           <option *ngFor="let user of patrolUsers" [value]="user.userId">
             {{ user.userId }} - {{ user.patrolGuardName }}
           </option>
         </select>
-      </div>
+      </div> -->
 
       <div class="form-group">
         <label>Title:</label>
@@ -496,7 +496,7 @@
       </div>
 
       <div class="form-group">
-        <label>Remarks:</label>
+        <label>Description:</label>
         <input type="text" [(ngModel)]="remarks">
       </div>
     </div>

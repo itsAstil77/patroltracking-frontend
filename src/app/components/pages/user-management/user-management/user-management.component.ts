@@ -677,7 +677,7 @@ export class UserManagementComponent {
 
   itemsPerPage = 10;
   currentPage = 1;
-  pageSizeOptions = [5, 10, 20];
+  pageSizeOptions = [5, 10, 20,50,100];
   totalItems: number = 0;
 
 
@@ -713,7 +713,7 @@ export class UserManagementComponent {
 
   locationItemsPerPage = 10;
   locationCurrentPage = 1;
-  locationPageSizeOptions = [5, 10, 20];
+  locationPageSizeOptions = [5, 10, 20,50,100];
   locationTotalItems: number = 0;
 
   get locationStartItem(): number {

@@ -497,7 +497,7 @@ export class PatrolTrackingComponent implements OnInit {
 
 itemsPerPage = 10;
 currentPage = 1;
-pageSizeOptions = [5, 10, 20];
+pageSizeOptions = [5, 10, 20,50,100];
 totalItems: number = 0;
 
 

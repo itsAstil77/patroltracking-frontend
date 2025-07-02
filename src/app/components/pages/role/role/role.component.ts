@@ -177,7 +177,7 @@ export class RoleComponent implements OnInit {
 
 roleItemsPerPage = 10;
 roleCurrentPage = 1;
-rolePageSizeOptions = [5, 10, 20];
+rolePageSizeOptions = [5, 10, 20,50,100];
 roleTotalItems: number = 0;
 
 get roleStartItem(): number {
