@@ -12,29 +12,6 @@ import { RoleService } from '../../../services/role/role.service';
 
 
 
-// export interface User {
-//   _id?: string;
-//   username: string;
-//   password: string;
-//   patrolGuardName: string;
-//   patrolId: string | null;
-//   adminId: string | null;
-//   mobileNumber: string;
-//   email: string;
-//   locationName:string;
-//   companyCode: string;
-//   designation:string;
-//   department:string;
-//   imageUrl: string;
-//   role: 'Admin' | 'Patrol';
-//   isActive: boolean;
-//   createdDate?: string;
-//   modifiedDate?: string;
-// }
-
-
-
-
 @Component({
   selector: 'app-user-management',
   imports: [CommonModule, FormsModule, RouterModule],
@@ -67,73 +44,22 @@ export class UserManagementComponent {
 
   ngOnInit(): void {
     this.fetchUsers();
-     this.loadLocation();
-   
+    this.loadLocation();
+
     const currentAdminId = localStorage.getItem('userId');
 
     // Assign to variables (fallback to empty string if not found)
     this.deletedBy = currentAdminId || '';
 
-
-
   }
-
-
-  // adminUsers: User[] = [];
-  // patrolUsers: User[] = [];
-
-  // fetchUsers(): void {
-  //   this.patrolService.getAllUsers().subscribe((response: any) => {
-  //     const allUsers: User[] = response.users;
-  //     this.adminUsers = allUsers.filter((user: User) => user.role === 'Admin');
-  //     this.patrolUsers = allUsers.filter((user: User) => user.role === 'Patrol');
-  //   });
-  // }
-
-
-  // newUser: Partial<User> = {
-  //   username: '',
-  //   password: '',
-  //   patrolGuardName: '',
-  //   patrolId: '',
-  //   adminId: '',
-  //   mobileNumber: '',
-  //   email: '',
-  //   locationName:'',
-  //   companyCode: '',
-  //   imageUrl: '',
-  //   designation:'',
-  //   department:'',
-  //   role: 'Patrol',
-  //   isActive: true
-  // };
-
-
-
-  // saveUser(): void {
-  //   this.patrolService.addUser(this.newUser).subscribe({
-  //     next: (res) => {
-  //       console.log('User added:', res);
-  //       this.closeAddUserPopup();
-  //       this.alertService.showAlert(res.message);
-  //       this.fetchUsers();
-  //     },
-  //     error: (err) => {
-  //       console.error('Error response', err);
-
-  //       const message = err.error?.message || 'An unexpected error occurred.';
-  //       this.alertService.showAlert(message,"error"); // Assuming alertService is already used
-  //     }
-
-  //   });
-  // }
 
 
 
   isAddUserPopupOpen: boolean = false
 
   openAddUserPopup(): void {
-   // this.getRoles();
+    this.loadLocations();
+    this.loadRoles();
     this.isAddUserPopupOpen = true;
     this.user.username = "";
     this.user.password = "";
@@ -156,17 +82,6 @@ export class UserManagementComponent {
 
   users: any[] = [];
 
-  // fetchUsers(): void {
-  //   this.patrolService.getUsers().subscribe({
-  //     next: (response) => {
-  //       this.users = response.users;
-
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching users:', err);
-  //     }
-  //   });
-  // }
 
   fetchUsers(): void {
     this.patrolService.getUsers(this.currentPage, this.itemsPerPage).subscribe({
@@ -203,13 +118,10 @@ export class UserManagementComponent {
       error: (err) => {
         console.error('Error creating user:', err);
         const errorMsg = err?.error?.message || 'User creation failed';
-        this.alertService.showAlert(errorMsg, 'error');  // Show API error message if present
+        this.alertService.showAlert(errorMsg, 'error');
       }
     });
   }
-
-
-
 
 
 
@@ -229,6 +141,7 @@ export class UserManagementComponent {
   };
 
   openUpdateUserPopup(userData: any): void {
+    this.loadLocations();
     this.isUpdateUserPopupOpen = true;
     this.userIdToUpdate = userData.userId;
 
@@ -261,7 +174,7 @@ export class UserManagementComponent {
       },
       error: (err) => {
         console.error('Error updating user:', err);
-        alert('User update failed');
+        this.alertService.showAlert('User update failed', 'error');
       }
     });
   }
@@ -291,138 +204,15 @@ export class UserManagementComponent {
           this.closeDeletePopup();
         },
         error: (err) => {
-          alert('Failed to delete user');
+          this.alertService.showAlert('Admin user cannot be deleted', "error");
         }
       });
     }
   }
 
 
-
-
-  // selectedPatrolId: string | null = null;
-  // isDeletePopupOpen = false;
-  // patrolId: string | null | undefined = null;
-
-  // openDeletePopup(patrolId: string | null): void {
-  //   if (patrolId) {
-  //     this.selectedPatrolId = patrolId;
-  //     this.isDeletePopupOpen = true;
-  //   }
-  // }
-
-
-  // closeDeletePopup() {
-  //   this.isDeletePopupOpen = false;
-  //   this.selectedPatrolId = null;
-  // }
-
-
-  // deleteUser() {
-  //   if (this.selectedPatrolId) {
-  //     this.patrolService.deletePatrolById(this.selectedPatrolId).subscribe({
-  //       next: (response) => {
-  //         console.log(response.message);
-  //         this.closeDeletePopup();
-  //         this.alertService.showAlert(response.message);
-  //         this.fetchUsers(); 
-  //       },
-  //       error: (error) => {
-  //         console.error('Error deleting patrol:', error);
-  //       }
-  //     });
-  //   }
-  // }
-
-
-  //     isEditUserPopupOpen = false;
-  //     currentUserId: string = '';
-
-
-  //     openEditUserPopup(user: any) {
-  //       this.user = { ...user };   
-  //       this.isEditUserPopupOpen = true;
-  //        this.isPasswordVisible = false;
-  //        this.loadLocation();
-  //        this.getRoles();
-
-  //     }
-
-
-
-
-  //     closeEditUserPopup() {
-  //       this.isEditUserPopupOpen = false;
-
-  //     }
-
-  // // Update user API call
-  // updateUser(): void {
-  //   // this.patrolService.updatePatrol(this.currentUserId, this.user).subscribe({
-  //   //   next: (res) => {
-  //   //     this.closeUpdateUserPopup();
-  //   //     this.alertService.showAlert(res.message); // assuming alertService available
-  //   //     this.fetchUsers(); // reload user list
-  //   //   },
-  //   //   error: (err) => {
-  //   //     console.error('Error updating user:', err);
-  //   //     alert('User update failed');
-  //   //   }
-  //   // });
-  // }
-
-
-  // isEditAdminPopupOpen = false;
-  // adminUser: any = {};
-
-  // openEditAdminPopup(user: any) {
-  //   this.adminUser = { ...user };
-
-  //   this.isEditAdminPopupOpen = true;
-  // }
-
-  // closeEditAdminPopup() {
-  //   this.isEditAdminPopupOpen = false;
-  // }
-
-  // updateAdminUser() {
-  //   if (this.adminUser.adminId) {
-  //     this.patrolService.updateAdminUser(this.adminUser.adminId, this.adminUser).subscribe(
-  //       response => {
-  //         console.log('Admin updated successfully', response);
-  //         this.closeEditAdminPopup();
-  //         this.alertService.showAlert(response.message);
-  //         this.fetchUsers();
-  //       },
-  //       error => {
-  //         console.error('Error updating admin:', error);
-  //       }
-  //     );
-  //   } else {
-  //     console.error('Admin ID is required');
-  //   }
-  // }
-
-
-
-
-
-
   locationList: any[] = []
 
-  // loadLocation() {
-  //   this.locationService.getLocationSummary(this.currentPage, this.itemsPerPage).subscribe({
-  //     next: (res) => {
-  //       if (res.success) {
-  //         this.locationList = res.locations;
-
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching location summary:', err);
-  //     }
-  //   });
-  // }
 
   loadLocation(): void {
     this.locationService.getLocationSummary(this.locationCurrentPage, this.locationItemsPerPage).subscribe({
@@ -441,9 +231,9 @@ export class UserManagementComponent {
   }
 
 
-  
 
-   loadLocations() {
+
+  loadLocations() {
     this.locationService.getAllLocations().subscribe({
       next: (res: any) => {
         this.locationList = res.locations;
@@ -454,27 +244,9 @@ export class UserManagementComponent {
     });
   }
 
-  // loadLocation(): void {
-  //   this.locationService.getLocationSummary(this.locationCurrentPage, this.locationItemsPerPage).subscribe({
-  //     next: (res) => {
-  //       if (res.success) {
-  //         this.locationList = res.locations || res.data || [];
-  //         this.locationTotalItems = res.pagination?.totalRecords || 0;
-
-
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching location summary:', err);
-  //     }
-  //   });
-  // }
-
 
 
   isAddLoc = false;
-
-
 
   location: any = {
 
@@ -519,9 +291,12 @@ export class UserManagementComponent {
         this.isAddLoc = false;
         this.loadLocation();
       },
-      error: (err) => {
-        console.error('Error adding location:', err);
-        alert('Failed to add location.');
+ error: (err) => {
+        if (err.status === 400 && err.error && err.error.message) {
+          this.alertService.showAlert(err.error.message, "error");
+        } else {
+          this.alertService.showAlert("Latitude and longitude are required and must be valid numbers.", "error");
+        }
       }
     });
   }
@@ -560,8 +335,11 @@ export class UserManagementComponent {
         // Optionally refresh list here
       },
       error: (err) => {
-        console.error(err);
-        alert('Update failed');
+        if (err.status === 400 && err.error && err.error.message) {
+          this.alertService.showAlert(err.error.message, "error");
+        } else {
+          this.alertService.showAlert("latitude and longitude are required and must be valid numbers.", "error");
+        }
       }
     });
   }
@@ -642,7 +420,7 @@ export class UserManagementComponent {
   loadRoles() {
     this.roleService.getRoleDrop().subscribe({
       next: (res: any) => {
-        this.roles= res.roles;
+        this.roles = res.roles;
       },
       error: (err) => {
         console.error('Failed to fetch roles:', err);
@@ -677,7 +455,7 @@ export class UserManagementComponent {
 
   itemsPerPage = 10;
   currentPage = 1;
-  pageSizeOptions = [5, 10, 20,50,100];
+  pageSizeOptions = [5, 10, 20, 50, 100];
   totalItems: number = 0;
 
 
@@ -713,7 +491,7 @@ export class UserManagementComponent {
 
   locationItemsPerPage = 10;
   locationCurrentPage = 1;
-  locationPageSizeOptions = [5, 10, 20,50,100];
+  locationPageSizeOptions = [5, 10, 20, 50, 100];
   locationTotalItems: number = 0;
 
   get locationStartItem(): number {

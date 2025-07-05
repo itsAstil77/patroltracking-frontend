@@ -57,8 +57,9 @@
       <input type="date" id="endDate" [(ngModel)]="endDate" name="endDate" [max]="currentDate" />
     </div>
     <div class="form-buttons">
-      <button type="submit" (click)="applyReport($event)">View Report</button>
-      <button type="submit" (click)="clearReport()">Clear</button>
+  
+      <button class="cancel-btn" type="submit" (click)="clearReport()">Clear</button>
+      <button class="create-btn" type="submit" (click)="applyReport($event)">View Report</button>
     </div>
   </form>
 </div>

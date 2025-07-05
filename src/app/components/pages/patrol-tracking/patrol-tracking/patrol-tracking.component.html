@@ -96,8 +96,8 @@
                 [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
                 (click)="openEditWorkflowPopup(workflow)" />
-
-              <img src="assets/delete.png" class="tab-icon"
+              <!-- <img src="assets/delete.png" class="tab-icon" -->
+              <img 
                 [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
             </div>
@@ -157,7 +157,7 @@
                         [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
                         (click)="openUpdateChecklistPopup(checklist)" />
 
-                      <img src="assets/delete.png" class="tab-icon"
+                      <img
                         [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                         [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
 
@@ -276,7 +276,7 @@
 
       <div class="form-group">
         <label>Assigned To:</label>
-        <select (click)="loadPatrolUsers()" [(ngModel)]="assignedTo">
+        <select  [(ngModel)]="assignedTo">
           <option *ngFor="let user of patrolUsers" [value]="user.userId">
             {{ user.userId }} - {{ user.patrolGuardName }}
           </option>
@@ -287,8 +287,8 @@
 
     <div class="modal-buttons">
 
-      <button (click)="closeTask()">Cancel</button>
-      <button (click)="  assignTask()">Assign</button>
+      <button class="cancel-btn" (click)="closeTask()">Cancel</button>
+      <button class="create-btn" (click)="  assignTask()">Assign</button>
     </div>
   </div>
 </div>
@@ -331,8 +331,8 @@
 
     <div class="modal-buttons">
 
-      <button (click)="closePopup()">Cancel</button>
-      <button (click)="createWorkflow()">Create</button>
+      <button class="cancel-btn" (click)="closePopup()">Cancel</button>
+      <button class="create-btn" (click)="createWorkflow()">Create</button>
     </div>
   </div>
 </div>
@@ -382,8 +382,8 @@
 
     <div class="modal-buttons">
 
-      <button (click)="closeEditWorkflowPopup()">Cancel</button>
-      <button (click)="updateWorkflow()">Update</button>
+      <button class="cancel-btn" (click)="closeEditWorkflowPopup()">Cancel</button>
+      <button class="create-btn" (click)="updateWorkflow()">Update</button>
     </div>
   </div>
 </div>
@@ -446,8 +446,8 @@
     </div>
     <div class="modal-buttons">
 
-      <button (click)="hideChecklistPopup()">Cancel</button>
-      <button (click)="createChecklist()">Create</button>
+      <button class="cancel-btn" (click)="hideChecklistPopup()">Cancel</button>
+      <button class="create-btn" (click)="createChecklist()">Create</button>
     </div>
   </div>
 </div>
@@ -501,8 +501,8 @@
       </div>
     </div>
     <div class="modal-buttons">
-      <button (click)="hideUpdateChecklistPopup()">Cancel</button>
-      <button (click)="updateChecklist()">Update</button>
+      <button class="cancel-btn" (click)="hideUpdateChecklistPopup()">Cancel</button>
+      <button class="create-btn" (click)="updateChecklist()">Update</button>
     </div>
   </div>
 </div>

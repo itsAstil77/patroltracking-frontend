@@ -81,7 +81,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999;
   }
   
   .alert-box {
@@ -115,3 +115,18 @@
     cursor: pointer;
   }
   
+
+  .alert-box.success .alert-icon {
+  color: #4CAF50;
+  border: 2px solid #c8f0c8;
+}
+
+.alert-box.error .alert-icon {
+  color: #f44336; /* Red */
+  border: 2px solid #fbc6c6; /* Light red border */
+}
+
+.alert-box.warning .alert-icon {
+  color: #ff9800; /* Orange */
+  border: 2px solid #ffe0b2; /* Light orange */
+}

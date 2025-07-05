@@ -28,6 +28,7 @@ export class PatrolTrackingComponent implements OnInit {
     this.modifiedBy = currentAdminId || '';
   }
   assignTaskOpen() {
+    this.loadPatrolUsers();
     this.showPopupAssign = true;
     this.selectedWorkflowId = '';
     this.selectedChecklistId = '';
@@ -94,18 +95,18 @@ export class PatrolTrackingComponent implements OnInit {
   // }
 
   getWorkflowSummary(): void {
-  this.workflowService.getWorkflows(this.currentPage, this.itemsPerPage).subscribe({
-    next: (res) => {
-      if (res.success) {
-        this.workflows = res.workflows;
-        this.totalItems = res.pagination?.totalRecords ?? 0; 
+    this.workflowService.getWorkflows(this.currentPage, this.itemsPerPage).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.workflows = res.workflows;
+          this.totalItems = res.pagination?.totalRecords ?? 0;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching workflows:', err);
       }
-    },
-    error: (err) => {
-      console.error('Error fetching workflows:', err);
-    }
-  });
-}
+    });
+  }
 
 
 
@@ -124,24 +125,24 @@ export class PatrolTrackingComponent implements OnInit {
 
 
   toggleChecklist(workflowId: string): void {
-  this.expandedRows[workflowId] = !this.expandedRows[workflowId];
+    this.expandedRows[workflowId] = !this.expandedRows[workflowId];
 
-  if (this.expandedRows[workflowId] && !this.checklistData[workflowId]) {
-    this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
-      if (res.success) {
-        // ✅ Add a flag for red marker icon
-        this.checklistData[workflowId] = res.checklists.map((checklist: any) => ({
-  ...checklist,
-  hasLocation: !!checklist.geoCoordinates
-}));
+    if (this.expandedRows[workflowId] && !this.checklistData[workflowId]) {
+      this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
+        if (res.success) {
+          // ✅ Add a flag for red marker icon
+          this.checklistData[workflowId] = res.checklists.map((checklist: any) => ({
+            ...checklist,
+            hasLocation: !!checklist.geoCoordinates
+          }));
 
-      }
-    });
+        }
+      });
+    }
   }
-}
 
 
-  
+
 
 
   showPopup = false;
@@ -173,7 +174,7 @@ export class PatrolTrackingComponent implements OnInit {
 
   createWorkflow() {
     if (!this.workflowTitle.trim() || !this.description.trim()) {
-      alert('Please enter title and description');
+      this.alertService.showAlert('Please enter title and description', 'error');
       return;
     }
 
@@ -220,17 +221,10 @@ export class PatrolTrackingComponent implements OnInit {
   title = '';
   remarks = '';
   assignedTo = '';
-  // assignedBy = 'ADM001'; // static or from auth
-  // createdBy = 'ADM001';  // static or from auth
   isActive = true;
-  // modifiedBy='ADM001';
   assignedBy = "";
   createdBy = '';
   modifiedBy = '';
-  // latitude = '';
-  // longitude = '';
-  // locationName = '';
-  // ETA = '';
   createChecklist() {
     const payload = {
       workflowId: this.workflowId,
@@ -242,10 +236,6 @@ export class PatrolTrackingComponent implements OnInit {
       isActive: this.isActive,
       createdBy: this.createdBy,
       modifiedBy: this.modifiedBy,
-      // latitude: this.latitude,
-      // longitude: this.longitude,
-      // locationName: this.locationName,
-      // ETA: this.ETA
     };
 
     this.workflowService.createChecklist(payload).subscribe(
@@ -256,9 +246,13 @@ export class PatrolTrackingComponent implements OnInit {
         this.refreshChecklist(this.workflowId);
 
       },
-      err => {
-        console.error('Error creating checklist', err);
+ (err: any) => {
+      if (err.status === 500 && err.error && err.error.message) {
+        this.alertService.showAlert(err.error.message + " please enter title", "error");
+      } else {
+        this.alertService.showAlert("Checklist creation failed.", "error");
       }
+    }
     );
   }
 
@@ -495,38 +489,38 @@ export class PatrolTrackingComponent implements OnInit {
   }
 
 
-itemsPerPage = 10;
-currentPage = 1;
-pageSizeOptions = [5, 10, 20,50,100];
-totalItems: number = 0;
+  itemsPerPage = 10;
+  currentPage = 1;
+  pageSizeOptions = [5, 10, 20, 50, 100];
+  totalItems: number = 0;
 
 
-get startItem(): number {
-  return (this.currentPage - 1) * this.itemsPerPage + 1;
-}
-
-get endItem(): number {
-  const end = this.currentPage * this.itemsPerPage;
-  return end > this.totalItems ? this.totalItems : end;
-}
-onItemsPerPageChange(): void {
-  this.currentPage = 1;
-  this.getWorkflowSummary(); // should fetch current page data
-}
-
-prevPage(): void {
-  if (this.currentPage > 1) {
-    this.currentPage--;
-    this.getWorkflowSummary();
+  get startItem(): number {
+    return (this.currentPage - 1) * this.itemsPerPage + 1;
   }
-}
 
-nextPage(): void {
-  if (this.endItem < this.totalItems) {
-    this.currentPage++;
-    this.getWorkflowSummary();
+  get endItem(): number {
+    const end = this.currentPage * this.itemsPerPage;
+    return end > this.totalItems ? this.totalItems : end;
   }
-}
+  onItemsPerPageChange(): void {
+    this.currentPage = 1;
+    this.getWorkflowSummary(); // should fetch current page data
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.getWorkflowSummary();
+    }
+  }
+
+  nextPage(): void {
+    if (this.endItem < this.totalItems) {
+      this.currentPage++;
+      this.getWorkflowSummary();
+    }
+  }
 
 }
 

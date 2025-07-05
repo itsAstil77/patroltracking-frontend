@@ -155,10 +155,24 @@ button {
   font-family: 'RedHatDisplay-Regular';
 }
 
-button[type="submit"] {
+/* button[type="submit"] {
   background-color: #5b2c8b;
   color: #fff;
+} */
+
+.create-btn {
+  background-color: #7030a0;
+  color: white;
+  font-family: 'RedHatDisplay-Regular';
 }
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+  font-family: 'RedHatDisplay-Regular';
+}
+
+
 
 
 

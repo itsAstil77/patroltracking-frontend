@@ -60,12 +60,12 @@ export class OtpComponent {
       //alert("User email is missing!");
       return;
     }
-     this.otpObj.otp = "9028";
+    this.otpObj.otp = "9028";
 
     const otpInputs = document.querySelectorAll('.otp-box') as NodeListOf<HTMLInputElement>;
     const otpValue = Array.from(otpInputs).map(input => input.value).join('');
 
-    if (otpValue.length < 4) { 
+    if (otpValue.length < 4) {
       this.alertService.showAlert("OTP must be at least 4 digits.", "error");
       return;
     }
@@ -84,32 +84,32 @@ export class OtpComponent {
             }
             this.alertService.showAlert(res.message);
 
-            
+
             if (res.token) {
               localStorage.setItem('token', res.token);
               localStorage.setItem('userId', res.user.userId);
               localStorage.setItem('userRole', res.user.role);
             }
 
-        if (res.user?.userId) {
-            localStorage.setItem('userId', res.user.userId);
-            localStorage.setItem('userRole', res.user.role);
-            console.log('Current user ID:', res.user.userId); 
-          }
-           
+            if (res.user?.userId) {
+              localStorage.setItem('userId', res.user.userId);
+              localStorage.setItem('userRole', res.user.role);
+              console.log('Current user ID:', res.user.userId);
+            }
+
             const loggedInAdminId = localStorage.getItem('userId');
-            console.log('Current admin ID:', loggedInAdminId); 
+            console.log('Current admin ID:', loggedInAdminId);
 
             if (this.authType === "signup") {
               localStorage.setItem("authType", "");
               this.router.navigateByUrl("login");
             } else if (this.authType === "login") {
-              localStorage.setItem("authType", ""); 
+              localStorage.setItem("authType", "");
               // this.router.navigateByUrl("dashboard"); 
               this.router.navigateByUrl("user-management");
-            } else if (this.authType === "forgot-password") { 
+            } else if (this.authType === "forgot-password") {
               localStorage.setItem("authType", "");
-              this.router.navigateByUrl("update-password");  
+              this.router.navigateByUrl("update-password");
             } else {
               this.alertService.showAlert("Unknown authentication type. Redirecting to login.", "error");
               this.router.navigateByUrl("login");
@@ -120,9 +120,13 @@ export class OtpComponent {
             this.alertService.showAlert("Invalid OTP! Please try again.", "error");
           }
         },
-        error: (error: HttpErrorResponse) => {
-          console.error("OTP Verification Error:", error);
-          this.alertService.showAlert("Invalid OTP or server error. Try again.", "error");
+        error: (err) => {
+          if (err.status === 400 && err.error && err.error.message) {
+            this.alertService.showAlert(err.error.message, "error");
+          }
+          else {
+            this.alertService.showAlert("OTP verification failed! Please try again.", "error");
+          }
         }
       });
   }
@@ -132,7 +136,7 @@ export class OtpComponent {
     const inputElements = document.querySelectorAll('.otp-box') as NodeListOf<HTMLInputElement>;
 
     if (event.target.value && index < inputElements.length - 1) {
-      inputElements[index + 1].focus(); 
+      inputElements[index + 1].focus();
     }
   }
 
@@ -140,7 +144,7 @@ export class OtpComponent {
     const inputElements = document.querySelectorAll('.otp-box') as NodeListOf<HTMLInputElement>;
 
     if (event.key === "Backspace" && !event.target.value && index > 0) {
-      inputElements[index - 1].focus(); 
+      inputElements[index - 1].focus();
     }
   }
 
@@ -152,7 +156,7 @@ export class OtpComponent {
       return;
     }
 
-    this.isResending = true; 
+    this.isResending = true;
 
     this.http.post("http://172.19.9.152:5000/api/auth/resend-otp", { email: this.otpObj.email })
       .subscribe({

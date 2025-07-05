@@ -297,7 +297,7 @@ h2 {
   margin-top: 15px;
 }
 
-.modal-buttons button {
+/* .modal-buttons button {
   background-color: #7030a0;
   color: white;
   border: none;
@@ -305,11 +305,33 @@ h2 {
   cursor: pointer;
   border-radius: 5px;
   width: 30%;
+} */
+
+.create-btn {
+  background-color: #7030a0;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 30%;
+  font-family: 'RedHatDisplay-Regular';
 }
 
-.modal-buttons button:hover {
-  background-color: #5a2580;
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 30%;
+  font-family: 'RedHatDisplay-Regular';
 }
+
+/* .modal-buttons button:hover {
+  background-color: #5a2580;
+} */
 
 
 
@@ -459,7 +481,7 @@ select {
 
 /* Yes Button */
 .delete-yes-btn {
-  background-color: #7030a0;
+  background-color: #6c757d;
   color: white;
   border: none;
   padding: 8px 15px;
@@ -474,7 +496,7 @@ select {
 
 /* No (Cancel) Button */
 .delete-no-btn {
-  background-color: #6c757d;
+  background-color: #7030a0;
   color: white;
   border: none;
   padding: 8px 15px;

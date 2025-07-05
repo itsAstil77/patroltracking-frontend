@@ -52,7 +52,7 @@
 
 <div class="form-group">
   <label>Location Name</label>
-  <select (mousedown)="loadLocations()" [(ngModel)]="user.locationId">
+  <select  [(ngModel)]="user.locationId">
     <option *ngFor="let location of locationList" [value]="location.locationId">
       {{ location.locationId }} - {{ location.description }}
     </option>
@@ -83,7 +83,7 @@
 
 <div class="form-group">
   <label>Role</label>
-  <select (mousedown)="loadRoles()" [(ngModel)]="user.roleId">
+  <select  [(ngModel)]="user.roleId">
     <option *ngFor="let role of roles" [value]="role.roleId">
       {{ role.roleName }}-{{ role.roleId }}
     </option>
@@ -93,8 +93,8 @@
     </div>
 
     <div class="modal-buttons">
-      <button (click)="closeAddUserPopup()">Cancel</button>
-      <button (click)="createUser()">Save</button>
+      <button class="cancel-btn" (click)="closeAddUserPopup()">Cancel</button>
+      <button class="create-btn" (click)="createUser()">Save</button>
     </div>
   </div>
 </div>
@@ -234,7 +234,7 @@
 
       <div class="form-group">
   <label>Location Name</label>
-  <select (mousedown)="loadLocations()" [(ngModel)]="updateUserData.locationId">
+  <select  [(ngModel)]="updateUserData.locationId">
     <option *ngFor="let location of locationList" [value]="location.locationId">
       {{ location.locationId }} - {{ location.description }}
     </option>
@@ -259,8 +259,8 @@
     </div>
 
     <div class="modal-buttons">
-      <button (click)="closeUpdateUserPopup()">Cancel</button>
-      <button (click)="updateUser()">Update</button>
+      <button class="cancel-btn" (click)="closeUpdateUserPopup()">Cancel</button>
+      <button class="create-btn" (click)="updateUser()">Update</button>
     </div>
   </div>
 </div>
@@ -691,8 +691,9 @@
       <p>Are you sure you want to delete this user?</p>
       <div class="delete-modal-buttons">
 
-        <button class="delete-no-btn" (click)="closeDeletePopup()">No</button>
+        
         <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
+        <button class="delete-no-btn" (click)="closeDeletePopup()">No</button>
       </div>
     </div>
   </div>
@@ -727,8 +728,8 @@
       </div>
 
       <div class="modal-buttons">
-        <button (click)="cancelLoc()">Cancel</button>
-        <button (click)="addLoc()">Add</button>
+        <button class="cancel-btn" (click)="cancelLoc()">Cancel</button>
+        <button class="create-btn" (click)="addLoc()">Add</button>
       </div>
     </div>
   </div>
@@ -763,8 +764,8 @@
       </div>
 
       <div class="modal-buttons">
-        <button (click)="cancelUpdateLoc()">Cancel</button>
-        <button (click)="updateLoc()">Update</button>
+        <button class="cancel-btn" (click)="cancelUpdateLoc()">Cancel</button>
+        <button class="create-btn" (click)="updateLoc()">Update</button>
       </div>
     </div>
   </div>
@@ -775,8 +776,9 @@
       <p>Are you sure you want to delete this Location?</p>
       <div class="delete-modal-buttons">
 
-        <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
+       
         <button class="delete-yes-btn" (click)="deleteLoc()">Yes</button>
+         <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
       </div>
     </div>
   </div>

@@ -54,10 +54,13 @@ export class LoginComponent {
             this.alertService.showAlert("Invalid login credentials!", "error");
           }
         },
-        error: (err) => {
+         error: (err) => {
+        if (err.status === 400 && err.error && err.error.message) {
+          this.alertService.showAlert(err.error.message, "error");
+        } else {
           this.alertService.showAlert("Login failed! Check your email & password.", "error");
-          console.error(err);
         }
+      }
       });
   }
 

@@ -135,8 +135,8 @@
     </div>
 
     <div class="modal-buttons">
-      <button (click)="closeRolePopup()">Cancel</button>
-      <button (click)="createRole()">Create</button>
+      <button class="cancel-btn" (click)="closeRolePopup()">Cancel</button>
+      <button class="create-btn" (click)="createRole()">Create</button>
     </div>
   </div>
 </div>
@@ -177,8 +177,8 @@
     </div>
 
     <div class="modal-buttons">
-      <button (click)="closeUpdateRolePopup()">Cancel</button>
-      <button (click)="confirmUpdateRole()">Update</button>
+      <button class="cancel-btn"(click)="closeUpdateRolePopup()">Cancel</button>
+      <button class="create-btn"(click)="confirmUpdateRole()">Update</button>
     </div>
   </div>
 </div>
@@ -188,8 +188,9 @@
     <p>Are you sure you want to delete this Role?</p>
     <div class="delete-modal-buttons">
      
-      <button class="delete-no-btn" (click)="CloseDeletePopup()">No</button>
+     
        <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
+        <button class="delete-no-btn" (click)="CloseDeletePopup()">No</button>
     </div>
   </div>
 </div>

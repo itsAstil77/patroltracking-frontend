@@ -25,7 +25,7 @@ export class RoleComponent implements OnInit {
     this.roleService.getRoles(this.roleCurrentPage, this.roleItemsPerPage).subscribe({
       next: (res) => {
         this.roles = res.roles;
-          this.roleTotalItems = res.totalCount ?? 0;
+        this.roleTotalItems = res.totalCount ?? 0;
       },
       error: (err) => {
         console.error('Error fetching roles:', err);
@@ -54,6 +54,11 @@ export class RoleComponent implements OnInit {
         this.getRoles();
       },
       error: (err) => {
+        if (err.status === 409 && err.error && err.error.message) {
+          this.alertService.showAlert(err.error.message, 'error');
+        } else {
+          this.alertService.showAlert('Failed to create role', 'error');
+        }
         console.error('Error creating role:', err);
       }
     });
@@ -117,7 +122,7 @@ export class RoleComponent implements OnInit {
   selectedRoleToDelete: any = null;
   showDeletePopup: boolean = false;
   deleteErrorMessage: string = '';
-  
+
   openDeletePopup(role: any): void {
     this.selectedRoleToDelete = role;
     this.showDeletePopup = true;
@@ -175,37 +180,37 @@ export class RoleComponent implements OnInit {
   }
 
 
-roleItemsPerPage = 10;
-roleCurrentPage = 1;
-rolePageSizeOptions = [5, 10, 20,50,100];
-roleTotalItems: number = 0;
+  roleItemsPerPage = 10;
+  roleCurrentPage = 1;
+  rolePageSizeOptions = [5, 10, 20, 50, 100];
+  roleTotalItems: number = 0;
 
-get roleStartItem(): number {
-  return (this.roleCurrentPage - 1) * this.roleItemsPerPage + 1;
-}
+  get roleStartItem(): number {
+    return (this.roleCurrentPage - 1) * this.roleItemsPerPage + 1;
+  }
 
-get roleEndItem(): number {
-  const end = this.roleCurrentPage * this.roleItemsPerPage;
-  return end > this.roleTotalItems ? this.roleTotalItems : end;
-}
+  get roleEndItem(): number {
+    const end = this.roleCurrentPage * this.roleItemsPerPage;
+    return end > this.roleTotalItems ? this.roleTotalItems : end;
+  }
 
-onRoleItemsPerPageChange(): void {
-  this.roleCurrentPage = 1;
-  this.getRoles();
-}
-
-prevRolePage(): void {
-  if (this.roleCurrentPage > 1) {
-    this.roleCurrentPage--;
+  onRoleItemsPerPageChange(): void {
+    this.roleCurrentPage = 1;
     this.getRoles();
   }
-}
 
-nextRolePage(): void {
-  if (this.roleEndItem < this.roleTotalItems) {
-    this.roleCurrentPage++;
-    this.getRoles();
+  prevRolePage(): void {
+    if (this.roleCurrentPage > 1) {
+      this.roleCurrentPage--;
+      this.getRoles();
+    }
   }
-}
+
+  nextRolePage(): void {
+    if (this.roleEndItem < this.roleTotalItems) {
+      this.roleCurrentPage++;
+      this.getRoles();
+    }
+  }
 
 }

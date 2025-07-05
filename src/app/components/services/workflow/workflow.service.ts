@@ -67,7 +67,7 @@ export class WorkflowService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-  
+
     return this.http.put(`http://172.19.9.152:5000/workflow/update/${workflowId}`, payload, { headers });
   }
 
@@ -89,12 +89,12 @@ export class WorkflowService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-  
+
     const url = `http://172.19.9.152:5000/workflow/${workflowId}/checklists`;
     return this.http.get<any>(url, { headers });
   }
-  
-  
+
+
   private apiUrl = 'http://172.19.9.152:5000/locationcode';
   getLocationSummary(): Observable<any> {
     const token = localStorage.getItem('token');
