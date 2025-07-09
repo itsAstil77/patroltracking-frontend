@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment.prod';
 
 
 
@@ -12,9 +13,9 @@ export class PatrolCreationService {
 
   constructor(private http: HttpClient) { }
 
+ private baseUrl = environment.apiUrl;
 
-
-  private apiUrl = 'http://172.19.9.152:5000/signup/users';
+  // private apiUrl = 'http://172.16.100.68:5000/signup/users';
 
 
 
@@ -24,11 +25,11 @@ export class PatrolCreationService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<any>(`http://172.19.9.152:5000/signup/users?page=${page}&limit=${limit}`, { headers });
+    return this.http.get<any>(`${this.baseUrl}signup/users?page=${page}&limit=${limit}`, { headers });
   }
 
 
-  private baseUrl = 'http://172.19.9.152:5000';
+  // private baseUrl = 'http://172.16.100.68:5000';
 
   createUser(userData: any): Observable<any> {
     const token = localStorage.getItem('token'); // adjust if you use sessionStorage or another key
@@ -36,7 +37,7 @@ export class PatrolCreationService {
       Authorization: `Bearer ${token}`
     });
 
-    return this.http.post(`${this.baseUrl}/signup`, userData, { headers });
+    return this.http.post(`${this.baseUrl}signup`, userData, { headers });
   }
 
 
@@ -46,7 +47,7 @@ export class PatrolCreationService {
       Authorization: `Bearer ${token}`
     });
 
-    return this.http.put(`${this.baseUrl}/signup/${userId}`, userData, { headers });
+    return this.http.put(`${this.baseUrl}signup/${userId}`, userData, { headers });
   }
 
   deleteUser(userId: string): Observable<any> {
@@ -55,11 +56,11 @@ export class PatrolCreationService {
       Authorization: `Bearer ${token}`
     });
 
-    return this.http.delete(`${this.baseUrl}/signup/${userId}`, { headers });
+    return this.http.delete(`${this.baseUrl}signup/${userId}`, { headers });
   }
 
 
-  private roleUrl = 'http://172.19.9.152:5000/roles';
+  // private roleUrl = 'http://172.16.100.68:5000/roles';
 
 
 
@@ -69,7 +70,7 @@ export class PatrolCreationService {
       Authorization: `Bearer ${token}`
     });
 
-    return this.http.get(this.roleUrl, { headers });
+    return this.http.get(`${this.baseUrl}roles`, { headers });
   }
 
 

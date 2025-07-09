@@ -28,15 +28,15 @@
         <input type="text" [(ngModel)]="user.username" />
       </div>
 
-<div class="form-group">
-  <label>Password</label>
-  <div class="password-wrapper">
-    <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="user.password" />
-    <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
-      <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
-    </button>
-  </div>
-</div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="password-wrapper">
+          <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="user.password" />
+          <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
+            <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
+          </button>
+        </div>
+      </div>
 
       <div class="form-group">
         <label>Email</label>
@@ -50,20 +50,91 @@
       </div>
 
 
-<div class="form-group">
-  <label>Location Name</label>
-  <select  [(ngModel)]="user.locationId">
-    <option *ngFor="let location of locationList" [value]="location.locationId">
-      {{ location.locationId }} - {{ location.description }}
-    </option>
-  </select>
-</div>
+      <!-- <div class="form-group">
+        <label>Location Name</label>
+        <select [(ngModel)]="user.locationIds">
+          <option *ngFor="let location of locationList" [value]="location.locationId">
+            {{ location.locationId }} - {{ location.description }}
+          </option>
+        </select>
+      </div> -->
 
 
 
+      <!-- <div class="form-group">
+        <label>Location Name</label>
+        <div class="dropdown-wrapper">
+          <div class="dropdown-toggle" (click)="toggleLocationDropdown()">
+            {{ user.locationIds.length ? user.locationIds.join(', ') : 'Select Locations' }}
+            <span class="arrow">&#9662;</span>
+          </div>
+
+          <div class="dropdown-menu" *ngIf="isDropdownOpen">
+            <label *ngFor="let location of locationList">
+              <input type="checkbox" [value]="location.locationId" (change)="onLocationCheckboxChange($event)"
+                [checked]="user.locationIds.includes(location.locationId)" />
+              {{ location.locationId }} - {{ location.description }}
+            </label>
+          </div>
+        </div>
+      </div> -->
 
 
-      
+      <!-- <div class="form-group">
+        <label for="taskDropdown">Location Name</label>
+        <div class="dropdown-wrapper">
+          <div id="taskDropdown" class="dropdown-container" (click)="toggleLocationDropdown()">
+            {{ user.locationIds.length ? user.locationIds.join(', ') : 'Select Locations' }}
+            <span class="remove-chip" (click)="removeSelectedLocation()">×</span>
+          </div>
+
+          <div class="dropdown-options" *ngIf="isDropdownOpen">
+            <label class="checkbox-label" *ngFor="let location of locationList">
+              <input type="checkbox" [value]="location.locationId" (change)="onLocationCheckboxChange($event)"
+                [checked]="user.locationIds.includes(location.locationId)" />
+              {{ location.locationId }} - {{ location.description }}
+            </label>
+          </div>
+        </div>
+      </div> -->
+
+
+      <div class="form-group">
+        <label for="taskDropdown">Location Name</label>
+        <div class="dropdown-wrapper">
+
+          <!-- Toggle Dropdown -->
+          <div id="taskDropdown" class="dropdown-container" (click)="toggleLocationDropdown()">
+
+            <!-- Show chips if any location selected -->
+            <ng-container *ngIf="user.locationIds.length > 0; else selectPrompt">
+              <span class="chip" *ngFor="let locId of user.locationIds" (click)="$event.stopPropagation()">
+                {{ getLocationDescription(locId) }}
+                <span class="remove-chip" (click)="removeLocation(locId)">×</span>
+              </span>
+            </ng-container>
+
+            <!-- Show placeholder if no selection -->
+        <ng-template #selectPrompt>
+  <span class="placeholder-text">Select Locations</span>
+</ng-template>
+
+
+          </div>
+
+          <!-- Dropdown list -->
+          <div class="dropdown-options" *ngIf="isDropdownOpen">
+            <label class="checkbox-label" *ngFor="let location of locationList">
+              <input type="checkbox" [value]="location.locationId" (change)="onLocationCheckboxChange($event)"
+                [checked]="user.locationIds.includes(location.locationId)" />
+              {{ location.locationId }} - {{ location.description }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+
       <div class="form-group">
         <label>Designation</label>
         <input type="text" [(ngModel)]="user.designation" />
@@ -81,14 +152,14 @@
       </div>
 
 
-<div class="form-group">
-  <label>Role</label>
-  <select  [(ngModel)]="user.roleId">
-    <option *ngFor="let role of roles" [value]="role.roleId">
-      {{ role.roleName }}-{{ role.roleId }}
-    </option>
-  </select>
-</div>
+      <div class="form-group">
+        <label>Role</label>
+        <select [(ngModel)]="user.roleId">
+          <option *ngFor="let role of roles" [value]="role.roleId">
+            {{ role.roleName }}-{{ role.roleId }}
+          </option>
+        </select>
+      </div>
 
     </div>
 
@@ -233,13 +304,13 @@
       </div> -->
 
       <div class="form-group">
-  <label>Location Name</label>
-  <select  [(ngModel)]="updateUserData.locationId">
-    <option *ngFor="let location of locationList" [value]="location.locationId">
-      {{ location.locationId }} - {{ location.description }}
-    </option>
-  </select>
-</div>
+        <label>Location Name</label>
+        <select [(ngModel)]="updateUserData.locationId">
+          <option *ngFor="let location of locationList" [value]="location.locationId">
+            {{ location.locationId }} - {{ location.description }}
+          </option>
+        </select>
+      </div>
 
       <div class="form-group">
         <label>Designation</label>
@@ -565,22 +636,22 @@
             </div>
           </td>
         </tr>
-        <tr class="pagination-row"  style="height:50px;">
-  <td colspan="13">
-    <div class="pagination-container">
-      <label>Items per page:
-        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-        </select>
-      </label>
+        <tr class="pagination-row" style="height:50px;">
+          <td colspan="13">
+            <div class="pagination-container">
+              <label>Items per page:
+                <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+                  <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+                </select>
+              </label>
 
-      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+              <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
 
-      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
-      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
-    </div>
-  </td>
-</tr>
+              <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+              <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
 
@@ -665,22 +736,23 @@
           </td>
         </tr>
       </tbody>
-  <tr class="pagination-row" style="height:50px;" >
-  <td colspan="13">
-    <div class="pagination-container">
-      <label>Items per page:
-        <select [(ngModel)]="locationItemsPerPage" (change)="onLocationItemsPerPageChange()">
-          <option *ngFor="let size of locationPageSizeOptions" [value]="size">{{ size }}</option>
-        </select>
-      </label>
+      <tr class="pagination-row" style="height:50px;">
+        <td colspan="13">
+          <div class="pagination-container">
+            <label>Items per page:
+              <select [(ngModel)]="locationItemsPerPage" (change)="onLocationItemsPerPageChange()">
+                <option *ngFor="let size of locationPageSizeOptions" [value]="size">{{ size }}</option>
+              </select>
+            </label>
 
-      <span class="range-info">{{ locationStartItem }}–{{ locationEndItem }} of {{ locationTotalItems }}</span>
+            <span class="range-info">{{ locationStartItem }}–{{ locationEndItem }} of {{ locationTotalItems }}</span>
 
-      <button (click)="prevLocationPage()" [disabled]="locationCurrentPage === 1" class="arrow-btn">⏴</button>
-      <button (click)="nextLocationPage()" [disabled]="locationEndItem >= locationTotalItems" class="arrow-btn">⏵</button>
-    </div>
-  </td>
-</tr>
+            <button (click)="prevLocationPage()" [disabled]="locationCurrentPage === 1" class="arrow-btn">⏴</button>
+            <button (click)="nextLocationPage()" [disabled]="locationEndItem >= locationTotalItems"
+              class="arrow-btn">⏵</button>
+          </div>
+        </td>
+      </tr>
 
     </table>
   </div>
@@ -691,7 +763,7 @@
       <p>Are you sure you want to delete this user?</p>
       <div class="delete-modal-buttons">
 
-        
+
         <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
         <button class="delete-no-btn" (click)="closeDeletePopup()">No</button>
       </div>
@@ -776,9 +848,9 @@
       <p>Are you sure you want to delete this Location?</p>
       <div class="delete-modal-buttons">
 
-       
+
         <button class="delete-yes-btn" (click)="deleteLoc()">Yes</button>
-         <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
+        <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
       </div>
     </div>
   </div>

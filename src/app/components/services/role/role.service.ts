@@ -1,17 +1,21 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleService {
-  private baseUrl = 'http://172.19.9.152:5000/roles';
+  // private baseUrl = 'http://172.16.100.68:5000/roles';
+
+    private baseUrl = environment.apiUrl + 'roles';
+
 
   constructor(private http: HttpClient) {}
 
   getRoles(page: number, limit: number): Observable<any> {
-    const token = localStorage.getItem('token'); // or wherever your token is stored
+    const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
@@ -20,7 +24,7 @@ export class RoleService {
   }
 
   createRole(roleData: { roleName: string; description: string }): Observable<any> {
-    const token = localStorage.getItem('token'); // Adjust as per your token storage
+    const token = localStorage.getItem('token'); 
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,

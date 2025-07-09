@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../../services/alert/alert.service';
+import { environment } from '../../../../../environments/environment.prod';
 
 
 @Component({
@@ -72,8 +73,9 @@ export class OtpComponent {
 
     this.otpObj.otp = otpValue;
 
+    const otpUrl = environment.apiUrl + 'login/verify-otp';
 
-    this.http.post("http://172.19.9.152:5000/login/verify-otp", this.otpObj)
+    this.http.post(otpUrl, this.otpObj)
       .subscribe({
         next: (res: any) => {
           if (res.success) {
@@ -158,7 +160,10 @@ export class OtpComponent {
 
     this.isResending = true;
 
-    this.http.post("http://172.19.9.152:5000/api/auth/resend-otp", { email: this.otpObj.email })
+    const resendUrl = environment.apiUrl + 'api/auth/resend-otp';
+
+    this.http.post(resendUrl, { email: this.otpObj.email })
+    
       .subscribe({
         next: (res: any) => {
           this.alertService.showAlert("OTP resent successfully! Please check your email.");

@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocationService {
-  private apiUrl = 'http://172.19.9.152:5000/locationcode';
+  // private apiUrl = 'http://172.16.100.68:5000/locationcode';
+
+   private apiUrl = environment.apiUrl + 'locationcode';
 
   constructor(private http: HttpClient) {}
 
   createLocation(data: any) {
     const token = localStorage.getItem('token');
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
@@ -24,25 +26,24 @@ export class LocationService {
 
   updateLocation(locationId: string, data: any) {
   const token = localStorage.getItem('token');
-
   const headers = new HttpHeaders({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`
   });
 
-  const url = `http://172.19.9.152:5000/locationcode/${locationId}`;
+  // const url = `http://172.16.100.68:5000/locationcode/${locationId}`;
 
-  return this.http.put(url, data, { headers });
+  return this.http.put(`${this.apiUrl}/${locationId}`, data, { headers });
 }
 
 
-  // You can fetch token from localStorage, sessionStorage, or a user service
+
   private getToken(): string {
-    return localStorage.getItem('token') || ''; // Adjust if token stored differently
+    return localStorage.getItem('token') || ''; 
   }
 
 deleteLocation(locationId: string, deletedBy: string): Observable<any> {
-  const url = `http://172.19.9.152:5000/locationcode/${locationId}`;
+  // const url = `http://172.16.100.68:5000/locationcode/${locationId}`;
   const token = this.getToken();
 
   const headers = new HttpHeaders({
@@ -52,7 +53,7 @@ deleteLocation(locationId: string, deletedBy: string): Observable<any> {
 
   const body = { deletedBy };
 
-  return this.http.delete(url, { headers, body });
+  return this.http.delete(`${this.apiUrl}/${locationId}`, { headers, body });
 }
 
 

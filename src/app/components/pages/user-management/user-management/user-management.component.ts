@@ -58,7 +58,7 @@ export class UserManagementComponent {
   isAddUserPopupOpen: boolean = false
 
   openAddUserPopup(): void {
-    this.loadLocations();
+    // this.loadLocations();
     this.loadRoles();
     this.isAddUserPopupOpen = true;
     this.user.username = "";
@@ -66,7 +66,7 @@ export class UserManagementComponent {
     this.user.patrolGuardName = "";
     this.user.mobileNumber = "";
     this.user.email = "";
-    this.user.locationId = "";
+    this.user.locationIds = [];
     this.user.roleId = '';
     this.user.designation = "";
     this.user.department = "";
@@ -102,7 +102,7 @@ export class UserManagementComponent {
     email: '',
     patrolGuardName: '',
     mobileNumber: '',
-    locationId: '',
+    locationIds:  [] as string[],
     roleId: '',       // must be a valid roleId from your DB
     department: '',
     designation: ''
@@ -133,7 +133,7 @@ export class UserManagementComponent {
     email: '',
     patrolGuardName: '',
     mobileNumber: '',
-    locationId: '',
+    locationId: "",
     roleId: '',
     department: '',
     designation: '',
@@ -209,6 +209,47 @@ export class UserManagementComponent {
       });
     }
   }
+
+isDropdownOpen = false;
+
+toggleLocationDropdown(): void {
+  if (!this.isDropdownOpen) {
+    this.loadLocations();  // 👈 Always reload
+  }
+  this.isDropdownOpen = !this.isDropdownOpen;
+}
+
+
+removeLocation(locationId: string): void {
+  this.user.locationIds = this.user.locationIds.filter(id => id !== locationId);
+}
+
+getLocationDescription(locationId: string): string {
+  const location = this.locationList.find(loc => loc.locationId === locationId);
+  return location ? `${location.locationId} - ${location.description}` : locationId;
+}
+
+
+
+onLocationCheckboxChange(event: any): void {
+  const locationId = event.target.value;
+  const isChecked = event.target.checked;
+
+  if (isChecked) {
+    if (!this.user.locationIds.includes(locationId)) {
+      this.user.locationIds.push(locationId);
+    }
+
+  } else {
+    this.user.locationIds = this.user.locationIds.filter(id => id !== locationId);
+  }
+
+  this.isDropdownOpen = false;
+}
+
+
+
+
 
 
   locationList: any[] = []
@@ -441,7 +482,7 @@ export class UserManagementComponent {
     { label: 'Email', key: 'email', visible: true },
     { label: 'Department', key: 'department', visible: true },
     { label: 'Designation', key: 'designation', visible: true },
-    { label: 'Location', key: 'locationName', visible: true },
+    { label: 'Location', key: 'locationNames', visible: true },
     { label: 'Role', key: 'role', visible: true }
   ];
 

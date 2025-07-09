@@ -4,6 +4,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from '../../../services/alert/alert.service';
+import { environment } from '../../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +40,9 @@ export class LoginComponent {
 
  
   onLogin() {
-    this.http.post(" http://172.19.9.152:5000/login", this.loginForm.value,)
+     const loginUrl = environment.apiUrl + 'login';
+
+    this.http.post(loginUrl, this.loginForm.value)
       .subscribe({
         next: (res: any) => {
           if (res.success) {
@@ -128,10 +131,13 @@ export class LoginComponent {
 
     this.isSendingOTP = true;
 
-    this.http.post("http://172.19.9.152:5000/api/auth/forgot-password", this.forgotPasswordForm.value)
+     const url = environment.apiUrl + 'api/auth/forgot-password';
+
+
+    this.http.post(url, this.forgotPasswordForm.value)
       .subscribe({
         next: (res: any) => {
-          this.alertService.showAlert("OTP sent! Please check your email.");
+          this.alertService.showAlert(res.message);
           localStorage.setItem("resetEmail", this.forgotPasswordForm.value.email);
           this.router.navigateByUrl("reset-password");
           this.isSendingOTP = false;

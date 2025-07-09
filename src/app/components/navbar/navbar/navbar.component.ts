@@ -86,52 +86,52 @@ export class NavbarComponent {
     });
 
 
-      this.setActiveByRoute(this.router.url);
+    this.setActiveByRoute(this.router.url);
 
-  // Keep your existing route event logic
-  this.router.events.subscribe((event) => {
-    if (event instanceof NavigationEnd) {
-      this.setActiveByRoute(event.urlAfterRedirects);
+    // Keep your existing route event logic
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.setActiveByRoute(event.urlAfterRedirects);
+      }
+    });
+
+  }
+  setActiveByRoute(url: string) {
+    if (
+      url.includes('/configuration') ||
+      url.includes('/license-management') ||
+      url.includes('/user-management')
+    ) {
+      this.activeMenuItem = 'administration';
+    } else if (
+      url.includes('/report') ||
+      url.includes('/consolidated-report')
+    ) {
+      this.activeMenuItem = 'report';
+    } else if (url.includes('/dashboard')) {
+      this.activeMenuItem = 'dashboard';
+    } else if (url.includes('/events')) {
+      this.activeMenuItem = 'events';
+    } else if (url.includes('/insights')) {
+      this.activeMenuItem = 'insights';
+    } else if (url.includes('/process-and-automation')) {
+      this.activeMenuItem = 'process-and-automation';
+    } else if (url.includes('/patrol-tracking')) {
+      this.activeMenuItem = 'patrol-tracking';
     }
-  });
-
-  }
-    setActiveByRoute(url: string) {
-  if (
-    url.includes('/configuration') ||
-    url.includes('/license-management') ||
-    url.includes('/user-management')
-  ) {
-    this.activeMenuItem = 'administration';
-  } else if (
-    url.includes('/report') ||
-    url.includes('/consolidated-report')
-  ) {
-    this.activeMenuItem = 'report';
-  } else if (url.includes('/dashboard')) {
-    this.activeMenuItem = 'dashboard';
-  } else if (url.includes('/events')) {
-    this.activeMenuItem = 'events';
-  } else if (url.includes('/insights')) {
-    this.activeMenuItem = 'insights';
-  } else if (url.includes('/process-and-automation')) {
-    this.activeMenuItem = 'process-and-automation';
-  } else if (url.includes('/patrol-tracking')) {
-    this.activeMenuItem = 'patrol-tracking';
-  }
 
   }
 
   activeMenuItem: string = '';
 
-  
+
 
   toggleUserDropdown(): void {
     this.showUserDropdown = !this.showUserDropdown;
   }
 
   hideUserDropdown(): void {
-    // small delay to let click handlers run before closing
+
     setTimeout(() => this.showUserDropdown = false, 200);
   }
 
@@ -160,11 +160,11 @@ export class NavbarComponent {
   closePopup() {
     this.isUpdate = false;
   }
- 
+
 
   updatePassword() {
     const username = localStorage.getItem("userEmail");
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
 
     if (!username || !token) {
       alert("Missing username or token. Please log in again.");
@@ -207,134 +207,35 @@ export class NavbarComponent {
   }
 
 
-    // toggleReports() {
-  //   this.isReportsExpanded = !this.isReportsExpanded;
-  //   this.setActive('report');
-  // }
-
-  // closeReportsPanel() {
-  //   this.isReportsExpanded = false;
-  // }
-
-
-    // toggleAdministration() {
-  //   this.isAdminExpanded = !this.isAdminExpanded;
-  //   this.setActive('administration');
-  // }
-
-  // closeAdminPanel() {
-  //   this.isAdminExpanded = false;
-  // }
-
-  // activeMenuItem: string = 'administration'; // default active is dashboard
-
-  // setActive(menuItem: string): void {
-  //   this.activeMenuItem = menuItem; // only one active at a time
-
-
-  // }
-
-  // Keep your existing toggle methods
-  // toggleAdministration() {
-  //   this.isAdminExpanded = !this.isAdminExpanded;
-  //   if (this.isAdminExpanded) {
-  //     this.activeMenuItem = 'administration';
-  //   }
-  // }
-
-  // toggleReports() {
-  //   this.isReportsExpanded = !this.isReportsExpanded;
-  //   if (this.isReportsExpanded) {
-  //     this.activeMenuItem = 'report';
-  //   }
-  // }
-
-
-
-
-
-
-
-
-
-
-  // activeMenuItem: string | null = 'administration';
-
-  // setActive(menuItem: string) {
-  //   this.activeMenuItem = menuItem;
-  //   this.isAdminExpanded = false;
-  //   this.isReportsExpanded = false;
-  // }
-
-
-
-  // toggleAdministration() {
-  //   if (this.isReportsExpanded) {
-  //     this.isReportsExpanded = false;
-  //   }
-  //   this.isAdminExpanded = !this.isAdminExpanded;
-  //   this.activeMenuItem = this.isAdminExpanded ? 'administration' : null;
-  // }
-
-  // toggleReports() {
-  //   if (this.isAdminExpanded) {
-  //     this.isAdminExpanded = false;
-  //   }
-  //   this.isReportsExpanded = !this.isReportsExpanded;
-  //   this.activeMenuItem = this.isReportsExpanded ? 'report' : null;
-  // }
-
-
-  // closeAdminPanel() {
-  //   this.isAdminExpanded = false;
-  //   if (this.activeMenuItem === 'administration') {
-  //     this.activeMenuItem = null;
-  //   }
-  // }
-
-  // closeReportsPanel() {
-  //   this.isReportsExpanded = false;
-  //   if (this.activeMenuItem === 'report') {
-  //     this.activeMenuItem = null;
-  //   }
-  // }
-
-
-
-
-
-
-// activeMenuItem: string = 'administration'; 
-
-setActive(menuItem: string) {
-  this.activeMenuItem = menuItem;
-  this.isAdminExpanded = false;
-  this.isReportsExpanded = false;
-}
-
-toggleAdministration() {
-  if (this.isReportsExpanded) {
+  setActive(menuItem: string) {
+    this.activeMenuItem = menuItem;
+    this.isAdminExpanded = false;
     this.isReportsExpanded = false;
   }
-  this.isAdminExpanded = !this.isAdminExpanded;
-  this.activeMenuItem = this.isAdminExpanded ? 'administration' : '';
-}
 
-toggleReports() {
-  if (this.isAdminExpanded) {
+  toggleAdministration() {
+    if (this.isReportsExpanded) {
+      this.isReportsExpanded = false;
+    }
+    this.isAdminExpanded = !this.isAdminExpanded;
+    this.activeMenuItem = this.isAdminExpanded ? 'administration' : '';
+  }
+
+  toggleReports() {
+    if (this.isAdminExpanded) {
+      this.isAdminExpanded = false;
+    }
+    this.isReportsExpanded = !this.isReportsExpanded;
+    this.activeMenuItem = this.isReportsExpanded ? 'report' : '';
+  }
+
+  closeAdminPanel() {
     this.isAdminExpanded = false;
   }
-  this.isReportsExpanded = !this.isReportsExpanded;
-  this.activeMenuItem = this.isReportsExpanded ? 'report' : '';
-}
 
-closeAdminPanel() {
-  this.isAdminExpanded = false;
-}
-
-closeReportsPanel() {
-  this.isReportsExpanded = false;
-}
+  closeReportsPanel() {
+    this.isReportsExpanded = false;
+  }
 
 
 
