@@ -52,7 +52,7 @@
 
       <!-- <div class="form-group">
         <label>Location Name</label>
-        <select [(ngModel)]="user.locationIds">
+        <select [(ngModel)]="user.locationId">
           <option *ngFor="let location of locationList" [value]="location.locationId">
             {{ location.locationId }} - {{ location.description }}
           </option>
@@ -60,73 +60,24 @@
       </div> -->
 
 
-
-      <!-- <div class="form-group">
-        <label>Location Name</label>
-        <div class="dropdown-wrapper">
-          <div class="dropdown-toggle" (click)="toggleLocationDropdown()">
-            {{ user.locationIds.length ? user.locationIds.join(', ') : 'Select Locations' }}
-            <span class="arrow">&#9662;</span>
-          </div>
-
-          <div class="dropdown-menu" *ngIf="isDropdownOpen">
-            <label *ngFor="let location of locationList">
-              <input type="checkbox" [value]="location.locationId" (change)="onLocationCheckboxChange($event)"
-                [checked]="user.locationIds.includes(location.locationId)" />
-              {{ location.locationId }} - {{ location.description }}
-            </label>
-          </div>
-        </div>
-      </div> -->
-
-
-      <!-- <div class="form-group">
-        <label for="taskDropdown">Location Name</label>
-        <div class="dropdown-wrapper">
-          <div id="taskDropdown" class="dropdown-container" (click)="toggleLocationDropdown()">
-            {{ user.locationIds.length ? user.locationIds.join(', ') : 'Select Locations' }}
-            <span class="remove-chip" (click)="removeSelectedLocation()">×</span>
-          </div>
-
-          <div class="dropdown-options" *ngIf="isDropdownOpen">
-            <label class="checkbox-label" *ngFor="let location of locationList">
-              <input type="checkbox" [value]="location.locationId" (change)="onLocationCheckboxChange($event)"
-                [checked]="user.locationIds.includes(location.locationId)" />
-              {{ location.locationId }} - {{ location.description }}
-            </label>
-          </div>
-        </div>
-      </div> -->
-
-
       <div class="form-group">
         <label for="taskDropdown">Location Name</label>
         <div class="dropdown-wrapper">
-
-          <!-- Toggle Dropdown -->
           <div id="taskDropdown" class="dropdown-container" (click)="toggleLocationDropdown()">
-
-            <!-- Show chips if any location selected -->
-            <ng-container *ngIf="user.locationIds.length > 0; else selectPrompt">
-              <span class="chip" *ngFor="let locId of user.locationIds" (click)="$event.stopPropagation()">
+            <ng-container *ngIf="user.locationId.length > 0; else selectPrompt">
+              <span class="chip" *ngFor="let locId of user.locationId" (click)="$event.stopPropagation()">
                 {{ getLocationDescription(locId) }}
                 <span class="remove-chip" (click)="removeLocation(locId)">×</span>
               </span>
             </ng-container>
-
-            <!-- Show placeholder if no selection -->
-        <ng-template #selectPrompt>
-  <span class="placeholder-text">Select Locations</span>
-</ng-template>
-
-
+            <ng-template #selectPrompt>
+              <span class="placeholder-text">Select Locations</span>
+            </ng-template>
           </div>
-
-          <!-- Dropdown list -->
           <div class="dropdown-options" *ngIf="isDropdownOpen">
             <label class="checkbox-label" *ngFor="let location of locationList">
               <input type="checkbox" [value]="location.locationId" (change)="onLocationCheckboxChange($event)"
-                [checked]="user.locationIds.includes(location.locationId)" />
+                [checked]="user.locationId.includes(location.locationId)" />
               {{ location.locationId }} - {{ location.description }}
             </label>
           </div>
@@ -171,98 +122,6 @@
 </div>
 
 
-<!-- <form #formRef="ngForm" (ngSubmit)="createUser()" novalidate>
-  <div class="modal" *ngIf="isAddUserPopupOpen">
-    <div class="modal-content">
-      <p>Add User</p>
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Username</label>
-          <input type="text" [(ngModel)]="user.username" name="username" required #username="ngModel" />
-          <small *ngIf="username.invalid && username.touched" class="error">Username is required</small>
-        </div>
-
-
-        <div class="form-group">
-          <label>Password</label>
-          <div class="password-wrapper">
-            <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="user.password" name="password" required
-              minlength="4" #password="ngModel" />
-            <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
-              <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
-            </button>
-          </div>
-          <small *ngIf="password.invalid && password.touched" class="error">Password (min 4 chars) is required</small>
-        </div>
-
-  
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" [(ngModel)]="user.email" name="email" required email #email="ngModel" />
-          <small *ngIf="email.invalid && email.touched" class="error">Valid email is required</small>
-        </div>
-
-
-        <div class="form-group">
-          <label>Marshal Guard Name</label>
-          <input type="text" [(ngModel)]="user.patrolGuardName" name="patrolGuardName" required #guard="ngModel" />
-          <small *ngIf="guard.invalid && guard.touched" class="error">Guard Name is required</small>
-        </div>
-
-
-        <div class="form-group">
-          <label>Location Name</label>
-          <select (click)="loadLocation()" [(ngModel)]="user.locationName" name="locationName" required
-            #location="ngModel">
-            <option value="" disabled selected>Select Location</option>
-            <option *ngFor="let location of locationList" [value]="location.description">{{ location.description }}
-            </option>
-          </select>
-          <small *ngIf="location.invalid && location.touched" class="error">Location is required</small>
-        </div>
-
-  
-        <div class="form-group">
-          <label>Designation</label>
-          <input type="text" [(ngModel)]="user.designation" name="designation" required #designation="ngModel" />
-          <small *ngIf="designation.invalid && designation.touched" class="error">Designation is required</small>
-        </div>
-
-   
-        <div class="form-group">
-          <label>Department</label>
-          <input type="text" [(ngModel)]="user.department" name="department" required #department="ngModel" />
-          <small *ngIf="department.invalid && department.touched" class="error">Department is required</small>
-        </div>
-
-
-        <div class="form-group">
-          <label>Mobile Number</label>
-          <input type="text" [(ngModel)]="user.mobileNumber" name="mobileNumber" required pattern="^[0-9]{10}$"
-            #mobile="ngModel" />
-          <small *ngIf="mobile.invalid && mobile.touched" class="error">Valid 10-digit mobile number required</small>
-        </div>
-
-
-        <div class="form-group">
-          <label>Role</label>
-          <select [(ngModel)]="user.roleId" name="roleId" required #role="ngModel">
-            <option value="" disabled selected>Select Role</option>
-            <option *ngFor="let role of roles" [value]="role.roleId">{{ role.roleName }}-{{ role.roleId }}</option>
-          </select>
-          <small *ngIf="role.invalid && role.touched" class="error">Role is required</small>
-        </div>
-      </div>
-
-      <div class="modal-buttons">
-        <button type="button" (click)="closeAddUserPopup()">Cancel</button>
-        <button type="submit" [disabled]="formRef.invalid">Save</button>
-      </div>
-    </div>
-  </div>
-</form> -->
-
 
 <div class="modal" *ngIf="isUpdateUserPopupOpen">
   <div class="modal-content">
@@ -294,23 +153,43 @@
         <input type="text" [(ngModel)]="updateUserData.patrolGuardName" />
       </div>
 
-      <!-- <div class="form-group">
-        <label>Location Name</label>
-        <select (mousedown)="loadLocations()" [(ngModel)]="updateUserData.locationName" >
-          <option *ngFor="let location of locationList" [value]="location.description" readonly>
-            {{ location.description }}
-          </option>
-        </select>
-      </div> -->
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Location Name</label>
         <select [(ngModel)]="updateUserData.locationId">
           <option *ngFor="let location of locationList" [value]="location.locationId">
             {{ location.locationId }} - {{ location.description }}
           </option>
         </select>
+      </div> -->
+
+      <div class="form-group">
+        <label for="updateTaskDropdown">Location Name</label>
+        <div class="dropdown-wrapper">
+          <div id="updateTaskDropdown" class="dropdown-container" (click)="toggleUpdateLocationDropdown()">
+
+            <ng-container *ngIf="updateUserData.locationId?.length > 0; else updateSelectPrompt">
+              <span class="chip" *ngFor="let locId of updateUserData.locationId" (click)="$event.stopPropagation()">
+                {{ getLocationDescription(locId) }}
+                <span class="remove-chip" (click)="removeUpdateLocation(locId)">×</span>
+              </span>
+            </ng-container>
+
+            <ng-template #updateSelectPrompt>
+              <span class="placeholder-text">Select Locations</span>
+            </ng-template>
+          </div>
+
+          <div class="dropdown-options" *ngIf="isUpdateDropdownOpen">
+            <label class="checkbox-label" *ngFor="let location of locationList">
+              <input type="checkbox" [value]="location.locationId" (change)="onUpdateLocationCheckboxChange($event)"
+                [checked]="updateUserData.locationId?.includes(location.locationId)" />
+              {{ location.locationId }} - {{ location.description }}
+            </label>
+          </div>
+        </div>
       </div>
+
 
       <div class="form-group">
         <label>Designation</label>
@@ -336,240 +215,82 @@
   </div>
 </div>
 
-<!-- 
-<div class="modal" *ngIf="isEditUserPopupOpen">
-  <div class="modal-content">
-    <p>Upadate  User</p>
 
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" [(ngModel)]="user.username" />
+
+
+
+
+  <div class="user-management-container">
+
+    <div class="user-tabs">
+      <div class="tab" [ngClass]="{ active: selectedRole === 'User' }" (click)="selectedRole = 'User'">
+        User
       </div>
-
- <div class="form-group">
-  <label>Password</label>
-  <div class="password-wrapper">
-    <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="user.password" />
-    <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
-      <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
-    </button>
-  </div>
-</div>
-
-      <div class="form-group">
-        <label>Marshal Guard Name</label>
-        <input type="text" [(ngModel)]="user.patrolGuardName" />
-      </div>
-
-      <div class="form-group">
-        <label>Designation</label>
-        <input type="text" [(ngModel)]="user.designation" />
-      </div>
-
-      <div class="form-group">
-        <label>Department</label>
-        <input type="text" [(ngModel)]="user.department" />
-      </div>
-
-      <div class="form-group">
-  <label>Location details</label>
-  <select (click)="loadLocation()" [(ngModel)]="user.locationName">  
-    <option *ngFor="let location of locationList" [value]="location.description">
-      {{ location.description }}
-    </option>
-  </select>
-</div>
-
-
-
-
-      <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="text" [(ngModel)]="user.mobileNumber" />
-      </div>
-
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" [(ngModel)]="user.email" />
-      </div>
-
-
-
-<div class="form-group">
-  <label>Role</label>
-  <select [(ngModel)]="user.roleId">
-    <option *ngFor="let role of roles" [value]="role.roleId">
-      {{ role.roleName }} - {{ role.roleId }}
-    </option>
-  </select>
-</div>
-
-
- </div>
-
-    <div class="modal-buttons">
-      <button (click)="closeEditUserPopup()">Cancel</button>
-      <button (click)="updateUser()">Update</button>
-    </div>
-  </div>
-</div> -->
-
-
-<!-- 
-<div class="modal" *ngIf="isEditAdminPopupOpen">
-  <div class="modal-content">
-    <p>Update Admin User</p>
-
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" [(ngModel)]="adminUser.username" />
-      </div>
-
-
-
-  <div class="form-group">
-  <label>Password</label>
-  <div class="password-wrapper">
-    <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="adminUser.password" />
-    <button type="button" class="eye-button" (click)="isPasswordVisible = !isPasswordVisible">
-      <img [src]="isPasswordVisible ? 'assets/show.png' : 'assets/hide.png'" alt="Toggle visibility">
-    </button>
-  </div>
-</div>
-
-      <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="text" [(ngModel)]="adminUser.mobileNumber" />
-      </div>
-
-      <div class="form-group">
-        <label>Designation</label>
-        <input type="text" [(ngModel)]="adminUser.designation" />
-      </div>
-
-            <div class="form-group">
-  <label>Location details</label>
-  <select (click)="loadLocation()" [(ngModel)]="adminUser.locationName">  
-    <option *ngFor="let location of locationList" [value]="location.description">
-      {{ location.description }}
-    </option>
-  </select>
-</div>
-
-      <div class="form-group">
-        <label>Department</label>
-        <input type="text" [(ngModel)]="adminUser.department" />
-      </div>
-
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" [(ngModel)]="adminUser.email" />
-      </div>
-
-      <div class="form-group">
-        <label>Company Code</label>
-        <input type="text" [(ngModel)]="adminUser.companyCode" />
-      </div>
-
-      <div class="form-group">
-        <label>Role</label>
-        <select [(ngModel)]="adminUser.role" disabled>
-          <option value="Admin">Admin</option>
-          <option value="Patrol">Patrol</option>
-        </select>
-      </div>
-          </div>
-
-
-
-
-
-
-    <div class="modal-buttons">
-      <button (click)="closeEditAdminPopup()">Cancel</button>
-      <button (click)="updateAdminUser()">Update</button>
-    </div>
-  </div>
-</div> -->
-
-
-
-
-<div class="user-management-container">
-
-  <div class="user-tabs">
-
-    <div class="tab" [ngClass]="{ active: selectedRole === 'User' }" (click)="selectedRole = 'User'">
-      User
-    </div>
-
-    <!-- <div class="tab" [ngClass]="{ active: selectedRole === 'Marshal' }" (click)="selectedRole = 'Marshal'">
-      Marshal
-    </div> -->
-    <div class="tab" [ngClass]="{ active: selectedRole === 'Location' }" (click)="selectedRole = 'Location'">
-      Location
-    </div>
-
-
-  </div>
-
-
-
-
-
-  <nav class="navbar1">
-    <!-- Left Side -->
-    <div class="navbar-left">
-      <span class="navbar-title">{{ selectedRole }}</span>
-    </div>
-
-    <div class="navbar-right" *ngIf="selectedRole !== 'Location'">
-
-      <div class="tooltip-container">
-        <button class="icon-button"><img src="assets/refresh.png" (click)="reloadPage()" alt="Refresh"></button>
-        <span class="tooltip-text">Refresh</span>
-      </div>
-      <div class="tooltip-container">
-        <button class="icon-button"><img src="assets/add.png" (click)="openAddUserPopup()" alt="Add"></button>
-        <span class="tooltip-text">Add</span>
-      </div>
-      <div class="tooltip-container">
-        <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
-        <span class="tooltip-text">Download</span>
-      </div>
-      <div class="tooltip-container">
-        <button class="icon-button"><img src="assets/columns-3.png" (click)="toggleAdminColumnPicker()"></button>
-        <span class="tooltip-text">Column Picker</span>
+      <div class="tab" [ngClass]="{ active: selectedRole === 'Location' }" (click)="selectedRole = 'Location'">
+        Location
       </div>
     </div>
 
-    <div class="navbar-right" *ngIf="selectedRole === 'Location'">
 
-      <div class="tooltip-container">
-        <button class="icon-button"><img src="assets/refresh.png" alt="Refresh" (click)="reloadPage()"></button>
-        <span class="tooltip-text">Refresh</span>
+    <nav class="navbar1">
+      <!-- Left Side -->
+      <div class="navbar-left">
+        <span class="navbar-title">{{ selectedRole }}</span>
       </div>
-      <div class="tooltip-container">
-        <button class="icon-button"><img src="assets/add.png" (click)="openAddLocPopup()" alt="Add"></button>
-        <span class="tooltip-text">Add</span>
-      </div>
-      <div class="tooltip-container">
-        <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
-        <span class="tooltip-text">Download</span>
-      </div>
-      <div class="tooltip-container">
-        <button class="icon-button"><img src="assets/columns-3.png" (click)="toggleColumnPickerModal()"></button>
-        <span class="tooltip-text">Column Picker</span>
-      </div>
-    </div>
 
-  </nav>
+      <div class="navbar-right" *ngIf="selectedRole !== 'Location'">
+
+        <div class="search-box-wrapper">
+          <input type="text" placeholder="Search User..." [(ngModel)]="searchText" (input)="userSearch()"
+            class="search-input" />
+        </div>
+
+        <div class="tooltip-container" (click)="reloadPage()">
+          <button class="icon-button"><img src="assets/refresh.png" alt="Refresh"></button>
+          <span class="tooltip-text">Refresh</span>
+        </div>
+        <div class="tooltip-container" (click)="openAddUserPopup()">
+          <button class="icon-button"><img src="assets/add.png" alt="Add"></button>
+          <span class="tooltip-text">Add</span>
+        </div>
+        <div class="tooltip-container">
+          <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
+          <span class="tooltip-text">Download</span>
+        </div>
+        <div class="tooltip-container" (click)="toggleAdminColumnPicker()">
+          <button class="icon-button"><img src="assets/columns-3.png"></button>
+          <span class="tooltip-text">Column Picker</span>
+        </div>
+      </div>
+
+      <div class="navbar-right" *ngIf="selectedRole === 'Location'">
+        <div class="search-box-wrapper">
+          <input type="text" placeholder="Search Location..." [(ngModel)]="locationSearchText"
+            (input)="applyLocationSearch()" class="search-input" />
+        </div>
+        <div class="tooltip-container" (click)="reloadPage()">
+          <button class="icon-button"><img src="assets/refresh.png" alt="Refresh"></button>
+          <span class="tooltip-text">Refresh</span>
+        </div>
+        <div class="tooltip-container" (click)="openAddLocPopup()">
+          <button class="icon-button"><img src="assets/add.png" alt="Add"></button>
+          <span class="tooltip-text">Add</span>
+        </div>
+        <div class="tooltip-container">
+          <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
+          <span class="tooltip-text">Download</span>
+        </div>
+        <div class="tooltip-container" (click)="toggleColumnPickerModal()">
+          <button class="icon-button"><img src="assets/columns-3.png"></button>
+          <span class="tooltip-text">Column Picker</span>
+        </div>
+      </div>
+
+    </nav>
 
 
-  <div class="box">
-    <!-- <table class="company-table" *ngIf="selectedRole === 'Admin' ">
+    <div class="box">
+      <!-- <table class="company-table" *ngIf="selectedRole === 'Admin' ">
       <thead>
         <tr>
         <th>User ID</th>
@@ -613,63 +334,63 @@
     </table> -->
 
 
-    <table class="company-table" *ngIf="selectedRole === 'User'">
-      <thead>
-        <tr>
-          <th *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ col.label }}</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ user[col.key] }}</td>
-          <td>
-            <div class="tab">
-              <div class="tooltip-container">
-                <img src="assets/edit.png" alt="Edit" (click)="openUpdateUserPopup(user)" class="tab-icon" />
-                <span class="tooltip-text">Edit</span>
+      <table class="company-table" *ngIf="selectedRole === 'User'">
+        <thead>
+          <tr>
+            <th *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ col.label }}</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ user[col.key] }}</td>
+            <td>
+              <div class="tab">
+                <div class="tooltip-container">
+                  <img src="assets/edit.png" alt="Edit" (click)="openUpdateUserPopup(user)" class="tab-icon" />
+                  <span class="tooltip-text">Edit</span>
+                </div>
+                <div class="tooltip-container">
+                  <img src="assets/delete.png" alt="Delete" (click)="openDeletePopup(user.userId)" class="tab-icon" />
+                  <span class="tooltip-text">Delete</span>
+                </div>
               </div>
-              <div class="tooltip-container">
-                <img src="assets/delete.png" alt="Delete" (click)="openDeletePopup(user.userId)" class="tab-icon" />
-                <span class="tooltip-text">Delete</span>
+            </td>
+          </tr>
+          <tr class="pagination-row" style="height:50px;">
+            <td colspan="13">
+              <div class="pagination-container">
+                <label>Items per page:
+                  <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+                    <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+                  </select>
+                </label>
+
+                <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+
+                <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+                <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
               </div>
-            </div>
-          </td>
-        </tr>
-        <tr class="pagination-row" style="height:50px;">
-          <td colspan="13">
-            <div class="pagination-container">
-              <label>Items per page:
-                <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-                  <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-                </select>
-              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-              <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
-
-              <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
-              <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="column-picker-popup" [ngClass]="{ 'show': showAdminColumnPicker, 'hide': !showAdminColumnPicker }">
-      <div class="popup-header">
-        <span>Admin Column Picker</span>
-        <button class="close-btn" (click)="toggleAdminColumnPicker()">×</button>
+      <div class="column-picker-popup" [ngClass]="{ 'show': showAdminColumnPicker, 'hide': !showAdminColumnPicker }">
+        <div class="popup-header">
+          <span>Admin Column Picker</span>
+          <button class="close-btn" (click)="toggleAdminColumnPicker()">×</button>
+        </div>
+        <div class="column-list">
+          <label *ngFor="let col of adminColumns" class="column-item">
+            <input type="checkbox" [(ngModel)]="col.visible" />
+            {{ col.label }}
+          </label>
+        </div>
       </div>
-      <div class="column-list">
-        <label *ngFor="let col of adminColumns" class="column-item">
-          <input type="checkbox" [(ngModel)]="col.visible" />
-          {{ col.label }}
-        </label>
-      </div>
-    </div>
 
 
-    <!-- <table class="company-table" *ngIf="selectedRole === 'Marshal' && patrolUsers.length > 0">
+      <!-- <table class="company-table" *ngIf="selectedRole === 'Marshal' && patrolUsers.length > 0">
       <thead>
         <tr>
           <th>Marshal Name</th>
@@ -712,162 +433,162 @@
 
 
 
-    <table class="company-table" *ngIf="selectedRole === 'Location'">
-      <thead>
-        <tr>
-          <th *ngFor="let col of columns" [hidden]="!col.visible">{{ col.label }}</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let loc of locationList">
-          <td *ngFor="let col of columns" [hidden]="!col.visible">{{ loc[col.key] }}</td>
-          <td>
-            <div class="tab">
-              <div class="tooltip-container">
-                <img src="assets/edit.png" alt="Edit" (click)="openUpdateLocPopup(loc)" class="tab-icon">
-                <span class="tooltip-text">Edit</span>
+      <table class="company-table" *ngIf="selectedRole === 'Location'">
+        <thead>
+          <tr>
+            <th *ngFor="let col of columns" [hidden]="!col.visible">{{ col.label }}</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let loc of locationList">
+            <td *ngFor="let col of columns" [hidden]="!col.visible">{{ loc[col.key] }}</td>
+            <td>
+              <div class="tab">
+                <div class="tooltip-container">
+                  <img src="assets/edit.png" alt="Edit" (click)="openUpdateLocPopup(loc)" class="tab-icon">
+                  <span class="tooltip-text">Edit</span>
+                </div>
+                <div class="tooltip-container">
+                  <img src="assets/delete.png" alt="Delete" (click)="openDeleteModal(loc.locationId)" class="tab-icon">
+                  <span class="tooltip-text">Delete</span>
+                </div>
               </div>
-              <div class="tooltip-container">
-                <img src="assets/delete.png" alt="Delete" (click)="openDeleteModal(loc.locationId)" class="tab-icon">
-                <span class="tooltip-text">Delete</span>
-              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tr class="pagination-row" style="height:50px;">
+          <td colspan="13">
+            <div class="pagination-container">
+              <label>Items per page:
+                <select [(ngModel)]="locationItemsPerPage" (change)="onLocationItemsPerPageChange()">
+                  <option *ngFor="let size of locationPageSizeOptions" [value]="size">{{ size }}</option>
+                </select>
+              </label>
+
+              <span class="range-info">{{ locationStartItem }}–{{ locationEndItem }} of {{ locationTotalItems }}</span>
+
+              <button (click)="prevLocationPage()" [disabled]="locationCurrentPage === 1" class="arrow-btn">⏴</button>
+              <button (click)="nextLocationPage()" [disabled]="locationEndItem >= locationTotalItems"
+                class="arrow-btn">⏵</button>
             </div>
           </td>
         </tr>
-      </tbody>
-      <tr class="pagination-row" style="height:50px;">
-        <td colspan="13">
-          <div class="pagination-container">
-            <label>Items per page:
-              <select [(ngModel)]="locationItemsPerPage" (change)="onLocationItemsPerPageChange()">
-                <option *ngFor="let size of locationPageSizeOptions" [value]="size">{{ size }}</option>
-              </select>
-            </label>
 
-            <span class="range-info">{{ locationStartItem }}–{{ locationEndItem }} of {{ locationTotalItems }}</span>
+      </table>
+    </div>
 
-            <button (click)="prevLocationPage()" [disabled]="locationCurrentPage === 1" class="arrow-btn">⏴</button>
-            <button (click)="nextLocationPage()" [disabled]="locationEndItem >= locationTotalItems"
-              class="arrow-btn">⏵</button>
+
+    <div class="delete-modal" *ngIf="isDeletePopupOpen">
+      <div class="delete-modal-content">
+        <p>Are you sure you want to delete this user?</p>
+        <div class="delete-modal-buttons">
+
+
+          <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
+          <button class="delete-no-btn" (click)="closeDeletePopup()">No</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal" *ngIf="isAddLoc">
+      <div class="modal-content">
+        <p>Add Location</p>
+
+        <div class="form-grid">
+
+
+          <div class="form-group">
+            <label>Location Code</label>
+            <input type="text" [(ngModel)]="location.locationCode" />
           </div>
-        </td>
-      </tr>
 
-    </table>
-  </div>
+          <div class="form-group">
+            <label>Latitude</label>
+            <input type="text" [(ngModel)]="location.latitude" />
+          </div>
 
+          <div class="form-group">
+            <label>Longitude</label>
+            <input type="text" [(ngModel)]="location.longitude" />
+          </div>
 
-  <div class="delete-modal" *ngIf="isDeletePopupOpen">
-    <div class="delete-modal-content">
-      <p>Are you sure you want to delete this user?</p>
-      <div class="delete-modal-buttons">
-
-
-        <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
-        <button class="delete-no-btn" (click)="closeDeletePopup()">No</button>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="modal" *ngIf="isAddLoc">
-    <div class="modal-content">
-      <p>Add Location</p>
-
-      <div class="form-grid">
-
-
-        <div class="form-group">
-          <label>Location Code</label>
-          <input type="text" [(ngModel)]="location.locationCode" />
+          <div class="form-group">
+            <label>Location Name</label>
+            <input type="text" [(ngModel)]="location.description" />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>Latitude</label>
-          <input type="text" [(ngModel)]="location.latitude" />
-        </div>
-
-        <div class="form-group">
-          <label>Longitude</label>
-          <input type="text" [(ngModel)]="location.longitude" />
-        </div>
-
-        <div class="form-group">
-          <label>Location Name</label>
-          <input type="text" [(ngModel)]="location.description" />
+        <div class="modal-buttons">
+          <button class="cancel-btn" (click)="cancelLoc()">Cancel</button>
+          <button class="create-btn" (click)="addLoc()">Add</button>
         </div>
       </div>
-
-      <div class="modal-buttons">
-        <button class="cancel-btn" (click)="cancelLoc()">Cancel</button>
-        <button class="create-btn" (click)="addLoc()">Add</button>
-      </div>
     </div>
-  </div>
 
 
-  <div class="modal" *ngIf="isUpdateLoc">
-    <div class="modal-content">
-      <p>Update Location</p>
+    <div class="modal" *ngIf="isUpdateLoc">
+      <div class="modal-content">
+        <p>Update Location</p>
 
-      <div class="form-grid">
+        <div class="form-grid">
 
 
-        <div class="form-group">
-          <label>Location Code</label>
-          <input type="text" [(ngModel)]="location.locationCode" />
+          <div class="form-group">
+            <label>Location Code</label>
+            <input type="text" [(ngModel)]="location.locationCode" />
+          </div>
+
+          <div class="form-group">
+            <label>Latitude</label>
+            <input type="text" [(ngModel)]="location.latitude" />
+          </div>
+
+          <div class="form-group">
+            <label>Longitude</label>
+            <input type="text" [(ngModel)]="location.longitude" />
+          </div>
+
+          <div class="form-group">
+            <label>Location Name</label>
+            <input type="text" [(ngModel)]="location.description" />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>Latitude</label>
-          <input type="text" [(ngModel)]="location.latitude" />
-        </div>
-
-        <div class="form-group">
-          <label>Longitude</label>
-          <input type="text" [(ngModel)]="location.longitude" />
-        </div>
-
-        <div class="form-group">
-          <label>Location Name</label>
-          <input type="text" [(ngModel)]="location.description" />
+        <div class="modal-buttons">
+          <button class="cancel-btn" (click)="cancelUpdateLoc()">Cancel</button>
+          <button class="create-btn" (click)="updateLoc()">Update</button>
         </div>
       </div>
+    </div>
 
-      <div class="modal-buttons">
-        <button class="cancel-btn" (click)="cancelUpdateLoc()">Cancel</button>
-        <button class="create-btn" (click)="updateLoc()">Update</button>
+
+    <div class="delete-modal" *ngIf="isDeleteLoc">
+      <div class="delete-modal-content">
+        <p>Are you sure you want to delete this Location?</p>
+        <div class="delete-modal-buttons">
+
+
+          <button class="delete-yes-btn" (click)="deleteLoc()">Yes</button>
+          <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
+        </div>
       </div>
     </div>
-  </div>
 
 
-  <div class="delete-modal" *ngIf="isDeleteLoc">
-    <div class="delete-modal-content">
-      <p>Are you sure you want to delete this Location?</p>
-      <div class="delete-modal-buttons">
 
+    <!-- column picker for location -->
 
-        <button class="delete-yes-btn" (click)="deleteLoc()">Yes</button>
-        <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
+    <div class="column-picker-popup" [ngClass]="{ 'show': showColumnPicker, 'hide': !showColumnPicker }">
+      <div class="popup-header">
+        <span>Column Picker</span>
+        <button class="close-btn" (click)="toggleColumnPickerModal()">×</button>
+      </div>
+      <div class="column-list">
+        <label *ngFor="let col of columns" class="column-item">
+          <input type="checkbox" [(ngModel)]="col.visible" />
+          {{ col.label }}
+        </label>
       </div>
     </div>
-  </div>
-
-
-
-  <!-- column picker for location -->
-
-  <div class="column-picker-popup" [ngClass]="{ 'show': showColumnPicker, 'hide': !showColumnPicker }">
-    <div class="popup-header">
-      <span>Column Picker</span>
-      <button class="close-btn" (click)="toggleColumnPickerModal()">×</button>
-    </div>
-    <div class="column-list">
-      <label *ngFor="let col of columns" class="column-item">
-        <input type="checkbox" [(ngModel)]="col.visible" />
-        {{ col.label }}
-      </label>
-    </div>
-  </div>

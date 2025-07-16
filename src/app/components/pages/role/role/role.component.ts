@@ -25,6 +25,8 @@ export class RoleComponent implements OnInit {
     this.roleService.getRoles(this.roleCurrentPage, this.roleItemsPerPage).subscribe({
       next: (res) => {
         this.roles = res.roles;
+        this.allRoles = res.roles; // Store all roles for search
+        this.applyRoleSearch();
         this.roleTotalItems = res.totalCount ?? 0;
       },
       error: (err) => {
@@ -32,6 +34,20 @@ export class RoleComponent implements OnInit {
       }
     });
   }
+
+
+  roleSearchText: string = '';
+  allRoles: any[] = []; // Full list for search
+  
+  applyRoleSearch(): void {
+  const search = this.roleSearchText.toLowerCase();
+  this.roles = this.allRoles.filter(role =>
+    Object.values(role).some(val =>
+      String(val).toLowerCase().includes(search)
+    )
+  );
+}
+
 
 
 

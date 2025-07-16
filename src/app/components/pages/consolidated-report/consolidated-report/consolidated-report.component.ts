@@ -182,7 +182,7 @@ export class ConsolidatedReportComponent {
 
   mediaList: any[] = [];
 
-    fullMediaList: any[] = [];
+  fullMediaList: any[] = [];
 
 
   applyReport(event: Event) {
@@ -191,15 +191,15 @@ export class ConsolidatedReportComponent {
     this.showTable = false;
     this.showTableMedia = false;
 
-         const page = this.currentPage;
-          const limit = this.itemsPerPage;
+    const page = this.currentPage;
+    const limit = this.itemsPerPage;
 
     if (!this.startDate || !this.endDate || !this.type) {
       this.alertService.showAlert('Please fill all required fields.', 'error');
       return;
     }
 
-    this.reportService.getConsolidatedReport(this.type, this.startDate, this.endDate,page, limit).subscribe({
+    this.reportService.getConsolidatedReport(this.type, this.startDate, this.endDate, page, limit).subscribe({
       next: (res: any) => {
         if (this.type === 'media') {
           const patrolMedia = res.mediaByUser || {};
@@ -207,10 +207,10 @@ export class ConsolidatedReportComponent {
 
           if (allMedia.length > 0) {
             this.fullMediaList = allMedia;
-             this.totalItems = allMedia.length;
+            this.totalItems = allMedia.length;
             //  this.mediaList = this.fullMediaList.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
             // this.currentPage = 1;              // reset page
-    this.updatePagination();
+            this.updatePagination();
             this.alertService.showAlert('Consolidated Report generated successfully!')
             this.showTableMedia = true;
           } else {
@@ -220,9 +220,9 @@ export class ConsolidatedReportComponent {
           if (res.report && res.report.length > 0) {
             this.reportData = res;
             this.fullReportList = res.report;
-    this.totalItems = this.fullReportList.length;
-    this.currentPage = 1;              // reset page
-    this.updatePagination();
+            this.totalItems = this.fullReportList.length;
+            this.currentPage = 1;              // reset page
+            this.updatePagination();
             this.alertService.showAlert('Consolidated Report generated successfully!')
             this.showTable = true;
           } else {
@@ -231,77 +231,77 @@ export class ConsolidatedReportComponent {
         }
       },
       error: (err) => {
-        console.error('Error fetching report:', err);
-        this.alertService.showAlert('Error loading report.', 'error');
+        const errorMsg = err?.error?.message ;
+        this.alertService.showAlert(errorMsg, 'error');
       }
     });
   }
 
-fullReportList: any[] = [];
-paginatedReportList: any[] = [];
+  fullReportList: any[] = [];
+  paginatedReportList: any[] = [];
 
-currentPage: number = 1;
-itemsPerPage: number = 10;
-totalItems: number = 0;
-pageSizeOptions: number[] = [5, 10, 20]; // customize as needed
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
+  pageSizeOptions: number[] = [5, 10, 20]; // customize as needed
 
-get startItem(): number {
-  return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
-}
+  get startItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
 
-get endItem(): number {
-  const possibleEnd = this.currentPage * this.itemsPerPage;
-  return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
-}
+  get endItem(): number {
+    const possibleEnd = this.currentPage * this.itemsPerPage;
+    return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
+  }
 
 
-onItemsPerPageChange() {
-  this.currentPage = 1;
-  // this.updateMediaPagination();
-  this.updatePagination();
-   this.applyReport(new Event('submit')); // Call the API again
-}
-
-prevPage() {
-  if (this.currentPage > 1) {
-    this.currentPage--;
+  onItemsPerPageChange() {
+    this.currentPage = 1;
     // this.updateMediaPagination();
     this.updatePagination();
-     
+    this.applyReport(new Event('submit')); // Call the API again
   }
-}
 
-nextPage() {
-  const totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-  if (this.currentPage < totalPages) {
-    this.currentPage++;
-    // this.updateMediaPagination();
-    this.updatePagination();
-     
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      // this.updateMediaPagination();
+      this.updatePagination();
+
+    }
   }
-}
 
-// updateMediaPagination() {
-//   if (this.type === 'media') {
-//     this.mediaList = this.fullMediaList.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
-//   } else {
-//     this.applyReport(new Event('submit'));
-//   }
-// }
+  nextPage() {
+    const totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+    if (this.currentPage < totalPages) {
+      this.currentPage++;
+      // this.updateMediaPagination();
+      this.updatePagination();
 
-get totalPages(): number {
-  return Math.ceil(this.totalItems / this.itemsPerPage);
-}
-
-updatePagination() {
-  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  const endIndex = this.currentPage * this.itemsPerPage;
-
-  if (this.type === 'media') {
-    this.mediaList = this.fullMediaList.slice(startIndex, endIndex);
-  } else {
-    this.paginatedReportList = this.fullReportList.slice(startIndex, endIndex);
+    }
   }
-}
+
+  // updateMediaPagination() {
+  //   if (this.type === 'media') {
+  //     this.mediaList = this.fullMediaList.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
+  //   } else {
+  //     this.applyReport(new Event('submit'));
+  //   }
+  // }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  updatePagination() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = this.currentPage * this.itemsPerPage;
+
+    if (this.type === 'media') {
+      this.mediaList = this.fullMediaList.slice(startIndex, endIndex);
+    } else {
+      this.paginatedReportList = this.fullReportList.slice(startIndex, endIndex);
+    }
+  }
 
 }

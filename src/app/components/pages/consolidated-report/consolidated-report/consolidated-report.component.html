@@ -23,9 +23,9 @@
         <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" [max]="currentDate" required />
       </div>
 
-     
+
       <button type="button" class="clear-btn" (click)="onClear()">Clear</button>
-       <button type="submit" class="apply-btn" (click)="applyReport($event)">View Report</button>
+      <button type="submit" class="apply-btn" (click)="applyReport($event)">View Report</button>
     </div>
   </form>
 </div>
@@ -73,10 +73,12 @@
           <td>{{ patrol.userId }}</td>
           <td>{{ workflowItem.workflow.workflowTitle }}</td>
           <td>{{ workflowItem.workflow.status }}</td>
-          <td>{{ workflowItem.workflow.assignedStart ? (workflowItem.workflow.assignedStart | date: 'dd-MM-yyyy , hh:mm   a') : '-' }}</td>
-          <td>{{ workflowItem.workflow.assignedEnd ? (workflowItem.workflow.assignedEnd | date: 'dd-MM-yyyy , hh:mm a'): '-' }}</td>
+          <td>{{ workflowItem.workflow.assignedStart ? (workflowItem.workflow.assignedStart | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+          <td>{{ workflowItem.workflow.assignedEnd ? (workflowItem.workflow.assignedEnd | date: 'dd-MM-yyyy , hh:mm a'):
+            '-' }}</td>
           <td>{{ workflowItem.workflow.startDateTime ? (workflowItem.workflow.startDateTime | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
-          <td>{{ workflowItem.workflow.endDateTime ? (workflowItem.workflow.endDateTime | date: 'dd-MM-yyyy , hh:mm a'): '-' }}</td>
+          <td>{{ workflowItem.workflow.endDateTime ? (workflowItem.workflow.endDateTime | date: 'dd-MM-yyyy , hh:mm a'):
+            '-' }}</td>
         </tr>
 
         <!-- Checklist Table -->
@@ -182,22 +184,22 @@
       </ng-container>
     </ng-container>
 
-        <tr class="pagination-row" style="height:50px;" >
-  <td colspan="8">
-    <div class="pagination-container">
-      <label>Items per page:
-        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-        </select>
-      </label>
+    <tr class="pagination-row" style="height:50px;">
+      <td colspan="8">
+        <div class="pagination-container">
+          <label>Items per page:
+            <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+              <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+            </select>
+          </label>
 
-      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+          <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
 
-      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
-      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
-    </div>
-  </td>
-</tr>
+          <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+          <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+        </div>
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -258,22 +260,22 @@
     </tr>
 
 
-<tr class="pagination-row"  style="height:50px;">
-  <td colspan="7">
-    <div class="pagination-container">
-      <label>Items per page:
-        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-        </select>
-      </label>
+    <tr class="pagination-row" style="height:50px;">
+      <td colspan="7">
+        <div class="pagination-container">
+          <label>Items per page:
+            <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+              <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+            </select>
+          </label>
 
-      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+          <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
 
-      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
-      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
-    </div>
-  </td>
-</tr>
+          <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+          <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+        </div>
+      </td>
+    </tr>
   </tbody>
 </table>
 

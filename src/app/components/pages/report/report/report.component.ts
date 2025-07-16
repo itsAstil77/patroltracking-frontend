@@ -5,38 +5,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReportService } from '../../../services/report/report.service';
 
-// interface Signature {
-//   signatureId: string;
-//   signatureUrl: string;
-//   createdTime: string;
-// }
-
-// interface Media {
-//   description: string;
-//   mediaType: string;
-//   mediaUrl: string;
-//   signatures: Signature[];
-// }
-
-// interface Checklist {
-//   title: string;
-//   status: string;
-//   media: Media[];
-// }
-
-// interface Workflow {
-//   workflowTitle: string;
-//   status: string;
-//   assignedStart: string;
-//   assignedEnd: string;
-//   checklists: Checklist[];
-// }
-
-// interface ReportData {
-//   completedWorkflows: Workflow[];
-// }
-
-
 
 @Component({
   selector: 'app-report',
@@ -104,64 +72,115 @@ export class ReportComponent {
   }
 
 
+  // applyReport(event: Event) {
+  //   event.preventDefault();
+
+  //   if (!this.assignedTo) {
+  //     this.alertService.showAlert('Please select a Patrol User.');
+  //     return;
+  //   }
+
+  //   this.showTable = false; // Hide table initially
+  //   this.showTableMedia = false;
+
+
+  //    const page = this.currentPage;
+  //    const limit = this.itemsPerPage;
+
+
+  //   const observable = this.startDate && this.endDate
+  //     ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type,page, limit)
+  //     : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate,page, limit);
+
+  //   observable.subscribe({
+  //     next: (res) => {
+  //       if (this.type === 'media') {
+
+  //         if (res?.media?.length > 0) {  // ✅ check res.media directly
+  //           this.reportData = res; 
+  //           this.totalItems = res.pagination?.totalMedia || res.media?.length || 0;
+  //           this.alertService.showAlert('Media Report generated successfully!')
+
+  //           this.showTableMedia = true;
+  //         } else {
+  //           this.alertService.showAlert('No media report data found.');
+  //         }
+  //       } else {
+  //         if (res?.completedWorkflows?.length > 0) {
+  //           this.reportData = res;
+  //            this.totalItems = res.pagination?.totalWorkflows || res.completedWorkflows.length || 0;
+  //           this.alertService.showAlert('Report generated successfully!')
+  //           this.showTable = true; // show regular table
+  //         } else {
+  //           this.alertService.showAlert('No regular report data found.');
+  //         }
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching report:', err);
+
+  //       if (err.status === 404) {
+  //         const message = err.error?.message || 'No data found.';
+
+  //         // Use backend's specific 404 messages
+  //         this.alertService.showAlert(message, "error");
+  //       } else {
+  //         this.alertService.showAlert('Error fetching report.');
+  //       }
+  //     }
+  //   });
+  // }
+
+
   applyReport(event: Event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (!this.assignedTo) {
-      this.alertService.showAlert('Please select a Patrol User.');
-      return;
-    }
+  if (!this.assignedTo) {
+    this.alertService.showAlert('Please select a Patrol User.');
+    return;
+  }
 
-    this.showTable = false; // Hide table initially
-    this.showTableMedia = false;
+  this.showTable = false;
+  this.showTableMedia = false;
 
+  const page = this.currentPage;
+  const limit = this.itemsPerPage;
 
-     const page = this.currentPage;
-     const limit = this.itemsPerPage;
+  const observable = this.startDate && this.endDate
+    ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type, page, limit)
+    : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate, page, limit);
 
+  observable.subscribe({
+    next: (res) => {
+      console.log("API response:", res);
 
-    const observable = this.startDate && this.endDate
-      ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type,page, limit)
-      : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate,page, limit);
+      this.totalItems = res.pagination?.total ?? 0; // ✅ updated here
 
-    observable.subscribe({
-      next: (res) => {
-        if (this.type === 'media') {
-
-          if (res?.media?.length > 0) {  // ✅ check res.media directly
-            this.reportData = res; 
-            this.totalItems = res.pagination?.totalMedia || res.media?.length || 0;
-            this.alertService.showAlert('Media Report generated successfully!')
-
-            this.showTableMedia = true;
-          } else {
-            this.alertService.showAlert('No media report data found.');
-          }
+      if (this.type === 'media') {
+        if (res?.media?.length > 0) {
+          this.reportData = res;
+          this.alertService.showAlert('Media Report generated successfully!');
+          this.showTableMedia = true;
         } else {
-          if (res?.completedWorkflows?.length > 0) {
-            this.reportData = res;
-             this.totalItems = res.pagination?.totalWorkflows || res.completedWorkflows.length || 0;
-            this.alertService.showAlert('Report generated successfully!')
-            this.showTable = true; // show regular table
-          } else {
-            this.alertService.showAlert('No regular report data found.');
-          }
+          this.alertService.showAlert('No media report data found.');
         }
-      },
-      error: (err) => {
-        console.error('Error fetching report:', err);
-
-        if (err.status === 404) {
-          const message = err.error?.message || 'No data found.';
-
-          // Use backend's specific 404 messages
-          this.alertService.showAlert(message, "error");
+      } else {
+        if (res?.completedWorkflows?.length > 0) {
+          this.reportData = res;
+          this.alertService.showAlert('Report generated successfully!');
+          this.showTable = true;
         } else {
-          this.alertService.showAlert('Error fetching report.');
+          this.alertService.showAlert('No regular report data found.');
         }
       }
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Error fetching report:', err);
+      const message = err.error?.message || 'Error fetching report.';
+      this.alertService.showAlert(message, "error");
+    }
+  });
+}
 
 
 
@@ -239,68 +258,6 @@ export class ReportComponent {
   expandedMedia: { [key: string]: boolean } = {};
 
 
-
-
-
-  // downloadCSV(): void {
-  //   let csvContent = 'data:text/csv;charset=utf-8,';
-
-  //   for (const workflow of this.reportData.completedWorkflows) {
-  //     const wf = workflow.workflow;
-
-  //     // Workflow header (row 1)
-  //     csvContent += 'Workflow Title,Status,Assigned Start,Assigned End\n';
-  //     // Workflow data (row 2)
-  //     csvContent += `${wf.workflowTitle},${wf.status},${wf.assignedStart},${wf.assignedEnd}\n\n`;
-
-  //     if (workflow.checklists?.length) {
-  //       // Checklist header (row 3)
-  //       csvContent += ',,Checklist Title,Remarks,Checklist Status\n';
-  //     }
-
-  //     for (const checklist of workflow.checklists) {
-  //       // Checklist data (row 4)
-  //       csvContent += `,,${checklist.title},${checklist.remarks},${checklist.status}\n`;
-
-  //       // 👉 1-row gap before media
-  //       csvContent += '\n';
-
-  //       if (checklist.media?.length) {
-  //         // Media header (starts in column D, 4th col)
-  //         csvContent += ',,,Media Description,Media Type,Media URL\n';
-  //         for (const media of checklist.media) {
-  //           csvContent += `,,,${media.description},${media.mediaType},${media.mediaUrl}\n`;
-  //         }
-  //       }
-
-  //       // 👉 1-row gap before signature
-  //       csvContent += '\n';
-
-  //       if (checklist.signatures?.length) {
-  //         // Signature header (starts in column E, 5th col)
-  //         csvContent += ',,,,Signature ID,Signature URL,Created Time\n';
-  //         for (const sig of checklist.signatures) {
-  //           csvContent += `,,,,${sig.signatureId},${sig.signatureUrl},${sig.createdTime}\n`;
-  //         }
-  //       }
-
-  //       // Blank line after each checklist
-  //       csvContent += '\n';
-  //     }
-
-  //     // Blank line after each workflow
-  //     csvContent += '\n';
-  //   }
-
-  //   // Trigger download
-  //   const encodedUri = encodeURI(csvContent);
-  //   const link = document.createElement('a');
-  //   link.setAttribute('href', encodedUri);
-  //   link.setAttribute('download', 'nested_workflow_report.csv');
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // }
 
   downloadCSV(): void {
     let csvContent = 'data:text/csv;charset=utf-8,';
@@ -401,11 +358,10 @@ export class ReportComponent {
 
 
 
-
 currentPage: number = 1;
 itemsPerPage: number = 10;
 totalItems: number = 0;
-pageSizeOptions: number[] = [5, 10, 20,50,100]; // customize as needed
+pageSizeOptions: number[] = [5, 10, 20, 50, 100];
 
 get startItem(): number {
   return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
@@ -416,10 +372,13 @@ get endItem(): number {
   return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
 }
 
+get totalPages(): number {
+  return Math.ceil(this.totalItems / this.itemsPerPage);
+}
 
 onItemsPerPageChange() {
   this.currentPage = 1;
-  this.applyReport(new Event('submit')); // re-fetch on size change
+  this.applyReport(new Event('submit'));
 }
 
 prevPage() {
@@ -430,14 +389,10 @@ prevPage() {
 }
 
 nextPage() {
-  const totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-  if (this.currentPage < totalPages) {
+  if (this.currentPage < this.totalPages) {
     this.currentPage++;
     this.applyReport(new Event('submit'));
   }
-}
-get totalPages(): number {
-  return Math.ceil(this.totalItems / this.itemsPerPage);
 }
 
 }

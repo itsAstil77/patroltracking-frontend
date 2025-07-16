@@ -14,20 +14,24 @@
   </div>
 
   <div class="navbar-right">
-    <div class="tooltip-container">
-      <button class="icon-button"><img src="assets/refresh.png" (click)="reloadPage()" alt="Refresh"></button>
+    <div class="search-box-wrapper">
+      <input type="text" placeholder="Search Role..." 
+        [(ngModel)]="roleSearchText" (input)="applyRoleSearch()" class="search-input" />
+    </div>
+    <div class="tooltip-container" (click)="reloadPage()">
+      <button class="icon-button"><img src="assets/refresh.png"  alt="Refresh"></button>
       <span class="tooltip-text">Refresh</span>
     </div>
-    <div class="tooltip-container">
-      <button class="icon-button"><img src="assets/add.png" (click)="openRolePopup()" alt="Add"></button>
+    <div class="tooltip-container" (click)="openRolePopup()">
+      <button class="icon-button"><img src="assets/add.png"  alt="Add"></button>
       <span class="tooltip-text">Add</span>
     </div>
     <div class="tooltip-container">
       <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
       <span class="tooltip-text">Download</span>
     </div>
-    <div class="tooltip-container">
-      <button class="icon-button"><img src="assets/columns-3.png" (click)="toggleRoleColumnPicker()"></button>
+    <div class="tooltip-container" (click)="toggleRoleColumnPicker()">
+      <button class="icon-button"><img src="assets/columns-3.png" ></button>
       <span class="tooltip-text">Column Picker</span>
     </div>
   </div>
@@ -94,22 +98,22 @@
         </div>
       </td>
     </tr>
-           <tr class="pagination-row" style="height:50px;">
-  <td colspan="13">
-    <div class="pagination-container">
-      <label>Items per page:
-        <select [(ngModel)]="roleItemsPerPage" (change)="onRoleItemsPerPageChange()">
-          <option *ngFor="let size of rolePageSizeOptions" [value]="size">{{ size }}</option>
-        </select>
-      </label>
+    <tr class="pagination-row" style="height:50px;">
+      <td colspan="13">
+        <div class="pagination-container">
+          <label>Items per page:
+            <select [(ngModel)]="roleItemsPerPage" (change)="onRoleItemsPerPageChange()">
+              <option *ngFor="let size of rolePageSizeOptions" [value]="size">{{ size }}</option>
+            </select>
+          </label>
 
-      <span class="range-info">{{ roleStartItem }}–{{ roleEndItem }} of {{ roleTotalItems }}</span>
+          <span class="range-info">{{ roleStartItem }}–{{ roleEndItem }} of {{ roleTotalItems }}</span>
 
-      <button (click)="prevRolePage()" [disabled]="roleCurrentPage === 1" class="arrow-btn">⏴</button>
-      <button (click)="nextRolePage()" [disabled]="roleEndItem >= roleTotalItems" class="arrow-btn">⏵</button>
-    </div>
-  </td>
-</tr>
+          <button (click)="prevRolePage()" [disabled]="roleCurrentPage === 1" class="arrow-btn">⏴</button>
+          <button (click)="nextRolePage()" [disabled]="roleEndItem >= roleTotalItems" class="arrow-btn">⏵</button>
+        </div>
+      </td>
+    </tr>
 
   </tbody>
 </table>
@@ -177,8 +181,8 @@
     </div>
 
     <div class="modal-buttons">
-      <button class="cancel-btn"(click)="closeUpdateRolePopup()">Cancel</button>
-      <button class="create-btn"(click)="confirmUpdateRole()">Update</button>
+      <button class="cancel-btn" (click)="closeUpdateRolePopup()">Cancel</button>
+      <button class="create-btn" (click)="confirmUpdateRole()">Update</button>
     </div>
   </div>
 </div>
@@ -187,10 +191,10 @@
   <div class="delete-modal-content">
     <p>Are you sure you want to delete this Role?</p>
     <div class="delete-modal-buttons">
-     
-     
-       <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
-        <button class="delete-no-btn" (click)="CloseDeletePopup()">No</button>
+
+
+      <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
+      <button class="delete-no-btn" (click)="CloseDeletePopup()">No</button>
     </div>
   </div>
 </div>

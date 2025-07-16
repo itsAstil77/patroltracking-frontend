@@ -80,26 +80,17 @@ export class PatrolTrackingComponent implements OnInit {
 
 
 
-  // getWorkflowSummary(): void {
 
-  //   this.workflowService.getWorkflows().subscribe({
-  //     next: (res) => {
-  //       if (res.success) {
-  //         this.workflows = res.workflows;
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching workflows:', err);
-  //     }
-  //   });
-  // }
 
   getWorkflowSummary(): void {
     this.workflowService.getWorkflows(this.currentPage, this.itemsPerPage).subscribe({
       next: (res) => {
         if (res.success) {
-          this.workflows = res.workflows;
-          this.totalItems = res.pagination?.totalRecords ?? 0;
+          // this.workflows = res.workflows;
+          // this.totalItems = res.pagination?.totalRecords ?? 0;
+           this.allWorkflows = res.workflows || [];
+        this.totalItems = res.pagination?.totalRecords ?? 0;
+        this.applyWorkflowSearch(); // show filtered list
         }
       },
       error: (err) => {
@@ -108,20 +99,22 @@ export class PatrolTrackingComponent implements OnInit {
     });
   }
 
+workflowSearchText: string = '';
+allWorkflows: any[] = []; // holds current page data for local filtering
+
+
+  applyWorkflowSearch(): void {
+  const search = this.workflowSearchText.toLowerCase();
+  this.workflows = this.allWorkflows.filter(workflow =>
+    Object.values(workflow).some(val =>
+      String(val).toLowerCase().includes(search)
+    )
+  );
+}
 
 
 
-  // toggleChecklist(workflowId: string): void {
-  //   this.expandedRows[workflowId] = !this.expandedRows[workflowId];
 
-  //   if (this.expandedRows[workflowId] && !this.checklistData[workflowId]) {
-  //     this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
-  //       if (res.success) {
-  //         this.checklistData[workflowId] = res.checklists;
-  //       }
-  //     });
-  //   }
-  // }
 
 
   toggleChecklist(workflowId: string): void {
@@ -246,13 +239,13 @@ export class PatrolTrackingComponent implements OnInit {
         this.refreshChecklist(this.workflowId);
 
       },
- (err: any) => {
-      if (err.status === 500 && err.error && err.error.message) {
-        this.alertService.showAlert(err.error.message + " please enter title", "error");
-      } else {
-        this.alertService.showAlert("Checklist creation failed.", "error");
+      (err: any) => {
+        if (err.status === 500 && err.error && err.error.message) {
+          this.alertService.showAlert(err.error.message + " please enter title", "error");
+        } else {
+          this.alertService.showAlert("Checklist creation failed.", "error");
+        }
       }
-    }
     );
   }
 
@@ -506,12 +499,14 @@ export class PatrolTrackingComponent implements OnInit {
   onItemsPerPageChange(): void {
     this.currentPage = 1;
     this.getWorkflowSummary(); // should fetch current page data
+
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.getWorkflowSummary();
+
     }
   }
 
@@ -519,6 +514,7 @@ export class PatrolTrackingComponent implements OnInit {
     if (this.endItem < this.totalItems) {
       this.currentPage++;
       this.getWorkflowSummary();
+
     }
   }
 

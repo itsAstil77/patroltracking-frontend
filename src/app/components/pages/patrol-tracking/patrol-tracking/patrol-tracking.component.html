@@ -7,15 +7,19 @@
 
 
   <div class="navbar-right">
-    <!-- <button class="nav-button" [routerLink]="'/schedules'">Schedules</button> -->
+    <div class="search-box-wrapper">
+      <input type="text" placeholder="Search Workflows..." class="search-input" [(ngModel)]="workflowSearchText"
+        (input)="applyWorkflowSearch()" />
+
+    </div>
 
     <button class="nav-button" (click)="assignTaskOpen()">Assign</button>
-    <div class="tooltip-container">
-      <button class="icon-button"><img src="assets/refresh.png" alt="Refresh" (click)="reloadPage()"></button>
+    <div class="tooltip-container" (click)="reloadPage()">
+      <button class="icon-button"><img src="assets/refresh.png" alt="Refresh"></button>
       <span class="tooltip-text">Refresh</span>
     </div>
-    <div class="tooltip-container">
-      <button class="icon-button"><img src="assets/add.png" (click)="openPopup()" alt="Add"></button>
+    <div class="tooltip-container" (click)="openPopup()">
+      <button class="icon-button"><img src="assets/add.png" alt="Add"></button>
       <span class="tooltip-text">Add</span>
     </div>
     <div class="tooltip-container">
@@ -97,8 +101,7 @@
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
                 (click)="openEditWorkflowPopup(workflow)" />
               <!-- <img src="assets/delete.png" class="tab-icon" -->
-              <img 
-                [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
+              <img [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
             </div>
 
@@ -157,8 +160,7 @@
                         [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
                         (click)="openUpdateChecklistPopup(checklist)" />
 
-                      <img
-                        [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
+                      <img [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                         [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
 
 
@@ -276,7 +278,7 @@
 
       <div class="form-group">
         <label>Assigned To:</label>
-        <select  [(ngModel)]="assignedTo">
+        <select [(ngModel)]="assignedTo">
           <option *ngFor="let user of patrolUsers" [value]="user.userId">
             {{ user.userId }} - {{ user.patrolGuardName }}
           </option>

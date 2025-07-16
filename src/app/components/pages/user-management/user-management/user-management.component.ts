@@ -58,7 +58,7 @@ export class UserManagementComponent {
   isAddUserPopupOpen: boolean = false
 
   openAddUserPopup(): void {
-    // this.loadLocations();
+    this.loadLocations();
     this.loadRoles();
     this.isAddUserPopupOpen = true;
     this.user.username = "";
@@ -66,7 +66,7 @@ export class UserManagementComponent {
     this.user.patrolGuardName = "";
     this.user.mobileNumber = "";
     this.user.email = "";
-    this.user.locationIds = [];
+    this.user.locationId= [] as string[];
     this.user.roleId = '';
     this.user.designation = "";
     this.user.department = "";
@@ -83,10 +83,28 @@ export class UserManagementComponent {
   users: any[] = [];
 
 
+  // fetchUsers(): void {
+  //   this.patrolService.getUsers(this.currentPage, this.itemsPerPage).subscribe({
+  //     next: (response) => {
+  //       this.users = response.users;
+  //       this.totalItems = response.pagination?.totalRecords ?? 0;
+
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching users:', err);
+  //     }
+  //   });
+  // }
+
+  searchText: string = '';
+  allUsers: any[] = []; // store all users locally
+
+
   fetchUsers(): void {
     this.patrolService.getUsers(this.currentPage, this.itemsPerPage).subscribe({
       next: (response) => {
-        this.users = response.users;
+        this.allUsers = response.users; // store original data
+        this.userSearch(); // apply search if needed
         this.totalItems = response.pagination?.totalRecords ?? 0;
       },
       error: (err) => {
@@ -95,6 +113,17 @@ export class UserManagementComponent {
     });
   }
 
+  userSearch(): void {
+    const search = this.searchText.toLowerCase();
+    this.users = this.allUsers.filter(user =>
+      Object.values(user).some(val =>
+        String(val).toLowerCase().includes(search)
+      )
+    );
+  }
+
+
+
 
   user = {
     username: '',
@@ -102,7 +131,7 @@ export class UserManagementComponent {
     email: '',
     patrolGuardName: '',
     mobileNumber: '',
-    locationIds:  [] as string[],
+    locationId: [] as string[],
     roleId: '',       // must be a valid roleId from your DB
     department: '',
     designation: ''
@@ -133,7 +162,7 @@ export class UserManagementComponent {
     email: '',
     patrolGuardName: '',
     mobileNumber: '',
-    locationId: "",
+    locationId:[] as string[],
     roleId: '',
     department: '',
     designation: '',
@@ -151,7 +180,7 @@ export class UserManagementComponent {
       email: userData.email || '',
       patrolGuardName: userData.patrolGuardName || '',
       mobileNumber: userData.mobileNumber || '',
-      locationId: userData.locationId || '',
+      locationId: userData.locationId || [],
       roleId: userData.roleId || '',
       department: userData.department || '',
       designation: userData.designation || '',
@@ -178,6 +207,34 @@ export class UserManagementComponent {
       }
     });
   }
+  isUpdateDropdownOpen: boolean = false;
+
+  toggleUpdateLocationDropdown(): void {
+  this.isUpdateDropdownOpen = !this.isUpdateDropdownOpen;
+}
+
+onUpdateLocationCheckboxChange(event: any): void {
+  const locationId = event.target.value;
+  const isChecked = event.target.checked;
+
+  if (isChecked) {
+    if (!this.updateUserData.locationId.includes(locationId)) {
+      this.updateUserData.locationId.push(locationId);
+    }
+  } else {
+     this.updateUserData.locationId = this.updateUserData.locationId.filter((id: string) => id !== locationId);
+  }
+
+  // ✅ Close dropdown after each selection
+  this.isUpdateDropdownOpen = false;
+}
+
+removeUpdateLocation(locationId: string): void {
+  this.updateUserData.locationId = this.updateUserData.locationId.filter((id: string) => id !== locationId);
+}
+
+
+
 
   isDeletePopupOpen = false;
   userIdToDelete: string | null = null;
@@ -210,42 +267,42 @@ export class UserManagementComponent {
     }
   }
 
-isDropdownOpen = false;
+  isDropdownOpen = false;
 
-toggleLocationDropdown(): void {
-  if (!this.isDropdownOpen) {
-    this.loadLocations();  // 👈 Always reload
+  toggleLocationDropdown(): void {
+    if (!this.isDropdownOpen) {
+      this.loadLocations();  // 👈 Always reload
+    }
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
-  this.isDropdownOpen = !this.isDropdownOpen;
-}
 
 
-removeLocation(locationId: string): void {
-  this.user.locationIds = this.user.locationIds.filter(id => id !== locationId);
-}
+  removeLocation(locationId: string): void {
+    this.user.locationId = this.user.locationId.filter(id => id !== locationId);
+  }
 
-getLocationDescription(locationId: string): string {
-  const location = this.locationList.find(loc => loc.locationId === locationId);
-  return location ? `${location.locationId} - ${location.description}` : locationId;
-}
+  getLocationDescription(locationId: string): string {
+    const location = this.locationList.find(loc => loc.locationId === locationId);
+    return location ? `${location.locationId} - ${location.description}` : locationId;
+  }
 
 
 
-onLocationCheckboxChange(event: any): void {
-  const locationId = event.target.value;
-  const isChecked = event.target.checked;
+  onLocationCheckboxChange(event: any): void {
+    const locationId = event.target.value;
+    const isChecked = event.target.checked;
 
-  if (isChecked) {
-    if (!this.user.locationIds.includes(locationId)) {
-      this.user.locationIds.push(locationId);
+    if (isChecked) {
+      if (!this.user.locationId.includes(locationId)) {
+        this.user.locationId.push(locationId);
+      }
+
+    } else {
+      this.user.locationId = this.user.locationId.filter(id => id !== locationId);
     }
 
-  } else {
-    this.user.locationIds = this.user.locationIds.filter(id => id !== locationId);
+    this.isDropdownOpen = false;
   }
-
-  this.isDropdownOpen = false;
-}
 
 
 
@@ -259,9 +316,8 @@ onLocationCheckboxChange(event: any): void {
     this.locationService.getLocationSummary(this.locationCurrentPage, this.locationItemsPerPage).subscribe({
       next: (res) => {
         if (res.success) {
-          this.locationList = res.locations || res.data || [];
-          // this.locationTotalItems = res.pagination?.totalRecords || this.locationList.length;
-          // ✅ NEW — correct based on your API
+          this.allLocationList = res.locations || res.data || [];
+          this.applyLocationSearch(); // filter result
           this.locationTotalItems = res.totalLocations || 0;
         }
       },
@@ -270,8 +326,18 @@ onLocationCheckboxChange(event: any): void {
       }
     });
   }
+  locationSearchText: string = '';
+  allLocationList: any[] = []; // full list for local filtering
 
 
+  applyLocationSearch(): void {
+    const search = this.locationSearchText.toLowerCase();
+    this.locationList = this.allLocationList.filter(location =>
+      Object.values(location).some(val =>
+        String(val).toLowerCase().includes(search)
+      )
+    );
+  }
 
 
   loadLocations() {
@@ -332,7 +398,7 @@ onLocationCheckboxChange(event: any): void {
         this.isAddLoc = false;
         this.loadLocation();
       },
- error: (err) => {
+      error: (err) => {
         if (err.status === 400 && err.error && err.error.message) {
           this.alertService.showAlert(err.error.message, "error");
         } else {
@@ -482,7 +548,7 @@ onLocationCheckboxChange(event: any): void {
     { label: 'Email', key: 'email', visible: true },
     { label: 'Department', key: 'department', visible: true },
     { label: 'Designation', key: 'designation', visible: true },
-    { label: 'Location', key: 'locationNames', visible: true },
+    { label: 'Location', key: 'locationName', visible: true },
     { label: 'Role', key: 'role', visible: true }
   ];
 
@@ -512,12 +578,14 @@ onLocationCheckboxChange(event: any): void {
     this.currentPage = 1;
     this.fetchUsers();
 
+
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.fetchUsers();
+
 
     }
   }
@@ -563,6 +631,8 @@ onLocationCheckboxChange(event: any): void {
       this.loadLocation();
     }
   }
+
+
 
 
 
