@@ -208,8 +208,6 @@ export class ConsolidatedReportComponent {
           if (allMedia.length > 0) {
             this.fullMediaList = allMedia;
             this.totalItems = allMedia.length;
-            //  this.mediaList = this.fullMediaList.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
-            // this.currentPage = 1;              // reset page
             this.updatePagination();
             this.alertService.showAlert('Consolidated Report generated successfully!')
             this.showTableMedia = true;
@@ -243,29 +241,29 @@ export class ConsolidatedReportComponent {
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalItems: number = 0;
-  pageSizeOptions: number[] = [5, 10, 20]; // customize as needed
+  pageSizeOptions: number[] = [5, 10, 20,50,100]; // customize as needed
+
+
 
   get startItem(): number {
-    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
-  }
+  return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+}
 
   get endItem(): number {
-    const possibleEnd = this.currentPage * this.itemsPerPage;
-    return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
-  }
+  const possibleEnd = this.currentPage * this.itemsPerPage;
+  return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
+}
 
 
   onItemsPerPageChange() {
     this.currentPage = 1;
-    // this.updateMediaPagination();
     this.updatePagination();
-    this.applyReport(new Event('submit')); // Call the API again
+    this.applyReport(new Event('submit'));
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      // this.updateMediaPagination();
       this.updatePagination();
 
     }
@@ -275,23 +273,15 @@ export class ConsolidatedReportComponent {
     const totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
     if (this.currentPage < totalPages) {
       this.currentPage++;
-      // this.updateMediaPagination();
       this.updatePagination();
 
     }
   }
 
-  // updateMediaPagination() {
-  //   if (this.type === 'media') {
-  //     this.mediaList = this.fullMediaList.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
-  //   } else {
-  //     this.applyReport(new Event('submit'));
-  //   }
-  // }
 
-  get totalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage);
-  }
+get totalPages(): number {
+  return Math.ceil(this.totalItems / this.itemsPerPage);
+}
 
   updatePagination() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -304,4 +294,35 @@ export class ConsolidatedReportComponent {
     }
   }
 
+
+
+
+// onItemsPerPageChange() {
+//   this.currentPage = 1;
+//   this.applyReport(new Event('submit'));
+// }
+
+// prevPage() {
+//   if (this.currentPage > 1) {
+//     this.currentPage--;
+//     this.applyReport(new Event('submit'));
+//   }
+// }
+
+// nextPage() {
+//   if (this.currentPage < this.totalPages) {
+//     this.currentPage++;
+//     this.applyReport(new Event('submit'));
+//   }
+// }
+
 }
+
+
+
+// "pagination": {
+//         "totalPatrols": 1,
+//         "page": 1,
+//         "limit": 10,
+//         "totalPages": 1
+//     },
