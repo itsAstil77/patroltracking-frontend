@@ -220,77 +220,77 @@
 
 
 
-  <div class="user-management-container">
+<div class="user-management-container">
 
-    <div class="user-tabs">
-      <div class="tab" [ngClass]="{ active: selectedRole === 'User' }" (click)="selectedRole = 'User'">
-        User
+  <div class="user-tabs">
+    <div class="tab" [ngClass]="{ active: selectedRole === 'User' }" (click)="selectedRole = 'User'">
+      User
+    </div>
+    <div class="tab" [ngClass]="{ active: selectedRole === 'Location' }" (click)="selectedRole = 'Location'">
+      Location
+    </div>
+  </div>
+
+
+  <nav class="navbar1">
+    <!-- Left Side -->
+    <div class="navbar-left">
+      <span class="navbar-title">{{ selectedRole }}</span>
+    </div>
+
+    <div class="navbar-right" *ngIf="selectedRole !== 'Location'">
+
+      <div class="search-box-wrapper">
+        <input type="text" placeholder="Search User..." [(ngModel)]="searchText" (input)="userSearch()"
+          class="search-input" />
       </div>
-      <div class="tab" [ngClass]="{ active: selectedRole === 'Location' }" (click)="selectedRole = 'Location'">
-        Location
+
+      <div class="tooltip-container" (click)="reloadPage()">
+        <button class="icon-button"><img src="assets/refresh.png" alt="Refresh"></button>
+        <span class="tooltip-text">Refresh</span>
+      </div>
+      <div class="tooltip-container" (click)="openAddUserPopup()">
+        <button class="icon-button"><img src="assets/add.png" alt="Add"></button>
+        <span class="tooltip-text">Add</span>
+      </div>
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
+        <span class="tooltip-text">Download</span>
+      </div>
+      <div class="tooltip-container" (click)="toggleAdminColumnPicker()">
+        <button class="icon-button"><img src="assets/columns-3.png"></button>
+        <span class="tooltip-text">Column Picker</span>
       </div>
     </div>
 
-
-    <nav class="navbar1">
-      <!-- Left Side -->
-      <div class="navbar-left">
-        <span class="navbar-title">{{ selectedRole }}</span>
+    <div class="navbar-right" *ngIf="selectedRole === 'Location'">
+      <div class="search-box-wrapper">
+        <input type="text" placeholder="Search Location..." [(ngModel)]="locationSearchText"
+          (input)="applyLocationSearch()" class="search-input" />
       </div>
-
-      <div class="navbar-right" *ngIf="selectedRole !== 'Location'">
-
-        <div class="search-box-wrapper">
-          <input type="text" placeholder="Search User..." [(ngModel)]="searchText" (input)="userSearch()"
-            class="search-input" />
-        </div>
-
-        <div class="tooltip-container" (click)="reloadPage()">
-          <button class="icon-button"><img src="assets/refresh.png" alt="Refresh"></button>
-          <span class="tooltip-text">Refresh</span>
-        </div>
-        <div class="tooltip-container" (click)="openAddUserPopup()">
-          <button class="icon-button"><img src="assets/add.png" alt="Add"></button>
-          <span class="tooltip-text">Add</span>
-        </div>
-        <div class="tooltip-container">
-          <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
-          <span class="tooltip-text">Download</span>
-        </div>
-        <div class="tooltip-container" (click)="toggleAdminColumnPicker()">
-          <button class="icon-button"><img src="assets/columns-3.png"></button>
-          <span class="tooltip-text">Column Picker</span>
-        </div>
+      <div class="tooltip-container" (click)="reloadPage()">
+        <button class="icon-button"><img src="assets/refresh.png" alt="Refresh"></button>
+        <span class="tooltip-text">Refresh</span>
       </div>
-
-      <div class="navbar-right" *ngIf="selectedRole === 'Location'">
-        <div class="search-box-wrapper">
-          <input type="text" placeholder="Search Location..." [(ngModel)]="locationSearchText"
-            (input)="applyLocationSearch()" class="search-input" />
-        </div>
-        <div class="tooltip-container" (click)="reloadPage()">
-          <button class="icon-button"><img src="assets/refresh.png" alt="Refresh"></button>
-          <span class="tooltip-text">Refresh</span>
-        </div>
-        <div class="tooltip-container" (click)="openAddLocPopup()">
-          <button class="icon-button"><img src="assets/add.png" alt="Add"></button>
-          <span class="tooltip-text">Add</span>
-        </div>
-        <div class="tooltip-container">
-          <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
-          <span class="tooltip-text">Download</span>
-        </div>
-        <div class="tooltip-container" (click)="toggleColumnPickerModal()">
-          <button class="icon-button"><img src="assets/columns-3.png"></button>
-          <span class="tooltip-text">Column Picker</span>
-        </div>
+      <div class="tooltip-container" (click)="openAddLocPopup()">
+        <button class="icon-button"><img src="assets/add.png" alt="Add"></button>
+        <span class="tooltip-text">Add</span>
       </div>
+      <div class="tooltip-container">
+        <button class="icon-button"><img src="assets/download.png" alt="Download"></button>
+        <span class="tooltip-text">Download</span>
+      </div>
+      <div class="tooltip-container" (click)="toggleColumnPickerModal()">
+        <button class="icon-button"><img src="assets/columns-3.png"></button>
+        <span class="tooltip-text">Column Picker</span>
+      </div>
+    </div>
 
-    </nav>
+  </nav>
 
 
-    <div class="box">
-      <!-- <table class="company-table" *ngIf="selectedRole === 'Admin' ">
+  <div class="box">
+    <!-- <table class="company-table" *ngIf="selectedRole === 'Admin' ">
       <thead>
         <tr>
         <th>User ID</th>
@@ -334,63 +334,63 @@
     </table> -->
 
 
-      <table class="company-table" *ngIf="selectedRole === 'User'">
-        <thead>
-          <tr>
-            <th *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ col.label }}</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users">
-            <td *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ user[col.key] }}</td>
-            <td>
-              <div class="tab">
-                <div class="tooltip-container">
-                  <img src="assets/edit.png" alt="Edit" (click)="openUpdateUserPopup(user)" class="tab-icon" />
-                  <span class="tooltip-text">Edit</span>
-                </div>
-                <div class="tooltip-container">
-                  <img src="assets/delete.png" alt="Delete" (click)="openDeletePopup(user.userId)" class="tab-icon" />
-                  <span class="tooltip-text">Delete</span>
-                </div>
+    <table class="company-table" *ngIf="selectedRole === 'User'">
+      <thead>
+        <tr>
+          <th *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ col.label }}</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td *ngFor="let col of adminColumns" [hidden]="!col.visible">{{ user[col.key] }}</td>
+          <td>
+            <div class="tab">
+              <div class="tooltip-container">
+                <img src="assets/edit.png" alt="Edit" (click)="openUpdateUserPopup(user)" class="tab-icon" />
+                <span class="tooltip-text">Edit</span>
               </div>
-            </td>
-          </tr>
-          <tr class="pagination-row" style="height:50px;">
-            <td colspan="13">
-              <div class="pagination-container">
-                <label>Items per page:
-                  <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-                    <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-                  </select>
-                </label>
-
-                <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
-
-                <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
-                <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+              <div class="tooltip-container">
+                <img src="assets/delete.png" alt="Delete" (click)="openDeletePopup(user.userId)" class="tab-icon" />
+                <span class="tooltip-text">Delete</span>
               </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </td>
+        </tr>
+        <tr class="pagination-row" style="height:50px;">
+          <td colspan="13">
+            <div class="pagination-container">
+              <label>Items per page:
+                <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+                  <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+                </select>
+              </label>
 
-      <div class="column-picker-popup" [ngClass]="{ 'show': showAdminColumnPicker, 'hide': !showAdminColumnPicker }">
-        <div class="popup-header">
-          <span>Admin Column Picker</span>
-          <button class="close-btn" (click)="toggleAdminColumnPicker()">×</button>
-        </div>
-        <div class="column-list">
-          <label *ngFor="let col of adminColumns" class="column-item">
-            <input type="checkbox" [(ngModel)]="col.visible" />
-            {{ col.label }}
-          </label>
-        </div>
+              <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+
+              <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+              <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="column-picker-popup" [ngClass]="{ 'show': showAdminColumnPicker, 'hide': !showAdminColumnPicker }">
+      <div class="popup-header">
+        <span>Admin Column Picker</span>
+        <button class="close-btn" (click)="toggleAdminColumnPicker()">×</button>
       </div>
+      <div class="column-list">
+        <label *ngFor="let col of adminColumns" class="column-item">
+          <input type="checkbox" [(ngModel)]="col.visible" />
+          {{ col.label }}
+        </label>
+      </div>
+    </div>
 
 
-      <!-- <table class="company-table" *ngIf="selectedRole === 'Marshal' && patrolUsers.length > 0">
+    <!-- <table class="company-table" *ngIf="selectedRole === 'Marshal' && patrolUsers.length > 0">
       <thead>
         <tr>
           <th>Marshal Name</th>
@@ -433,162 +433,162 @@
 
 
 
-      <table class="company-table" *ngIf="selectedRole === 'Location'">
-        <thead>
-          <tr>
-            <th *ngFor="let col of columns" [hidden]="!col.visible">{{ col.label }}</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let loc of locationList">
-            <td *ngFor="let col of columns" [hidden]="!col.visible">{{ loc[col.key] }}</td>
-            <td>
-              <div class="tab">
-                <div class="tooltip-container">
-                  <img src="assets/edit.png" alt="Edit" (click)="openUpdateLocPopup(loc)" class="tab-icon">
-                  <span class="tooltip-text">Edit</span>
-                </div>
-                <div class="tooltip-container">
-                  <img src="assets/delete.png" alt="Delete" (click)="openDeleteModal(loc.locationId)" class="tab-icon">
-                  <span class="tooltip-text">Delete</span>
-                </div>
+    <table class="company-table" *ngIf="selectedRole === 'Location'">
+      <thead>
+        <tr>
+          <th *ngFor="let col of columns" [hidden]="!col.visible">{{ col.label }}</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let loc of locationList">
+          <td *ngFor="let col of columns" [hidden]="!col.visible">{{ loc[col.key] }}</td>
+          <td>
+            <div class="tab">
+              <div class="tooltip-container">
+                <img src="assets/edit.png" alt="Edit" (click)="openUpdateLocPopup(loc)" class="tab-icon">
+                <span class="tooltip-text">Edit</span>
               </div>
-            </td>
-          </tr>
-        </tbody>
-        <tr class="pagination-row" style="height:50px;">
-          <td colspan="13">
-            <div class="pagination-container">
-              <label>Items per page:
-                <select [(ngModel)]="locationItemsPerPage" (change)="onLocationItemsPerPageChange()">
-                  <option *ngFor="let size of locationPageSizeOptions" [value]="size">{{ size }}</option>
-                </select>
-              </label>
-
-              <span class="range-info">{{ locationStartItem }}–{{ locationEndItem }} of {{ locationTotalItems }}</span>
-
-              <button (click)="prevLocationPage()" [disabled]="locationCurrentPage === 1" class="arrow-btn">⏴</button>
-              <button (click)="nextLocationPage()" [disabled]="locationEndItem >= locationTotalItems"
-                class="arrow-btn">⏵</button>
+              <div class="tooltip-container">
+                <img src="assets/delete.png" alt="Delete" (click)="openDeleteModal(loc.locationId)" class="tab-icon">
+                <span class="tooltip-text">Delete</span>
+              </div>
             </div>
           </td>
         </tr>
+      </tbody>
+      <tr class="pagination-row" style="height:50px;">
+        <td colspan="13">
+          <div class="pagination-container">
+            <label>Items per page:
+              <select [(ngModel)]="locationItemsPerPage" (change)="onLocationItemsPerPageChange()">
+                <option *ngFor="let size of locationPageSizeOptions" [value]="size">{{ size }}</option>
+              </select>
+            </label>
 
-      </table>
-    </div>
+            <span class="range-info">{{ locationStartItem }}–{{ locationEndItem }} of {{ locationTotalItems }}</span>
+
+            <button (click)="prevLocationPage()" [disabled]="locationCurrentPage === 1" class="arrow-btn">⏴</button>
+            <button (click)="nextLocationPage()" [disabled]="locationEndItem >= locationTotalItems"
+              class="arrow-btn">⏵</button>
+          </div>
+        </td>
+      </tr>
+
+    </table>
+  </div>
 
 
-    <div class="delete-modal" *ngIf="isDeletePopupOpen">
-      <div class="delete-modal-content">
-        <p>Are you sure you want to delete this user?</p>
-        <div class="delete-modal-buttons">
+  <div class="delete-modal" *ngIf="isDeletePopupOpen">
+    <div class="delete-modal-content">
+      <p>Are you sure you want to delete this user?</p>
+      <div class="delete-modal-buttons">
 
 
-          <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
-          <button class="delete-no-btn" (click)="closeDeletePopup()">No</button>
-        </div>
+        <button class="delete-yes-btn" (click)="confirmDelete()">Yes</button>
+        <button class="delete-no-btn" (click)="closeDeletePopup()">No</button>
       </div>
     </div>
+  </div>
 
 
-    <div class="modal" *ngIf="isAddLoc">
-      <div class="modal-content">
-        <p>Add Location</p>
+  <div class="modal" *ngIf="isAddLoc">
+    <div class="modal-content">
+      <p>Add Location</p>
 
-        <div class="form-grid">
+      <div class="form-grid">
 
 
-          <div class="form-group">
-            <label>Location Code</label>
-            <input type="text" [(ngModel)]="location.locationCode" />
-          </div>
-
-          <div class="form-group">
-            <label>Latitude</label>
-            <input type="text" [(ngModel)]="location.latitude" />
-          </div>
-
-          <div class="form-group">
-            <label>Longitude</label>
-            <input type="text" [(ngModel)]="location.longitude" />
-          </div>
-
-          <div class="form-group">
-            <label>Location Name</label>
-            <input type="text" [(ngModel)]="location.description" />
-          </div>
+        <div class="form-group">
+          <label>Location Code</label>
+          <input type="text" [(ngModel)]="location.locationCode" />
         </div>
 
-        <div class="modal-buttons">
-          <button class="cancel-btn" (click)="cancelLoc()">Cancel</button>
-          <button class="create-btn" (click)="addLoc()">Add</button>
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="text" [(ngModel)]="location.latitude" />
         </div>
+
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="text" [(ngModel)]="location.longitude" />
+        </div>
+
+        <div class="form-group">
+          <label>Location Name</label>
+          <input type="text" [(ngModel)]="location.description" />
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button class="cancel-btn" (click)="cancelLoc()">Cancel</button>
+        <button class="create-btn" (click)="addLoc()">Add</button>
       </div>
     </div>
+  </div>
 
 
-    <div class="modal" *ngIf="isUpdateLoc">
-      <div class="modal-content">
-        <p>Update Location</p>
+  <div class="modal" *ngIf="isUpdateLoc">
+    <div class="modal-content">
+      <p>Update Location</p>
 
-        <div class="form-grid">
+      <div class="form-grid">
 
 
-          <div class="form-group">
-            <label>Location Code</label>
-            <input type="text" [(ngModel)]="location.locationCode" />
-          </div>
-
-          <div class="form-group">
-            <label>Latitude</label>
-            <input type="text" [(ngModel)]="location.latitude" />
-          </div>
-
-          <div class="form-group">
-            <label>Longitude</label>
-            <input type="text" [(ngModel)]="location.longitude" />
-          </div>
-
-          <div class="form-group">
-            <label>Location Name</label>
-            <input type="text" [(ngModel)]="location.description" />
-          </div>
+        <div class="form-group">
+          <label>Location Code</label>
+          <input type="text" [(ngModel)]="location.locationCode" />
         </div>
 
-        <div class="modal-buttons">
-          <button class="cancel-btn" (click)="cancelUpdateLoc()">Cancel</button>
-          <button class="create-btn" (click)="updateLoc()">Update</button>
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="text" [(ngModel)]="location.latitude" />
+        </div>
+
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="text" [(ngModel)]="location.longitude" />
+        </div>
+
+        <div class="form-group">
+          <label>Location Name</label>
+          <input type="text" [(ngModel)]="location.description" />
         </div>
       </div>
-    </div>
 
-
-    <div class="delete-modal" *ngIf="isDeleteLoc">
-      <div class="delete-modal-content">
-        <p>Are you sure you want to delete this Location?</p>
-        <div class="delete-modal-buttons">
-
-
-          <button class="delete-yes-btn" (click)="deleteLoc()">Yes</button>
-          <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
-        </div>
+      <div class="modal-buttons">
+        <button class="cancel-btn" (click)="cancelUpdateLoc()">Cancel</button>
+        <button class="create-btn" (click)="updateLoc()">Update</button>
       </div>
     </div>
+  </div>
 
 
+  <div class="delete-modal" *ngIf="isDeleteLoc">
+    <div class="delete-modal-content">
+      <p>Are you sure you want to delete this Location?</p>
+      <div class="delete-modal-buttons">
 
-    <!-- column picker for location -->
 
-    <div class="column-picker-popup" [ngClass]="{ 'show': showColumnPicker, 'hide': !showColumnPicker }">
-      <div class="popup-header">
-        <span>Column Picker</span>
-        <button class="close-btn" (click)="toggleColumnPickerModal()">×</button>
-      </div>
-      <div class="column-list">
-        <label *ngFor="let col of columns" class="column-item">
-          <input type="checkbox" [(ngModel)]="col.visible" />
-          {{ col.label }}
-        </label>
+        <button class="delete-yes-btn" (click)="deleteLoc()">Yes</button>
+        <button class="delete-no-btn" (click)="CloseLocDel()">No</button>
       </div>
     </div>
+  </div>
+
+
+
+  <!-- column picker for location -->
+
+  <div class="column-picker-popup" [ngClass]="{ 'show': showColumnPicker, 'hide': !showColumnPicker }">
+    <div class="popup-header">
+      <span>Column Picker</span>
+      <button class="close-btn" (click)="toggleColumnPickerModal()">×</button>
+    </div>
+    <div class="column-list">
+      <label *ngFor="let col of columns" class="column-item">
+        <input type="checkbox" [(ngModel)]="col.visible" />
+        {{ col.label }}
+      </label>
+    </div>
+  </div>

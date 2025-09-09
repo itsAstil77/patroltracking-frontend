@@ -32,7 +32,7 @@ export class WorkflowService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get(`${this.baseUrl}checklists/${workflowId}`, { headers });
+    return this.http.get(`${this.baseUrl}checklists/wf/${workflowId}`, { headers });
   }
 
   createWorkflow(data: any): Observable<any> {
@@ -118,6 +118,15 @@ export class WorkflowService {
     // const url = `${this.assignUrl}/${checklistId}`;
     return this.http.put<any>(`${this.baseUrl}checklists/assign/${checklistId}`, requestBody, { headers });
   }
+
+  createBulkChecklist(payload: any): Observable<any> {
+  return this.http.post('http://172.16.100.68:5000/checklists/bulk', payload);
+}
+
+  getBulkChecklistByWorkflowId(workflowId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}checklists/is/${workflowId}`);
+  }
+
 }
 
 

@@ -11,10 +11,10 @@ import { EventsComponent } from './components/pages/events/events/events.compone
 import { InsightsComponent } from './components/pages/insights/insights/insights.component';
 import { ConfigurationComponent } from './components/pages/configuration/configuration/configuration.component';
 import { LicenseManagementComponent } from './components/pages/license-management/license-management/license-management.component';
-import { SchedulesComponent } from './components/pages/schedules/schedules/schedules.component';
 import { ConsolidatedReportComponent } from './components/pages/consolidated-report/consolidated-report/consolidated-report.component';
 import { RoleComponent } from './components/pages/role/role/role.component';
 import { MapComponent } from './components/pages/map/map/map.component';
+import { ScheduleComponent } from './components/pages/schedule/schedule/schedule.component';
 
 export const routes: Routes = [
 
@@ -34,7 +34,7 @@ export const routes: Routes = [
 
   {
     path: '',
-    component: NavbarComponent,
+    component: NavbarComponent, 
     children: [
       // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
@@ -48,9 +48,9 @@ export const routes: Routes = [
       { path: 'insights', component:InsightsComponent},
       { path:'configuration',component:ConfigurationComponent},
       { path:'license-management',component:LicenseManagementComponent},
-      { path:'schedules',component:SchedulesComponent},
       {path:'consolidated-report',component:ConsolidatedReportComponent},
       {path:'role',component:RoleComponent},
+      {path:'schedule',component:ScheduleComponent}
       // {path:'map/:id',component:MapComponent}
       
 

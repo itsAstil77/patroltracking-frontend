@@ -1,5 +1,5 @@
 /* Navbar */
-.patrol-tracking-navbar {
+.navbar {
   width: 100%;
   height: 60px;
   background-color: white;
@@ -54,55 +54,8 @@
   /* Ensures bold effect */
 }
 
-/* Tooltip wrapper only inside patrol tracking navbar */
-.patrol-tracking-navbar .tooltip-container {
-  position: relative;
-  display: inline-block;
-}
 
-/* Tooltip text */
-.patrol-tracking-navbar .tooltip-container .tooltip-text {
-  visibility: hidden;
-  opacity: 0;
-  width: max-content;
-  max-width: 120px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 6px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  line-height: 1.2;
-
-  position: absolute;
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  transition: opacity 0.3s ease-in-out;
-
-  z-index: 9999; /* always on top */
-  white-space: nowrap;
-}
-
-/* Tooltip arrow */
-.patrol-tracking-navbar .tooltip-container .tooltip-text::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #333 transparent transparent transparent;
-}
-
-/* Show on hover */
-.patrol-tracking-navbar .tooltip-container:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* .tooltip-container:hover .tooltip-text {
+.tooltip-container:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
 }
@@ -113,9 +66,9 @@
   overflow: visible;
   z-index: auto;
 
-} */
+}
 
-/* .tooltip-container .tooltip-text {
+.tooltip-container .tooltip-text {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -131,14 +84,12 @@
   transition: opacity 0.3s ease-in-out;
   z-index: 9999;
   width: 70px;
-} */
-
-
+}
 
 /* table */
 
 .workflow-summary {
-  /* margin: 70px; */
+  margin: 70px;
   padding: 50px;
   /* Adds space inside the container */
   background-color: white;
@@ -158,23 +109,11 @@
   /* One outer border */
 }
 
-
+.workflow-summary th,
 .workflow-summary td {
   border: none;
   /* No vertical or internal borders */
-  padding-left: 18px;
-  text-align: left;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  font-size: 14px;
-  font-family: 'RedHatDisplay-Regular'
-
-}
-
-.workflow-summary th {
-  border: none;
-  /* No vertical or internal borders */
-  padding: 13px;
+  padding: 10px;
   text-align: left;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
@@ -208,6 +147,37 @@
   border: none;
   margin-top: 3px;
 }
+
+/* table {
+    width: 100%; 
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #ccc;
+    
+    
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'RedHatDisplay-Regular';
+
+    
+  }
+
+  th {
+    background-color: white;
+    color: black;
+   
+  } */
+
+/* Alternating row colors for better readability */
+/* tr:nth-child(even) {
+    background-color: #f9f9f9;
+  } */
 
 /* Image Styling */
 img {
@@ -273,7 +243,7 @@ img {
 .nested-table th,
 .nested-table td {
   border: 1px solid #ccc;
-  padding: 5px;
+  padding: 10px;
   font-size: 14px;
   text-align: center;
   font-family: 'RedHatDisplay-Regular';
@@ -426,7 +396,19 @@ h2 {
   margin-top: 15px;
 }
 
+/* .modal-buttons button {
+  background-color: #7030a0;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 30%;
+} */
 
+/* .modal-buttons button:hover {
+  background-color: #5a2580;
+} */
 
 .create-btn {
   background-color: #7030a0;
@@ -591,54 +573,54 @@ select {
 
 
 
-.pagination-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+ .pagination-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+       
+        font-size: 14px;
+        gap: 10px;
+        color: #333;
+        flex-wrap: wrap; 
+      }
 
-  font-size: 14px;
-  gap: 10px;
-  color: #333;
-  flex-wrap: wrap;
-}
-
-
-.pagination-container label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin: 0;
-  white-space: nowrap;
-}
-
-.pagination-container select {
-  padding: 4px 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 13px;
-  cursor: pointer;
-  width: 48px;
-  height: 25px;
-}
-
-.range-info {
-  min-width: 100px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.arrow-btn {
-  background-color: transparent;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: #7030a0;
-}
-
-.arrow-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+      
+      .pagination-container label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 0;
+        white-space: nowrap;
+      }
+      
+      .pagination-container select {
+        padding: 4px 6px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 13px;
+        cursor: pointer;
+        width: 48px; 
+        height: 25px;
+      }
+      
+      .range-info {
+        min-width: 100px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      
+      .arrow-btn {
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        color: #7030a0;
+      }
+      
+      .arrow-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
 
 
 .pagination-row td {
@@ -649,8 +631,8 @@ select {
 
 
 .search-box-wrapper {
-  margin-top: 3px;
-  margin-left: 20px;
+ margin-top: 3px;
+ margin-left:20px;
 
 }
 
@@ -672,125 +654,28 @@ select {
 }
 
 
-
-
-
-.user-tabs {
+::ng-deep #calendar-demo {
   display: flex;
 }
 
-.tab {
-  padding: 10px 20px;
-  cursor: pointer;
-  color: #6a1b9a;
-  border-bottom: 3px solid transparent;
-  font-weight: 500;
-  font-family: 'RedHatDisplay-Regular';
-}
-
-.tab.active {
-  border-bottom: 3px solid #6a1b9a;
-  font-weight: bold;
-  font-family: 'RedHatDisplay-Regular';
-}
-
-
-
-/* Make calendar popup background white */
-.mat-datepicker-content,
-.mat-calendar {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  border-radius: 8px;
-}
-
-/* Selected date style */
-.mat-calendar-body-selected {
-  background-color: #6a1b9a !important;
-  /* Purple */
-  color: #ffffff !important;
-  border-radius: 50% !important;
-}
-
-/* Today’s date highlight */
-.mat-calendar-body-today {
-  border: 1px solid #6a1b9a !important;
-  /* Purple border for today */
-  border-radius: 50% !important;
-}
-
-/* Hover effect on dates */
-.mat-calendar-body-cell:hover {
-  background-color: #f3e5f5 !important;
-  /* Light purple hover */
-  border-radius: 50% !important;
-}
-
-
-.mat-calendar-body-cell.selected {
-  background-color: red !important;
-  border-radius: 50%
-}
-
-.drop-calendar {
-  width: 30rem
-}
-
-.selected-dates span {
-  display: inline-block;
-  margin-right: 6px;
-  padding: 3px 8px;
-  background: #f3e5f5;         /* light purple badge */
-  border-radius: 12px;
-  font-size: 13px;
-}
-
-/* Put this in styles.css (global) or use ::ng-deep if inside component */
-::ng-deep .custom-small-datepicker.mat-form-field-appearance-outline .mat-form-field-flex {
-  height: 36px !important;       /* reduce height */
-  min-height: 36px !important;
-  padding: 0 8px !important;
-}
-
-::ng-deep .custom-small-datepicker .mat-input-element {
-  height: 20px !important;       /* shrink input text area */
-  padding: 2px 0 !important;
-  font-size: 13px !important;    /* smaller font */
-}
-
-::ng-deep .custom-small-datepicker .mat-form-field-outline {
-  height: 36px !important;       /* shrink outline */
-  min-height: 36px !important;
-}
-
-.selected-dates-container {
-  /* border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 5px; */
+.calendar-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 5px;
-  background-color: #fff; /* optional */
-}
-
-.selected-date-chip {
-  background-color: #6a0dad; /* purple */
-  color: #fff;
-  padding: 2px 4px;
-  border-radius: 15px;
-  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   align-items: center;
-  font-size: 10px;
+  justify-content: center;
 }
 
-.remove-date {
-  cursor: pointer;
-  margin-left: 6px;
-  font-weight: bold;
+.caption {
+  font-weight: 500;
+  font-size: 18px;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: #ccc;
-  stroke: #ccc;  /* border color */
+.options {
+  padding: 20px;
+  background-color: rgba(191, 191, 191, 0.15);
+}
+
+.option {
+  margin-top: 10px;
 }

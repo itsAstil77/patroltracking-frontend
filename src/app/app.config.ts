@@ -6,11 +6,25 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+
+
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
      provideRouter(routes),
      provideHttpClient(),
      provideClientHydration(withEventReplay()),
-    importProvidersFrom(ReactiveFormsModule) // ✅ <-- This is what you need
+    importProvidersFrom(ReactiveFormsModule,
+      BrowserAnimationsModule,
+      MatDatepickerModule,
+      MatInputModule,
+      MatFormFieldModule,
+      MatNativeDateModule
+    ) // ✅ <-- This is what you need
   ]
 };
+
