@@ -104,8 +104,10 @@ export class PatrolTrackingComponent implements OnInit {
   checklistDataSchedule: { [workflowId: string]: any[] } = {};
 
 
-  constructor(private workflowService: WorkflowService, private alertService: AlertService) { }
-
+  constructor(private workflowService: WorkflowService, private alertService: AlertService) {
+    const today = new Date();
+    this.currentDate = today.toISOString().split('T')[0];
+  }
 
 
 
@@ -343,8 +345,8 @@ export class PatrolTrackingComponent implements OnInit {
 
       },
       (err: any) => {
-        if (err.status === 500 && err.error && err.error.message) {
-          this.alertService.showAlert(err.error.message + " please enter title", "error");
+        if ((err.status === 400 || err.status === 500) && err.error && err.error.message) {
+          this.alertService.showAlert(err.error.message, "error");
         } else {
           this.alertService.showAlert("Checklist creation failed.", "error");
         }
@@ -414,16 +416,26 @@ export class PatrolTrackingComponent implements OnInit {
     this.showEditPopup = true;
   }
 
+  // formatDateForInput(dateString: string): string {
+  //   if (!dateString) return '';
+  //   const date = new Date(dateString);
+  //   const year = date.getFullYear();
+  //   const month = this.pad(date.getMonth() + 1);
+  //   const day = this.pad(date.getDate());
+  //   const hours = this.pad(date.getHours());
+  //   const minutes = this.pad(date.getMinutes());
+  //   return `${year}-${month}-${day}T${hours}:${minutes}`;
+  // }
+
   formatDateForInput(dateString: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = this.pad(date.getMonth() + 1);
     const day = this.pad(date.getDate());
-    const hours = this.pad(date.getHours());
-    const minutes = this.pad(date.getMinutes());
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
+    return `${year}-${month}-${day}`;
   }
+
 
   pad(num: number): string {
     return num < 10 ? '0' + num : num.toString();
@@ -693,37 +705,37 @@ export class PatrolTrackingComponent implements OnInit {
   selectedDates: Date[] = [];
   scheduledDates: any[] = [];
 
-formatDate(d: Date): string {
-  const year = d.getFullYear();
-  const month = ('0' + (d.getMonth() + 1)).slice(-2);
-  const day = ('0' + d.getDate()).slice(-2);
-  return `${year}-${month}-${day}`;
-}
-// Expand selected dates to include selected months
-expandDatesToMonths(dates: Date[], months: string[]): string[] {
-  const expandedDates: string[] = [];
+  formatDate(d: Date): string {
+    const year = d.getFullYear();
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+  // Expand selected dates to include selected months
+  expandDatesToMonths(dates: Date[], months: string[]): string[] {
+    const expandedDates: string[] = [];
 
-  dates.forEach(date => {
-    // Add the original date
-    expandedDates.push(this.formatDate(date));
+    dates.forEach(date => {
+      // Add the original date
+      expandedDates.push(this.formatDate(date));
 
-    // Add dates in selected months
-    months.forEach(month => {
-      const [monthName, year] = month.split(' '); // e.g., "Oct 2025"
-      const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth(); // 0-11
+      // Add dates in selected months
+      months.forEach(month => {
+        const [monthName, year] = month.split(' '); // e.g., "Oct 2025"
+        const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth(); // 0-11
 
-      const newDate = new Date(date);
-      newDate.setMonth(monthIndex);
+        const newDate = new Date(date);
+        newDate.setMonth(monthIndex);
 
-      const formatted = this.formatDate(newDate);
-      if (!expandedDates.includes(formatted)) {
-        expandedDates.push(formatted);
-      }
+        const formatted = this.formatDate(newDate);
+        if (!expandedDates.includes(formatted)) {
+          expandedDates.push(formatted);
+        }
+      });
     });
-  });
 
-  return expandedDates;
-}
+    return expandedDates;
+  }
 
   createChecklistBulk() {
 
@@ -734,8 +746,8 @@ expandDatesToMonths(dates: Date[], months: string[]): string[] {
       title: this.title,
       description: this.description,
       months: this.selectedMonths,
-    //  scheduledDates: this.selectedDates.map(d => new Date(d).toISOString().split('T')[0] ),// convert to YYYY-MM-DD ),
-     scheduledDates:expandedDates, 
+      //  scheduledDates: this.selectedDates.map(d => new Date(d).toISOString().split('T')[0] ),// convert to YYYY-MM-DD ),
+      scheduledDates: expandedDates,
       createdBy: this.createdBy
     };
 
@@ -747,7 +759,8 @@ expandDatesToMonths(dates: Date[], months: string[]): string[] {
         this.refreshBulkChecklist(this.workflowId);
       },
       (err: any) => {
-        if (err.status === 500 && err.error && err.error.message) {
+        if ((err.status === 400 || err.status === 500) && err.error && err.error.message) {
+          // ✅ Show API-provided message for 400 & 500 errors
           this.alertService.showAlert(err.error.message, "error");
         } else {
           this.alertService.showAlert("Bulk checklist creation failed.", "error");
@@ -835,7 +848,7 @@ expandDatesToMonths(dates: Date[], months: string[]): string[] {
     calendar.updateTodaysDate();
   }
 
- 
+
 
 
   monthA: string[] = [];
@@ -894,46 +907,46 @@ expandDatesToMonths(dates: Date[], months: string[]): string[] {
   //   this.selectedMonths = []; // reset when new months generated
   // }
 
-normalizeDate(d: Date): Date {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate()); // strip time
-}
-
-selectDate(event: any) {
-  const date: Date = event.value;
-  if (!date) return;
-
-  if (!this.workflowStartDate || !this.workflowEndDate) {
-    this.alertService.showAlert("Please select workflow start and end date first", "error");
-    return;
+  normalizeDate(d: Date): Date {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()); // strip time
   }
 
-  // ✅ Normalize all dates
-  const selected = this.normalizeDate(date);
-  const start = this.normalizeDate(this.workflowStartDate);
-  const end = this.normalizeDate(this.workflowEndDate);
+  selectDate(event: any) {
+    const date: Date = event.value;
+    if (!date) return;
 
-  // 🔒 Validate
-  if (selected < start || selected > end) {
-    const startStr = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    this.alertService.showAlert(`Only date range ${startStr} to ${endStr} is allowed`, "error");
-    return;
-  }
+    if (!this.workflowStartDate || !this.workflowEndDate) {
+      this.alertService.showAlert("Please select workflow start and end date first", "error");
+      return;
+    }
 
-  // ✅ Toggle selection (add/remove)
-  const exists = this.selectedDates.some(d => d.getTime() === selected.getTime());
-  if (!exists) {
-    this.selectedDates.push(selected);
-  } else {
-    this.selectedDates = this.selectedDates.filter(d => d.getTime() !== selected.getTime());
-  }
+    // ✅ Normalize all dates
+    const selected = this.normalizeDate(date);
+    const start = this.normalizeDate(this.workflowStartDate);
+    const end = this.normalizeDate(this.workflowEndDate);
 
-  // Generate next 6 months only on first valid selection
-  if (this.selectedDates.length === 1) {
-    this.monthA = this.getNextSixMonths(selected);
-    this.selectedMonths = [];
+    // 🔒 Validate
+    if (selected < start || selected > end) {
+      const startStr = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      this.alertService.showAlert(`Only date range ${startStr} to ${endStr} is allowed`, "error");
+      return;
+    }
+
+    // ✅ Toggle selection (add/remove)
+    const exists = this.selectedDates.some(d => d.getTime() === selected.getTime());
+    if (!exists) {
+      this.selectedDates.push(selected);
+    } else {
+      this.selectedDates = this.selectedDates.filter(d => d.getTime() !== selected.getTime());
+    }
+
+    // Generate next 6 months only on first valid selection
+    if (this.selectedDates.length === 1) {
+      this.monthA = this.getNextSixMonths(selected);
+      this.selectedMonths = [];
+    }
   }
-}
 
 
 
@@ -953,9 +966,9 @@ selectDate(event: any) {
 
 
 
-removeDate(index: number) {
-  this.selectedDates.splice(index, 1);
-}
+  removeDate(index: number) {
+    this.selectedDates.splice(index, 1);
+  }
 
 
   toggleMonthDropdown(event: Event) {

@@ -562,12 +562,12 @@
 
       <div class="form-group">
         <label>Assign Start:</label>
-        <input type="date" [(ngModel)]="assignedStart">
+        <input type="date" [(ngModel)]="assignedStart" name="assignedStart" [min]="currentDate">
       </div>
 
       <div class="form-group">
         <label>Assign End:</label>
-        <input type="date" [(ngModel)]="assignedEnd">
+        <input type="date" [(ngModel)]="assignedEnd" name="assignedEnd" [min]="currentDate">
       </div>
 
       <!-- <div class="form-group">
@@ -617,12 +617,12 @@
 
       <div class="form-group">
         <label>Assign Start:</label>
-        <input type="datetime-local" [(ngModel)]="assignedStart" [max]="currentDate" />
+        <input type="date" [(ngModel)]="assignedStart" name="assignedStart" [min]="currentDate" />
       </div>
 
       <div class="form-group">
         <label>Assign End:</label>
-        <input type="datetime-local" [(ngModel)]="assignedEnd" />
+        <input type="date" [(ngModel)]="assignedEnd" name="assignedEnd" [min]="currentDate" />
       </div>
 
       <div class="status-container">
@@ -772,9 +772,10 @@
         </div>
       </div> -->
 
-      <div class="form-group">
+      <div class="form-group1">
+         <label>Choose dates</label>
         <mat-form-field appearance="outline">
-          <mat-label>Choose dates</mat-label>
+        
           <input matInput [matDatepicker]="picker" (dateChange)="selectDate($event)" >
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
