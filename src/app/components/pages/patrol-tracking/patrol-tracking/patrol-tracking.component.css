@@ -867,7 +867,7 @@ transform: translateX(-50%);
 /* chips */
 .selected-dates-container { margin-top: 8px; display:flex; flex-wrap:wrap; gap:6px; }
 .selected-date-chip {
-  background-color: #7e57c2; color: white; padding:4px 10px; border-radius:0px; display:flex; align-items:center; gap:6px;
+  background-color: #7e57c2; color: white; padding:4px 10px; border-radius:0px; display:flex; align-items:center; gap:4px;
 }
 
 .calendar-popup .mat-calendar {
@@ -878,11 +878,11 @@ transform: translateX(-50%);
 
 
 .selected-dates-container {
-  max-height: 40px;   /* adjust height as you like */
+  max-height: 50px;   /* adjust height as you like */
   overflow-y: auto;    /* enable vertical scroll */
   margin-top: 8px;
   padding: 4px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   /* border-radius: 6px; */
   background: #fff;
 }
@@ -910,4 +910,7 @@ transform: translateX(-50%);
   margin-left: 6px;
   cursor: pointer;
   font-weight: bold;
+}
+.white-text {
+  color: white !important;
 }

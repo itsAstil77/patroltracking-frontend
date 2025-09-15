@@ -767,7 +767,7 @@
          <label>Choose dates</label>
         <mat-form-field appearance="outline"  (click)="$event.stopPropagation()">
         
-          <input matInput [matDatepicker]="picker" (dateChange)="selectDate($event)" >
+          <input matInput [matDatepicker]="picker" class="white-text" (dateChange)="selectDate($event)" >
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker ></mat-datepicker>
 
