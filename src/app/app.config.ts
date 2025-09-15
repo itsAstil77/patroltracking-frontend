@@ -11,6 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
+import { CalendarModule } from 'primeng/calendar';
 
 
 export const appConfig: ApplicationConfig = {
@@ -23,7 +24,8 @@ export const appConfig: ApplicationConfig = {
       MatDatepickerModule,
       MatInputModule,
       MatFormFieldModule,
-      MatNativeDateModule
+      MatNativeDateModule,
+      CalendarModule
     ) // ✅ <-- This is what you need
   ]
 };

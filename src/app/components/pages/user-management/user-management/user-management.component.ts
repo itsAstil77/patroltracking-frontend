@@ -50,10 +50,8 @@ export class UserManagementComponent {
 
     // Assign to variables (fallback to empty string if not found)
     this.deletedBy = currentAdminId || '';
-
+  
   }
-
-
 
   isAddUserPopupOpen: boolean = false
 
@@ -66,7 +64,7 @@ export class UserManagementComponent {
     this.user.patrolGuardName = "";
     this.user.mobileNumber = "";
     this.user.email = "";
-    this.user.locationId= [] as string[];
+    this.user.locationId = [] as string[];
     this.user.roleId = '';
     this.user.designation = "";
     this.user.department = "";
@@ -162,7 +160,7 @@ export class UserManagementComponent {
     email: '',
     patrolGuardName: '',
     mobileNumber: '',
-    locationId:[] as string[],
+    locationId: [] as string[],
     roleId: '',
     department: '',
     designation: '',
@@ -210,28 +208,28 @@ export class UserManagementComponent {
   isUpdateDropdownOpen: boolean = false;
 
   toggleUpdateLocationDropdown(): void {
-  this.isUpdateDropdownOpen = !this.isUpdateDropdownOpen;
-}
-
-onUpdateLocationCheckboxChange(event: any): void {
-  const locationId = event.target.value;
-  const isChecked = event.target.checked;
-
-  if (isChecked) {
-    if (!this.updateUserData.locationId.includes(locationId)) {
-      this.updateUserData.locationId.push(locationId);
-    }
-  } else {
-     this.updateUserData.locationId = this.updateUserData.locationId.filter((id: string) => id !== locationId);
+    this.isUpdateDropdownOpen = !this.isUpdateDropdownOpen;
   }
 
-  // ✅ Close dropdown after each selection
-  this.isUpdateDropdownOpen = false;
-}
+  onUpdateLocationCheckboxChange(event: any): void {
+    const locationId = event.target.value;
+    const isChecked = event.target.checked;
 
-removeUpdateLocation(locationId: string): void {
-  this.updateUserData.locationId = this.updateUserData.locationId.filter((id: string) => id !== locationId);
-}
+    if (isChecked) {
+      if (!this.updateUserData.locationId.includes(locationId)) {
+        this.updateUserData.locationId.push(locationId);
+      }
+    } else {
+      this.updateUserData.locationId = this.updateUserData.locationId.filter((id: string) => id !== locationId);
+    }
+
+    // ✅ Close dropdown after each selection
+    this.isUpdateDropdownOpen = false;
+  }
+
+  removeUpdateLocation(locationId: string): void {
+    this.updateUserData.locationId = this.updateUserData.locationId.filter((id: string) => id !== locationId);
+  }
 
 
 

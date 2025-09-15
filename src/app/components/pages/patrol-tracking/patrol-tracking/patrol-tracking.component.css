@@ -80,7 +80,8 @@
   transform: translateX(-50%);
   transition: opacity 0.3s ease-in-out;
 
-  z-index: 9999; /* always on top */
+  z-index: 9999;
+  /* always on top */
   white-space: nowrap;
 }
 
@@ -400,6 +401,7 @@ h2 {
   flex-direction: column;
   text-align: left;
 }
+
 .form-group1 {
   display: flex;
   flex-direction: column;
@@ -415,12 +417,14 @@ h2 {
   margin-bottom: 5px;
   font-family: 'RedHatDisplay-Regular';
 }
+
 .form-group1 label {
   font-weight: lighter;
   font-size: small;
   margin-bottom: 5px;
   font-family: 'RedHatDisplay-Regular';
 }
+
 /* Input Fields */
 .form-group input {
   width: 100%;
@@ -707,7 +711,6 @@ select {
 }
 
 
-
 /* Make calendar popup background white */
 .mat-datepicker-content,
 .mat-calendar {
@@ -738,7 +741,7 @@ select {
   border-radius: 50% !important;
 }
 
-
+/* 
 .mat-calendar-body-cell.selected {
   background-color: red !important;
   border-radius: 50%
@@ -752,53 +755,159 @@ select {
   display: inline-block;
   margin-right: 6px;
   padding: 3px 8px;
-  background: #f3e5f5;         /* light purple badge */
+  background: #f3e5f5;
   border-radius: 12px;
   font-size: 13px;
-}
+} */
 
 /* Put this in styles.css (global) or use ::ng-deep if inside component */
 ::ng-deep .custom-small-datepicker.mat-form-field-appearance-outline .mat-form-field-flex {
-  height: 36px !important;       /* reduce height */
+  height: 36px !important;
+  /* reduce height */
   min-height: 36px !important;
   padding: 0 8px !important;
 }
 
 ::ng-deep .custom-small-datepicker .mat-input-element {
-  height: 20px !important;       /* shrink input text area */
+  height: 20px !important;
+  /* shrink input text area */
   padding: 2px 0 !important;
-  font-size: 13px !important;    /* smaller font */
+  font-size: 13px !important;
+  /* smaller font */
 }
 
 ::ng-deep .custom-small-datepicker .mat-form-field-outline {
-  height: 36px !important;       /* shrink outline */
+  height: 36px !important;
+  /* shrink outline */
   min-height: 36px !important;
 }
 
-.selected-dates-container {
-  /* border: 1px solid #ccc;
+.full-width {
+  width: 100%;
+}
+
+.calendar-popup {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-top: 4px;
   padding: 8px;
-  border-radius: 5px; */
+}
+
+/* Highlight selected dates inside calendar */
+.selected-purple-date .mat-calendar-body-cell-content {
+  background-color: #7e57c2 !important; /* purple */
+  color: white !important;
+  border-radius: 50% !important; /* round circle */
+}
+
+/* Chips styling */
+/* .selected-dates-container {
+  margin-top: 8px;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 5px;
-  background-color: #fff; /* optional */
+  gap: 6px;
 }
 
 .selected-date-chip {
-  background-color: #6a0dad; /* purple */
-  color: #fff;
-  padding: 2px 4px;
-  border-radius: 15px;
+  background-color: #7e57c2; 
+  color: white;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 13px;
   display: flex;
   align-items: center;
-  font-size: 10px;
-}
+  gap: 6px;
+} */
 
 .remove-date {
   cursor: pointer;
-  margin-left: 6px;
   font-weight: bold;
 }
+/* Purple highlight for selected dates */
+::ng-deep .mat-calendar-body-cell.selected-purple-date .mat-calendar-body-cell-content {
+  background: purple !important;
+  color: white !important;
+  border-radius: 50% !important;
+}
 
+.full-width {
+  width: 100%;
+}
+
+.calendar-popup {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-top: 4px;
+  padding: 8px;
+
+left:0;
+transform: translateX(-50%);
+}
+
+
+/* Selected purple circle inside mat-calendar */
+::ng-deep .mat-calendar-body-cell.selected-purple-date .mat-calendar-body-cell-content {
+  background-color: #7e57c2 !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+}
+
+/* Slight hover/focus tweak */
+::ng-deep .mat-calendar-body-cell.selected-purple-date .mat-calendar-body-cell-content:hover,
+::ng-deep .mat-calendar-body-cell.selected-purple-date .mat-calendar-body-cell-content:focus {
+  background-color: #6a1b9a !important;
+}
+
+/* chips */
+.selected-dates-container { margin-top: 8px; display:flex; flex-wrap:wrap; gap:6px; }
+.selected-date-chip {
+  background-color: #7e57c2; color: white; padding:4px 10px; border-radius:0px; display:flex; align-items:center; gap:6px;
+}
+
+.calendar-popup .mat-calendar {
+  width: 250px;
+  height: 300px;
+}
+
+
+
+.selected-dates-container {
+  max-height: 40px;   /* adjust height as you like */
+  overflow-y: auto;    /* enable vertical scroll */
+  margin-top: 8px;
+  padding: 4px;
+  border: 1px solid #ccc;
+  /* border-radius: 6px; */
+  background: #fff;
+}
+
+/* .selected-date-chip {
+  display: inline-block;
+  background-color: #6a1b9a; 
+  color: #fff;
+  padding: 4px 8px;
+  margin: 4px;
+  border-radius: 16px;
+  font-size: 12px;
+  white-space: nowrap;
+} */
+.selected-date-chip {
+    background: #B399D4;
+    padding: 2px;
+    font-size: 10px;
+    display: inline-flex;
+    align-items: center;
+    color: #000000;
+
+}
+.remove-date {
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}

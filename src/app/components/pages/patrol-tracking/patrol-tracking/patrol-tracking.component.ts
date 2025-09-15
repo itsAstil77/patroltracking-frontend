@@ -1,16 +1,17 @@
-import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { WorkflowService } from '../../../services/workflow/workflow.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertService } from '../../../services/alert/alert.service';
 import { RouterModule } from '@angular/router';
-import { MatDatepicker, MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { CalendarModule } from 'primeng/calendar';
 
 
 @Component({
@@ -19,11 +20,10 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    MatDatepickerToggle,
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
-    MatDatepickerModule,
+    CalendarModule
 
   ],
   templateUrl: './patrol-tracking.component.html',
@@ -31,6 +31,74 @@ import { MatButtonModule } from '@angular/material/button';
   encapsulation: ViewEncapsulation.None
 })
 export class PatrolTrackingComponent implements OnInit {
+
+  // @ViewChild('calendarWrapper') calendarWrapper!: ElementRef;
+
+  // calendarOpen = false;
+
+  // lastSelectedDate: Date | null = null;
+
+  // /** Open/close calendar */
+  // toggleCalendar() {
+  //   this.calendarOpen = !this.calendarOpen;
+  // }
+
+  // /** Handle date selection */
+  // onDateSelected(date: Date | null) {
+  //   if (!date) return;
+
+  //   const exists = this.selectedDates.some(
+  //     d => d.toDateString() === date.toDateString()
+  //   );
+
+  //   if (exists) {
+  //     // Unselect → remove
+  //     this.selectedDates = this.selectedDates.filter(
+  //       d => d.toDateString() !== date.toDateString()
+  //     );
+  //   } else {
+  //     // Select → add
+  //     this.selectedDates.push(date);
+  //   }
+
+  //   // refresh change detection + last clicked date
+  //   this.selectedDates = [...this.selectedDates];
+  //   this.lastSelectedDate = date;
+  // }
+
+  // /** Add CSS class for selected dates */
+  // dateClass = (date: Date) => {
+  //   const isSelected = this.selectedDates.some(
+  //     d => d.toDateString() === date.toDateString()
+  //   );
+  //   return isSelected ? 'selected-purple-date' : '';
+  // };
+
+  // /** Display dates in input */
+  // get selectedDatesDisplay(): string {
+  //   return this.selectedDates
+  //     .map(d =>
+  //       new Intl.DateTimeFormat('en-US', {
+  //         month: 'short',
+  //         day: 'numeric',
+  //         year: '2-digit'
+  //       }).format(d)
+  //     )
+  //     .join(', ');
+  // }
+
+  // /** Close when clicking outside */
+  // @HostListener('document:click', ['$event'])
+  // clickOutside(event: Event) {
+  //   const target = event.target as HTMLElement;
+  //   if (
+  //     this.calendarOpen &&
+  //     this.calendarWrapper &&
+  //     !this.calendarWrapper.nativeElement.contains(target)
+  //   ) {
+  //     this.calendarOpen = false;
+  //   }
+  // }
 
   showPopupAssign = false;
 
@@ -44,7 +112,21 @@ export class PatrolTrackingComponent implements OnInit {
     this.assignedBy = currentAdminId || '';
     this.createdBy = currentAdminId || '';
     this.modifiedBy = currentAdminId || '';
+
+ const savedTab = localStorage.getItem('activeTab');
+    if (savedTab) {
+      this.selectedRole = savedTab;   // ✅ restore saved tab
+    }
   }
+
+
+
+
+ selectTab(tab: string) {
+    this.selectedRole = tab;
+    localStorage.setItem('activeTab', tab); // ✅ persist tab
+  }
+  
   assignTaskOpen() {
     this.loadPatrolUsers();
     this.showPopupAssign = true;
@@ -104,7 +186,7 @@ export class PatrolTrackingComponent implements OnInit {
   checklistDataSchedule: { [workflowId: string]: any[] } = {};
 
 
-  constructor(private workflowService: WorkflowService, private alertService: AlertService) {
+  constructor(private workflowService: WorkflowService, private alertService: AlertService, private cdRef: ChangeDetectorRef) {
     const today = new Date();
     this.currentDate = today.toISOString().split('T')[0];
   }
@@ -712,30 +794,61 @@ export class PatrolTrackingComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
   // Expand selected dates to include selected months
+  // expandDatesToMonths(dates: Date[], months: string[]): string[] {
+  //   const expandedDates: string[] = [];
+
+  //   dates.forEach(date => {
+  //     // Add the original date
+  //     expandedDates.push(this.formatDate(date));
+
+  //     // Add dates in selected months
+  //     months.forEach(month => {
+  //       const [monthName, year] = month.split(' '); // e.g., "Oct 2025"
+  //       const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth(); // 0-11
+
+  //       const newDate = new Date(date);
+  //       newDate.setMonth(monthIndex);
+
+  //       const formatted = this.formatDate(newDate);
+  //       if (!expandedDates.includes(formatted)) {
+  //         expandedDates.push(formatted);
+  //       }
+  //     });
+  //   });
+
+  //   return expandedDates;
+  // }
+
+
   expandDatesToMonths(dates: Date[], months: string[]): string[] {
-    const expandedDates: string[] = [];
+  const expandedDates: string[] = [];
 
-    dates.forEach(date => {
-      // Add the original date
-      expandedDates.push(this.formatDate(date));
+  dates.forEach(date => {
+    // Always include the original selected date
+    expandedDates.push(this.formatDate(date));
 
-      // Add dates in selected months
-      months.forEach(month => {
-        const [monthName, year] = month.split(' '); // e.g., "Oct 2025"
-        const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth(); // 0-11
+    months.forEach(month => {
+      const [monthName, year] = month.split(' '); // e.g., "Feb 2026"
+      const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth();
+      const day = date.getDate();
 
-        const newDate = new Date(date);
-        newDate.setMonth(monthIndex);
+      // ✅ Find last valid day of this month
+      const lastDayOfMonth = new Date(+year, monthIndex + 1, 0).getDate();
 
+      if (day <= lastDayOfMonth) {
+        // Only create if valid in this month
+        const newDate = new Date(+year, monthIndex, day);
         const formatted = this.formatDate(newDate);
+
         if (!expandedDates.includes(formatted)) {
           expandedDates.push(formatted);
         }
-      });
+      }
     });
+  });
 
-    return expandedDates;
-  }
+  return expandedDates;
+}
 
   createChecklistBulk() {
 
@@ -890,23 +1003,6 @@ export class PatrolTrackingComponent implements OnInit {
   selectedMonths: string[] = [];     // selected months
   monthDropdownOpen = false;         // toggle state
 
-  // selectDate(event: any) {
-  //   const date: Date = event.value;
-  //   if (!date) return;
-
-  //   if (date < this.workflowStartDate || date > this.workflowEndDate) {
-  //     return;
-  //   }
-
-  //   if (!this.selectedDates.some(d => d.getTime() === date.getTime())) {
-  //     this.selectedDates.push(date);
-  //   }
-
-  //   // 🔹 Generate next 6 months for dropdown
-  //   this.monthA = this.getNextSixMonths(date);
-  //   this.selectedMonths = []; // reset when new months generated
-  // }
-
   normalizeDate(d: Date): Date {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate()); // strip time
   }
@@ -950,7 +1046,6 @@ export class PatrolTrackingComponent implements OnInit {
 
 
 
-
   getNextSixMonths(startDate: Date): string[] {
     const months: string[] = [];
     const options: Intl.DateTimeFormatOptions = { month: 'short', year: 'numeric' };
@@ -964,6 +1059,9 @@ export class PatrolTrackingComponent implements OnInit {
   }
 
 
+  onCalendarBlur() {
+    // Triggered when clicking outside the calendar
+  }
 
 
   removeDate(index: number) {
@@ -1002,6 +1100,7 @@ export class PatrolTrackingComponent implements OnInit {
   isAllMonthsSelected(): boolean {
     return this.monthA.length > 0 && this.selectedMonths.length === this.monthA.length; // ✅ FIX
   }
+
 
 
 

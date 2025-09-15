@@ -74,10 +74,10 @@
 <!-- <div class="user-management-container"> -->
 
 <div class="user-tabs">
-  <div class="tab" [ngClass]="{ active: selectedRole === 'Assignment' }" (click)="selectedRole = 'Assignment'">
+  <div class="tab" [ngClass]="{ active: selectedRole === 'Assignment' }" (click)="selectTab('Assignment')">
     Assignment
   </div>
-  <div class="tab" [ngClass]="{ active: selectedRole === 'schedule' }" (click)="selectedRole = 'schedule'">
+  <div class="tab" [ngClass]="{ active: selectedRole === 'schedule' }"(click)="selectTab('schedule')">
     schedule
   </div>
 </div>
@@ -335,6 +335,7 @@
 
                   <th>Start</th>
                   <th>End</th>
+                  <th>ScheduledDate</th>
                   <th>ExpiryDate</th>
                   <th>Status</th>
                   <th>Active</th>
@@ -352,6 +353,7 @@
                   <td>{{ checklist.scanStartDate ? (checklist.scanStartDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
                   </td>
                   <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-'}}</td>
+                  <td>{{checklist.scheduledDate ? (checklist.scheduledDate | date: 'dd-MM-yyyy') : '-'}}</td>
                   <td>{{ checklist.expiryDate ? (checklist.expiryDate | date: 'dd-MM-yyyy') : '-' }}</td>
                   <td>{{ checklist.status }}</td>
                   <td>
@@ -760,25 +762,14 @@
         <input type="text" [(ngModel)]="description">
       </div>
 
-      <!-- <div class="form-group">
-        <mat-form-field appearance="fill">
-          <mat-label>Choose dates</mat-label>
-          <input matInput [matDatepicker]="picker" (dateChange)="selectDate($event)">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <div>
-          <span *ngFor="let date of selectedDates;let i = index">{{ date | date }}</span>
-        </div>
-      </div> -->
 
       <div class="form-group1">
          <label>Choose dates</label>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline"  (click)="$event.stopPropagation()">
         
           <input matInput [matDatepicker]="picker" (dateChange)="selectDate($event)" >
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #picker ></mat-datepicker>
 
         <div class="selected-dates-container">
           <span class="selected-date-chip" *ngFor="let date of selectedDates; let i = index">
@@ -788,6 +779,42 @@
         </div>
         </mat-form-field>
       </div>
+
+      <!-- <div class="form-group1" #calendarWrapper>
+        <label>Choose dates</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput [value]="selectedDatesDisplay" readonly (click)="toggleCalendar()" />
+          <button mat-icon-button matSuffix (click)="toggleCalendar()" type="button">
+         
+          </button>
+
+
+        </mat-form-field>
+
+        <div class="calendar-popup" *ngIf="calendarOpen">
+          <mat-calendar [selected]="lastSelectedDate" (selectedChange)="onDateSelected($event)"
+            [dateClass]="dateClass"></mat-calendar>
+
+        </div>
+
+
+        <div class="selected-dates-container">
+          <span class="selected-date-chip" *ngFor="let date of selectedDates; let i = index">
+            {{ date | date: 'MMM d, yy' }}
+            <span class="remove-date" (click)="removeDate(i)">×</span>
+          </span>
+        </div>
+      </div> -->
+
+
+
+
+
+
+
+
+
 
 
       <div class="form-group">
