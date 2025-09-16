@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WorkflowService } from '../../../services/workflow/workflow.service';
 import { AlertService } from '../../../services/alert/alert.service';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,11 @@ import { ReportService } from '../../../services/report/report.service';
   templateUrl: './report.component.html',
   styleUrl: './report.component.css'
 })
-export class ReportComponent {
+export class ReportComponent implements OnInit {
+
+  ngOnInit(): void {
+    this. loadPatrolUsers() ;
+  }
 
   constructor(private workflowService: WorkflowService, private alertService: AlertService, private reportService: ReportService) {
     const today = new Date();
@@ -46,9 +50,6 @@ export class ReportComponent {
   }
 
 
-
-
-
   loadPatrolUsers() {
     this.workflowService.getPatrolUsers().subscribe({
       next: (response) => {
@@ -72,64 +73,8 @@ export class ReportComponent {
   }
 
 
-  // applyReport(event: Event) {
-  //   event.preventDefault();
-
-  //   if (!this.assignedTo) {
-  //     this.alertService.showAlert('Please select a Patrol User.');
-  //     return;
-  //   }
-
-  //   this.showTable = false; // Hide table initially
-  //   this.showTableMedia = false;
 
 
-  //    const page = this.currentPage;
-  //    const limit = this.itemsPerPage;
-
-
-  //   const observable = this.startDate && this.endDate
-  //     ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type,page, limit)
-  //     : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate,page, limit);
-
-  //   observable.subscribe({
-  //     next: (res) => {
-  //       if (this.type === 'media') {
-
-  //         if (res?.media?.length > 0) {  // ✅ check res.media directly
-  //           this.reportData = res; 
-  //           this.totalItems = res.pagination?.totalMedia || res.media?.length || 0;
-  //           this.alertService.showAlert('Media Report generated successfully!')
-
-  //           this.showTableMedia = true;
-  //         } else {
-  //           this.alertService.showAlert('No media report data found.');
-  //         }
-  //       } else {
-  //         if (res?.completedWorkflows?.length > 0) {
-  //           this.reportData = res;
-  //            this.totalItems = res.pagination?.totalWorkflows || res.completedWorkflows.length || 0;
-  //           this.alertService.showAlert('Report generated successfully!')
-  //           this.showTable = true; // show regular table
-  //         } else {
-  //           this.alertService.showAlert('No regular report data found.');
-  //         }
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching report:', err);
-
-  //       if (err.status === 404) {
-  //         const message = err.error?.message || 'No data found.';
-
-  //         // Use backend's specific 404 messages
-  //         this.alertService.showAlert(message, "error");
-  //       } else {
-  //         this.alertService.showAlert('Error fetching report.');
-  //       }
-  //     }
-  //   });
-  // }
 
 
   applyReport(event: Event) {
@@ -182,58 +127,6 @@ export class ReportComponent {
   });
 }
 
-
-
-  // openSignaturePopup(signatureUrl: string) {
-  //   this.openMediaPopup(signatureUrl, 'image');
-  // }
-
-  // applyReport(event: Event) {
-  //   event.preventDefault();
-
-  //   if (!this.assignedTo) {
-  //     this.alertService.showAlert('Please select a Patrol User.');
-  //     return;
-  //   }
-
-  //   // If both dates are provided, use the filtered report API
-  //   if (this.startDate && this.endDate) {
-  //     this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate,this.type).subscribe({
-  //       next: (res) => {
-  //         if (res && res.success !== false) {
-  //           this.reportData = res;
-  //           this.showTable = true;
-  //         } else {
-  //           this.alertService.showAlert('No report data found for the selected date range.');
-  //           this.showTable = false;
-  //         }
-  //       },
-  //       error: (err) => {
-  //         console.error(err);
-  //         this.alertService.showAlert('Error fetching filtered report.');
-  //         this.showTable = false;
-  //       }
-  //     });
-  //   } else {
-  //     // Fallback to basic patrolId-based report
-  //     this.reportService.getReportByPatrolId(this.assignedTo,this.type).subscribe({
-  //       next: (res) => {
-  //         if (res && res.success !== false) {
-  //           this.reportData = res;
-  //           this.showTable = true;
-  //         } else {
-  //           this.alertService.showAlert('No report data found.');
-  //           this.showTable = false;
-  //         }
-  //       },
-  //       error: (err) => {
-  //         console.error(err);
-  //         this.alertService.showAlert('Error fetching report.');
-  //         this.showTable = false;
-  //       }
-  //     });
-  //   }
-  // }
 
 
   reportData: any = { completedWorkflows: [] };
@@ -394,6 +287,10 @@ nextPage() {
     this.applyReport(new Event('submit'));
   }
 }
+
+
+
+
 
 }
 

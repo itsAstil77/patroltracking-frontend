@@ -202,6 +202,7 @@ export class PatrolTrackingComponent implements OnInit {
           // this.totalItems = res.pagination?.totalRecords ?? 0;
           this.allWorkflows = res.workflows || [];
           this.totalItems = res.pagination?.totalRecords ?? 0;
+          
           this.applyWorkflowSearch(); // show filtered list
         }
       },
@@ -224,27 +225,6 @@ export class PatrolTrackingComponent implements OnInit {
     );
   }
 
-
-
-
-
-
-  // toggleChecklist(workflowId: string): void {
-  //   this.expandedRows[workflowId] = !this.expandedRows[workflowId];
-
-  //   if (this.expandedRows[workflowId] && !this.checklistData[workflowId]) {
-  //     this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
-  //       if (res.success) {
-  //         // ✅ Add a flag for red marker icon
-  //         this.checklistData[workflowId] = res.checklists.map((checklist: any) => ({
-  //           ...checklist,
-  //           hasLocation: !!checklist.geoCoordinates
-  //         }));
-
-  //       }
-  //     });
-  //   }
-  // }
 
   toggleChecklist(workflowId: string): void {
     this.expandedRowsAssignment[workflowId] = !this.expandedRowsAssignment[workflowId];

@@ -1,0 +1,30 @@
+/* .calendar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+p-calendar {
+  position: absolute;
+  z-index: 1000;
+}
+
+.selected-date .ui-state-default {
+  background-color: purple !important;
+  color: white !important;
+  border-radius: 50% !important;
+}
+.selected-date .ui-state-default {
+  background-color: purple !important;
+  color: white !important;
+  border-radius: 50% !important;
+}
+
+.calendar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+p-calendar {
+  position: absolute;
+  z-index: 1000;
+} */

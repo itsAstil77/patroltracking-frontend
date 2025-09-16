@@ -19,19 +19,9 @@
   <div class="roles-edit-header">Patrol Report</div>
   <form class="roles-edit-form">
 
-
-    <!-- <div class="form-group">
-      <label>Patrol:</label>
-      <select (click)="loadPatrolUsers()" [(ngModel)]="assignedTo" name="assignedTo">
-        <option *ngFor="let user of patrolUsers" [value]="user.patrolId">
-          {{ user.patrolId }} - {{ user.patrolGuardName }}
-        </option>
-      </select>
-    </div> -->
-
     <div class="form-group">
       <label>Patrol:</label>
-      <select (mousedown)="loadPatrolUsers()" [(ngModel)]="assignedTo" name="assignedTo">
+      <select [(ngModel)]="assignedTo" name="assignedTo">
         <option *ngFor="let user of patrolUsers" [value]="user.userId">
           {{ user.userId }} - {{ user.patrolGuardName }}
         </option>
@@ -57,9 +47,10 @@
       <input type="date" id="endDate" [(ngModel)]="endDate" name="endDate" [max]="currentDate" />
     </div>
     <div class="form-buttons">
-  
-      <button class="cancel-btn" type="submit" (click)="clearReport()">Clear</button>
-      <button class="create-btn" type="submit" (click)="applyReport($event)">View Report</button>
+
+      <button class="cancel-btn" type="button" (click)="clearReport()">Clear</button>
+      <button class="create-btn" type="button" (click)="applyReport($event)">View Report</button>
+    
     </div>
   </form>
 </div>
@@ -118,7 +109,7 @@
 
 
 
-      <!-- Checklist Table -->
+
       <tr *ngIf="workflow.expanded">
         <td colspan="7">
           <table class="nested-table">
@@ -132,8 +123,6 @@
                 <th>End</th>
                 <th>ScheduledDate</th>
                 <th>ExpiryDate</th>
-                <!-- <th>Latitude</th>
-                <th>Longitude</th> -->
                 <th>Status</th>
 
               </tr>
@@ -148,15 +137,13 @@
                   <td>{{ checklist.scanStartDate ? (checklist.scanStartDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
                   </td>
                   <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
-                   <td>{{ checklist.scheduledDate ? (checklist.scheduledDate | date: 'dd-MM-yyyy') : '-' }}</td>
-                    <td>{{ checklist.expiryDate ? (checklist.expiryDate | date: 'dd-MM-yyyy') : '-' }}</td>
-                  <!-- <td>{{ checklist.geoCoordinates.latitude }}</td>
-                  <td>{{ checklist.geoCoordinates.longitude }}</td> -->
+                  <td>{{ checklist.scheduledDate ? (checklist.scheduledDate | date: 'dd-MM-yyyy') : '-' }}</td>
+                  <td>{{ checklist.expiryDate ? (checklist.expiryDate | date: 'dd-MM-yyyy') : '-' }}</td>
                   <td>{{ checklist.status }}</td>
 
                 </tr>
 
-                <!-- Media Table -->
+              
                 <tr *ngIf="checklist.expanded">
                   <td colspan="8">
                     <table class="nested-table">
@@ -181,16 +168,21 @@
                             <td>{{ media.mediaType }}</td>
                             <td>{{media.createdBy}}</td>
                             <td>{{ media.createdDate ? (media.createdDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
-                            <!-- <td><a [href]="media.mediaUrl" target="_blank">View</a></td> -->
                             <td>
                               <a href="#"
                                 (click)="openMediaPopup(media.mediaUrl, media.mediaType); $event.preventDefault()">View</a>
                             </td>
-
-
+                            <!-- <td>
+                              <ng-container *ngFor="let media of checklist.media; let i = index">
+                                <a href="#"
+                                  (click)="openMediaPopup(media.mediaUrl, media.mediaType); $event.preventDefault()">
+                                  View{{ i + 1 }}
+                                </a><span *ngIf="i < checklist.media.length - 1">, </span>
+                              </ng-container>
+                            </td> -->
                           </tr>
 
-                          <!-- Signature Table -->
+
                           <tr *ngIf="media.expanded">
                             <td colspan="6">
                               <table class="nested-table">
@@ -234,23 +226,26 @@
       </tr>
     </ng-container>
     <tr class="pagination-row" *ngIf="showTable">
-  <td colspan="7">
-    <div class="pagination-container">
-      <label>Items per page:
-        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-        </select>
-      </label>
+      <td colspan="7">
+        <div class="pagination-container">
+          <label>Items per page:
+            <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+              <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+            </select>
+          </label>
 
-      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+          <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
 
-      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
-      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
-    </div>
-  </td>
-</tr>
+          <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+          <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+        </div>
+      </td>
+    </tr>
   </tbody>
 </table>
+
+
+
 
 
 
@@ -313,22 +308,22 @@
 
 
 
-<tr class="pagination-row">
-  <td colspan="6">
-    <div class="pagination-container">
-      <label>Items per page:
-        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-        </select>
-      </label>
+    <tr class="pagination-row">
+      <td colspan="6">
+        <div class="pagination-container">
+          <label>Items per page:
+            <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+              <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+            </select>
+          </label>
 
-      <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
+          <span class="range-info">{{ startItem }}–{{ endItem }} of {{ totalItems }}</span>
 
-      <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
-      <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
-    </div>
-  </td>
-</tr>
+          <button (click)="prevPage()" [disabled]="currentPage === 1" class="arrow-btn">⏴</button>
+          <button (click)="nextPage()" [disabled]="endItem >= totalItems" class="arrow-btn">⏵</button>
+        </div>
+      </td>
+    </tr>
 
 
 

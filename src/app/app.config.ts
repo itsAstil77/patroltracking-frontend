@@ -2,7 +2,7 @@ import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } fr
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -25,7 +25,8 @@ export const appConfig: ApplicationConfig = {
       MatInputModule,
       MatFormFieldModule,
       MatNativeDateModule,
-      CalendarModule
+      CalendarModule,
+      BrowserModule
     ) // ✅ <-- This is what you need
   ]
 };
