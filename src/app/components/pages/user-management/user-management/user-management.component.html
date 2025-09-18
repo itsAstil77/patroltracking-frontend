@@ -75,6 +75,10 @@
             </ng-template>
           </div>
           <div class="dropdown-options" *ngIf="isDropdownOpen">
+            <label class="checkbox-label">
+              <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="isAllSelected()" />
+              Select All
+            </label>
             <label class="checkbox-label" *ngFor="let location of locationList">
               <input type="checkbox" [value]="location.locationId" (change)="onLocationCheckboxChange($event)"
                 [checked]="user.locationId.includes(location.locationId)" />
@@ -83,6 +87,8 @@
           </div>
         </div>
       </div>
+
+
 
 
 
@@ -181,6 +187,10 @@
           </div>
 
           <div class="dropdown-options" *ngIf="isUpdateDropdownOpen">
+            <label class="checkbox-label">
+              <input type="checkbox" (change)="toggleUpdateUserSelectAll($event)" [checked]="isUpdateUserAllSelected()" />
+              Select All
+            </label>
             <label class="checkbox-label" *ngFor="let location of locationList">
               <input type="checkbox" [value]="location.locationId" (change)="onUpdateLocationCheckboxChange($event)"
                 [checked]="updateUserData.locationId?.includes(location.locationId)" />

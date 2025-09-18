@@ -77,7 +77,7 @@
   <div class="tab" [ngClass]="{ active: selectedRole === 'Assignment' }" (click)="selectTab('Assignment')">
     Assignment
   </div>
-  <div class="tab" [ngClass]="{ active: selectedRole === 'schedule' }"(click)="selectTab('schedule')">
+  <div class="tab" [ngClass]="{ active: selectedRole === 'schedule' }" (click)="selectTab('schedule')">
     schedule
   </div>
 </div>
@@ -762,7 +762,28 @@
         <input type="text" [(ngModel)]="description">
       </div>
 
+      <div class="form-group">
+        <label>Schedule Start:</label>
+        <input type="date" [(ngModel)]="scheduleStart" name="assignedStart" [min]="currentDate">
+      </div>
 
+      <div class="form-group">
+        <label>Schedule End:</label>
+        <input type="date" [(ngModel)]="scheduleEnd" name="assignedEnd" [min]="currentDate">
+      </div>
+
+
+    </div>
+    <div class="modal-buttons">
+
+      <button class="cancel-btn" (click)="hideBulkChecklistPopup()">Cancel</button>
+      <button class="create-btn" (click)="createChecklistBulk()">Create</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- 
       <div class="form-group1">
          <label>Choose dates</label>
         <mat-form-field appearance="outline"  (click)="$event.stopPropagation()">
@@ -778,51 +799,16 @@
           </span>
         </div>
         </mat-form-field>
-      </div>
-
-      <!-- <div class="form-group1" #calendarWrapper>
-        <label>Choose dates</label>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <input matInput [value]="selectedDatesDisplay" readonly (click)="toggleCalendar()" />
-          <button mat-icon-button matSuffix (click)="toggleCalendar()" type="button">
-         
-          </button>
-
-
-        </mat-form-field>
-
-        <div class="calendar-popup" *ngIf="calendarOpen">
-          <mat-calendar [selected]="lastSelectedDate" (selectedChange)="onDateSelected($event)"
-            [dateClass]="dateClass"></mat-calendar>
-
-        </div>
-
-
-        <div class="selected-dates-container">
-          <span class="selected-date-chip" *ngFor="let date of selectedDates; let i = index">
-            {{ date | date: 'MMM d, yy' }}
-            <span class="remove-date" (click)="removeDate(i)">×</span>
-          </span>
-        </div>
       </div> -->
 
 
 
-
-
-
-
-
-
-
-
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="monthDropdown">Select Month:</label>
 
         <div id="monthDropdown" class="dropdown-container" (click)="toggleMonthDropdown($event)">
 
-          <!-- Selected chips -->
+         
           <div class="selected-chips-container" *ngIf="selectedMonths.length > 0">
             <span class="selected-chip" *ngFor="let month of selectedMonths">
               {{ month }}
@@ -830,12 +816,11 @@
             </span>
           </div>
 
-          <!-- Placeholder -->
+
           <div class="dropdown-selected">
             {{ selectedMonths.length === 0 ? 'Select months' : '' }}
           </div>
 
-          <!-- Dropdown options -->
           <div class="dropdown-options" *ngIf="monthDropdownOpen">
             <div class="checkbox-row select-all">
               <label class="checkbox-label">
@@ -852,14 +837,4 @@
             </div>
           </div>
         </div>
-      </div>
-
-
-    </div>
-    <div class="modal-buttons">
-
-      <button class="cancel-btn" (click)="hideBulkChecklistPopup()">Cancel</button>
-      <button class="create-btn" (click)="createChecklistBulk()">Create</button>
-    </div>
-  </div>
-</div>
+      </div> -->

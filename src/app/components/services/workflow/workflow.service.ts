@@ -108,26 +108,47 @@ export class WorkflowService {
   }
 
 
-  // private assignUrl = 'http://172.16.100.68:5000/checklists/assign';
+
   assignChecklist(checklistId: string, requestBody: any): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    // const url = `${this.assignUrl}/${checklistId}`;
     return this.http.put<any>(`${this.baseUrl}checklists/assign/${checklistId}`, requestBody, { headers });
   }
 
 
-createBulkChecklist(payload: any): Observable<any> {
-  return this.http.post(`${this.baseUrl}checklists/bulk`, payload);
-}
+// createBulkChecklist(payload: any): Observable<any> {
+//   return this.http.post(`${this.baseUrl}checklists/bulk`, payload);
+// }
 
                                                                                                                                                             
-  getBulkChecklistByWorkflowId(workflowId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}checklists/is/${workflowId}`);
-  }
+//   getBulkChecklistByWorkflowId(workflowId: string): Observable<any> {
+//     return this.http.get(`${this.baseUrl}checklists/is/${workflowId}`);
+//   }
+
+
+createBulkChecklist(payload: any): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.post(`${this.baseUrl}checklists/bulk`, payload, { headers });
+}
+
+getBulkChecklistByWorkflowId(workflowId: string): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get(`${this.baseUrl}checklists/is/${workflowId}`, { headers });
+}
+
 
 }
 

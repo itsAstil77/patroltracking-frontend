@@ -800,12 +800,17 @@ select {
 
 
 .dropdown-container {
-  border: 1px solid #ccc;
-  padding: 3px;
-  position: relative;
-  cursor: pointer;
-  background: #fff;
+
+
+  display: flex;
+  flex-wrap: wrap;         /* allow wrapping in rows */
+  max-height: 35px;        /* adjust height limit */
+  overflow-y: auto;        /* vertical scroll if too many chips */
+  gap: 6px;                /* spacing between chips */
+  padding: 4px;
+  border: 1px solid #ccc;  /* looks like input */
   border-radius: 4px;
+  background: #fff;
 }
 
 .dropdown-selected {
@@ -859,7 +864,7 @@ select {
   background-color: #B399D4;
   color: black;
   padding: 4px 8px;
-  margin: 2px;
+  /* margin: 2px; */
   border-radius: 16px;
   font-size: 10px;
   font-family: 'RedHatDisplay-Regular';
@@ -909,4 +914,17 @@ select {
 .search-input:focus {
   border-color: #7030a0;
   box-shadow: 0 0 5px rgba(108, 99, 255, 0.3);
+}
+
+
+.selected-chips-container {
+  display: flex;
+  flex-wrap: wrap;         /* allow wrapping in rows */
+  max-height: 55px;        /* adjust height limit */
+  overflow-y: auto;        /* vertical scroll if too many chips */
+  gap: 6px;                /* spacing between chips */
+  padding: 6px;
+  border: 1px solid #ccc;  /* looks like input */
+  border-radius: 4px;
+  background: #fff;
 }

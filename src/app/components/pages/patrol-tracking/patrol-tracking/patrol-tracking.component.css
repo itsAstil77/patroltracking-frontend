@@ -570,10 +570,16 @@ select {
 /* Selected chips styling */
 .selected-chips-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-
+  flex-wrap: wrap;         /* allow wrapping in rows */
+  max-height: 55px;        /* adjust height limit */
+  overflow-y: auto;        /* vertical scroll if too many chips */
+  gap: 6px;                /* spacing between chips */
+  padding: 6px;
+  border: 1px solid #ccc;  /* looks like input */
+  border-radius: 4px;
+  background: #fff;
 }
+
 
 .selected-chip {
   background: #B399D4;
@@ -914,3 +920,6 @@ transform: translateX(-50%);
 .white-text {
   color: white !important;
 }
+
+
+

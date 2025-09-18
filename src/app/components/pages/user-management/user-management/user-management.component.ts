@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { AlertService } from '../../../services/alert/alert.service';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -299,7 +299,7 @@ export class UserManagementComponent {
       this.user.locationId = this.user.locationId.filter(id => id !== locationId);
     }
 
-    this.isDropdownOpen = false;
+    // this.isDropdownOpen = false;
   }
 
 
@@ -631,6 +631,40 @@ export class UserManagementComponent {
   }
 
 
+
+  toggleSelectAll(event: Event) {
+  const isChecked = (event.target as HTMLInputElement).checked;
+  if (isChecked) {
+    // Select all locationIds
+    this.user.locationId = this.locationList.map(loc => loc.locationId);
+  } else {
+    // Clear all selections
+    this.user.locationId = [];
+  }
+}
+
+isAllSelected(): boolean {
+  return this.locationList.length > 0 && this.user.locationId.length === this.locationList.length;
+}
+
+
+isUpdateUserAllSelected(): boolean {
+  return this.locationList?.length > 0 &&
+         this.updateUserData.locationId?.length === this.locationList.length;
+}
+
+// ✅ Select All toggle
+toggleUpdateUserSelectAll(event: Event): void {
+  const checked = (event.target as HTMLInputElement).checked;
+
+  if (checked) {
+    // Select all location IDs
+    this.updateUserData.locationId = this.locationList.map(loc => loc.locationId);
+  } else {
+    // Clear all
+    this.updateUserData.locationId = [];
+  }
+}
 
 
 

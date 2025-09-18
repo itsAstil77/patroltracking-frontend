@@ -185,55 +185,106 @@ export class ConsolidatedReportComponent {
   fullMediaList: any[] = [];
 
 
-  applyReport(event: Event) {
-    event.preventDefault();
+  // applyReport(event: Event) {
+  //   event.preventDefault();
 
-    this.showTable = false;
-    this.showTableMedia = false;
+  //   this.showTable = false;
+  //   this.showTableMedia = false;
 
-    const page = this.currentPage;
-    const limit = this.itemsPerPage;
+  //   const page = this.currentPage;
+  //   const limit = this.itemsPerPage;
 
-    if (!this.startDate || !this.endDate || !this.type) {
-      this.alertService.showAlert('Please fill all required fields.', 'error');
-      return;
-    }
+  //   if (!this.startDate || !this.endDate || !this.type) {
+  //     this.alertService.showAlert('Please fill all required fields.', 'error');
+  //     return;
+  //   }
 
-    this.reportService.getConsolidatedReport(this.type, this.startDate, this.endDate, page, limit).subscribe({
-      next: (res: any) => {
-        if (this.type === 'media') {
-          const patrolMedia = res.mediaByUser || {};
-          const allMedia = Object.values(patrolMedia).flat();
+  //   this.reportService.getConsolidatedReport(this.type, this.startDate, this.endDate, page, limit).subscribe({
+  //     next: (res: any) => {
+  //       if (this.type === 'media') {
+  //         const patrolMedia = res.mediaByUser || {};
+  //         const allMedia = Object.values(patrolMedia).flat();
 
-          if (allMedia.length > 0) {
-            this.fullMediaList = allMedia;
-            this.totalItems = allMedia.length;
-            this.updatePagination();
-            this.alertService.showAlert('Consolidated Report generated successfully!')
-            this.showTableMedia = true;
-          } else {
-            this.alertService.showAlert('No media report data found.', 'error');
-          }
-        } else {
-          if (res.report && res.report.length > 0) {
-            this.reportData = res;
-            this.fullReportList = res.report;
-            this.totalItems = this.fullReportList.length;
-            this.currentPage = 1;              // reset page
-            this.updatePagination();
-            this.alertService.showAlert('Consolidated Report generated successfully!')
-            this.showTable = true;
-          } else {
-            this.alertService.showAlert('No report data found.', 'error');
-          }
-        }
-      },
-      error: (err) => {
-        const errorMsg = err?.error?.message ;
-        this.alertService.showAlert(errorMsg, 'error');
-      }
-    });
+  //         if (allMedia.length > 0) {
+  //           this.fullMediaList = allMedia;
+  //           this.totalItems = allMedia.length;
+  //           this.updatePagination();
+  //           this.alertService.showAlert('Consolidated Report generated successfully!')
+  //           this.showTableMedia = true;
+  //         } else {
+  //           this.alertService.showAlert('No media report data found.', 'error');
+  //         }
+  //       } else {
+  //         if (res.report && res.report.length > 0) {
+  //           this.reportData = res;
+  //           this.fullReportList = res.report;
+  //           this.totalItems = this.fullReportList.length;
+  //           this.currentPage = 1;              // reset page
+  //           this.updatePagination();
+  //           this.alertService.showAlert('Consolidated Report generated successfully!')
+  //           this.showTable = true;
+  //         } else {
+  //           this.alertService.showAlert('No report data found.', 'error');
+  //         }
+  //       }
+  //     },
+  //     error: (err) => {
+  //       const errorMsg = err?.error?.message ;
+  //       this.alertService.showAlert(errorMsg, 'error');
+  //     }
+  //   });
+  // }
+
+
+applyReport(event: Event) {
+  event.preventDefault();
+
+  this.showTable = false;
+  this.showTableMedia = false;
+
+  if (!this.startDate || !this.endDate || !this.type) {
+    this.alertService.showAlert('Please fill all required fields.', 'error');
+    return;
   }
+
+  this.reportService.getConsolidatedReport(this.type, this.startDate, this.endDate, this.currentPage, this.itemsPerPage).subscribe({
+    next: (res: any) => {
+
+      if (this.type === 'media') {
+        const patrolMedia = res.mediaByUser || {};
+        const allMedia = Object.values(patrolMedia).flat();
+
+        if (allMedia.length > 0) {
+          this.fullMediaList = allMedia;
+          this.totalItems = res.pagination.totalMedia; // use API total
+          this.updatePagination();
+          this.alertService.showAlert('Consolidated Media Report generated successfully!');
+          this.showTableMedia = true;
+        } else {
+          this.alertService.showAlert('No media report data found.', 'error');
+        }
+
+      } else { // regular
+        if (res.report && res.report.length > 0) {
+          this.reportData = res;
+          this.paginatedReportList = res.report; // use API page directly
+          this.totalItems = res.pagination.totalWorkflows; // total workflows from API
+          this.alertService.showAlert('Consolidated Regular Report generated successfully!');
+          this.showTable = true;
+        } else {
+          this.alertService.showAlert('No report data found.', 'error');
+        }
+      }
+    },
+    error: (err) => {
+      const errorMsg = err?.error?.message ;
+      this.alertService.showAlert(errorMsg, 'error');
+    }
+  });
+}
+
+
+
 
   fullReportList: any[] = [];
   paginatedReportList: any[] = [];
@@ -241,18 +292,18 @@ export class ConsolidatedReportComponent {
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalItems: number = 0;
-  pageSizeOptions: number[] = [5, 10, 20,50,100]; // customize as needed
+  pageSizeOptions: number[] = [5, 10, 20, 50, 100]; // customize as needed
 
 
 
   get startItem(): number {
-  return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
-}
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
 
   get endItem(): number {
-  const possibleEnd = this.currentPage * this.itemsPerPage;
-  return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
-}
+    const possibleEnd = this.currentPage * this.itemsPerPage;
+    return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
+  }
 
 
   onItemsPerPageChange() {
@@ -260,6 +311,7 @@ export class ConsolidatedReportComponent {
     this.updatePagination();
     this.applyReport(new Event('submit'));
   }
+
 
   prevPage() {
     if (this.currentPage > 1) {
@@ -279,9 +331,9 @@ export class ConsolidatedReportComponent {
   }
 
 
-get totalPages(): number {
-  return Math.ceil(this.totalItems / this.itemsPerPage);
-}
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
 
   updatePagination() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -294,35 +346,14 @@ get totalPages(): number {
     }
   }
 
+  
 
 
 
-// onItemsPerPageChange() {
-//   this.currentPage = 1;
-//   this.applyReport(new Event('submit'));
-// }
 
-// prevPage() {
-//   if (this.currentPage > 1) {
-//     this.currentPage--;
-//     this.applyReport(new Event('submit'));
-//   }
-// }
 
-// nextPage() {
-//   if (this.currentPage < this.totalPages) {
-//     this.currentPage++;
-//     this.applyReport(new Event('submit'));
-//   }
-// }
 
 }
 
 
 
-// "pagination": {
-//         "totalPatrols": 1,
-//         "page": 1,
-//         "limit": 10,
-//         "totalPages": 1
-//     },

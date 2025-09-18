@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertService } from '../../../services/alert/alert.service';
 import { RouterModule } from '@angular/router';
-import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -32,73 +32,7 @@ import { CalendarModule } from 'primeng/calendar';
 })
 export class PatrolTrackingComponent implements OnInit {
 
-  // @ViewChild('calendarWrapper') calendarWrapper!: ElementRef;
 
-  // calendarOpen = false;
-
-  // lastSelectedDate: Date | null = null;
-
-  // /** Open/close calendar */
-  // toggleCalendar() {
-  //   this.calendarOpen = !this.calendarOpen;
-  // }
-
-  // /** Handle date selection */
-  // onDateSelected(date: Date | null) {
-  //   if (!date) return;
-
-  //   const exists = this.selectedDates.some(
-  //     d => d.toDateString() === date.toDateString()
-  //   );
-
-  //   if (exists) {
-  //     // Unselect → remove
-  //     this.selectedDates = this.selectedDates.filter(
-  //       d => d.toDateString() !== date.toDateString()
-  //     );
-  //   } else {
-  //     // Select → add
-  //     this.selectedDates.push(date);
-  //   }
-
-  //   // refresh change detection + last clicked date
-  //   this.selectedDates = [...this.selectedDates];
-  //   this.lastSelectedDate = date;
-  // }
-
-  // /** Add CSS class for selected dates */
-  // dateClass = (date: Date) => {
-  //   const isSelected = this.selectedDates.some(
-  //     d => d.toDateString() === date.toDateString()
-  //   );
-  //   return isSelected ? 'selected-purple-date' : '';
-  // };
-
-  // /** Display dates in input */
-  // get selectedDatesDisplay(): string {
-  //   return this.selectedDates
-  //     .map(d =>
-  //       new Intl.DateTimeFormat('en-US', {
-  //         month: 'short',
-  //         day: 'numeric',
-  //         year: '2-digit'
-  //       }).format(d)
-  //     )
-  //     .join(', ');
-  // }
-
-  // /** Close when clicking outside */
-  // @HostListener('document:click', ['$event'])
-  // clickOutside(event: Event) {
-  //   const target = event.target as HTMLElement;
-  //   if (
-  //     this.calendarOpen &&
-  //     this.calendarWrapper &&
-  //     !this.calendarWrapper.nativeElement.contains(target)
-  //   ) {
-  //     this.calendarOpen = false;
-  //   }
-  // }
 
   showPopupAssign = false;
 
@@ -175,6 +109,7 @@ export class PatrolTrackingComponent implements OnInit {
   workflows: any[] = [];
   expandedRows: { [workflowId: string]: boolean } = {};
   checklistData: { [workflowId: string]: any[] } = {};
+  currentDate: string = '';
 
 
 
@@ -198,11 +133,8 @@ export class PatrolTrackingComponent implements OnInit {
     this.workflowService.getWorkflows(this.currentPage, this.itemsPerPage).subscribe({
       next: (res) => {
         if (res.success) {
-          // this.workflows = res.workflows;
-          // this.totalItems = res.pagination?.totalRecords ?? 0;
           this.allWorkflows = res.workflows || [];
-          this.totalItems = res.pagination?.totalRecords ?? 0;
-          
+          this.totalItems = res.pagination?.totalRecords ?? 0;   
           this.applyWorkflowSearch(); // show filtered list
         }
       },
@@ -289,45 +221,6 @@ export class PatrolTrackingComponent implements OnInit {
   }
 
 
-
-  // createWorkflow() {
-  //   if (!this.workflowTitle.trim() || !this.description.trim()) {
-  //     this.alertService.showAlert('Please enter title and description', 'error');
-  //     return;
-  //   }
-
-  //   const startDateTime = this.assignedStart ? new Date(this.assignedStart).toISOString() : null;
-  //   const endDateTime = this.assignedEnd ? new Date(this.assignedEnd).toISOString() : null;
-
-
-
-  //   const payload = {
-  //     workflowTitle: this.workflowTitle,
-  //     description: this.description,
-  //     createdBy: this.createdBy,
-  //     assignedStart: startDateTime,
-  //     assignedEnd: endDateTime,
-  //     isActive: this.isActive,
-
-
-  //   };
-
-  //   this.workflowService.createWorkflow(payload).subscribe({
-  //     next: (res) => {
-  //       if (res.success) {
-  //         this.closePopup();
-  //         this.alertService.showAlert(res.message);
-  //         this.getWorkflowSummary();
-  //       } else {
-  //         alert('Failed to create workflow');
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //       alert('Error while creating workflow');
-  //     }
-  //   });
-  // }
 
 
   workflowStartDate!: Date;
@@ -478,16 +371,7 @@ export class PatrolTrackingComponent implements OnInit {
     this.showEditPopup = true;
   }
 
-  // formatDateForInput(dateString: string): string {
-  //   if (!dateString) return '';
-  //   const date = new Date(dateString);
-  //   const year = date.getFullYear();
-  //   const month = this.pad(date.getMonth() + 1);
-  //   const day = this.pad(date.getDate());
-  //   const hours = this.pad(date.getHours());
-  //   const minutes = this.pad(date.getMinutes());
-  //   return `${year}-${month}-${day}T${hours}:${minutes}`;
-  // }
+
 
   formatDateForInput(dateString: string): string {
     if (!dateString) return '';
@@ -763,104 +647,124 @@ export class PatrolTrackingComponent implements OnInit {
 
 
 
-  months = '';
-  selectedDates: Date[] = [];
-  scheduledDates: any[] = [];
+//   months = '';
+//   selectedDates: Date[] = [];
+//   scheduledDates: any[] = [];
 
-  formatDate(d: Date): string {
-    const year = d.getFullYear();
-    const month = ('0' + (d.getMonth() + 1)).slice(-2);
-    const day = ('0' + d.getDate()).slice(-2);
-    return `${year}-${month}-${day}`;
-  }
-  // Expand selected dates to include selected months
-  // expandDatesToMonths(dates: Date[], months: string[]): string[] {
-  //   const expandedDates: string[] = [];
+//   formatDate(d: Date): string {
+//     const year = d.getFullYear();
+//     const month = ('0' + (d.getMonth() + 1)).slice(-2);
+//     const day = ('0' + d.getDate()).slice(-2);
+//     return `${year}-${month}-${day}`;
+//   }
+//   expandDatesToMonths(dates: Date[], months: string[]): string[] {
+//   const expandedDates: string[] = [];
 
-  //   dates.forEach(date => {
-  //     // Add the original date
-  //     expandedDates.push(this.formatDate(date));
+//   dates.forEach(date => {
+//     // Always include the original selected date
+//     expandedDates.push(this.formatDate(date));
 
-  //     // Add dates in selected months
-  //     months.forEach(month => {
-  //       const [monthName, year] = month.split(' '); // e.g., "Oct 2025"
-  //       const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth(); // 0-11
+//     months.forEach(month => {
+//       const [monthName, year] = month.split(' '); // e.g., "Feb 2026"
+//       const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth();
+//       const day = date.getDate();
 
-  //       const newDate = new Date(date);
-  //       newDate.setMonth(monthIndex);
+//       // ✅ Find last valid day of this month
+//       const lastDayOfMonth = new Date(+year, monthIndex + 1, 0).getDate();
 
-  //       const formatted = this.formatDate(newDate);
-  //       if (!expandedDates.includes(formatted)) {
-  //         expandedDates.push(formatted);
+//       if (day <= lastDayOfMonth) {
+//         // Only create if valid in this month
+//         const newDate = new Date(+year, monthIndex, day);
+//         const formatted = this.formatDate(newDate);
+
+//         if (!expandedDates.includes(formatted)) {
+//           expandedDates.push(formatted);
+//         }
+//       }
+//     });
+//   });
+
+//   return expandedDates;
+// }
+
+scheduleStart='';
+scheduleEnd='';
+
+  // createChecklistBulk() {
+
+  //   const expandedDates = this.expandDatesToMonths(this.selectedDates, this.selectedMonths);
+
+  //   const payload = {
+  //     workflowId: this.workflowId,
+  //     title: this.title,
+  //     description: this.description,
+  //     months: this.selectedMonths,
+  //     //  scheduledDates: this.selectedDates.map(d => new Date(d).toISOString().split('T')[0] ),// convert to YYYY-MM-DD ),
+  //     scheduledDates: expandedDates,
+  //     createdBy: this.createdBy
+  //   };
+
+  //   this.workflowService.createBulkChecklist(payload).subscribe(
+  //     res => {
+  //       console.log('Bulk Checklist Created:', res);
+  //       this.hideBulkChecklistPopup();
+  //       this.alertService.showAlert(res.message);
+  //       this.refreshBulkChecklist(this.workflowId);
+  //     },
+  //     (err: any) => {
+  //       if ((err.status === 400 || err.status === 500) && err.error && err.error.message) {
+  //         // ✅ Show API-provided message for 400 & 500 errors
+  //         this.alertService.showAlert(err.error.message, "error");
+  //       } else {
+  //         this.alertService.showAlert("Bulk checklist creation failed.", "error");
   //       }
-  //     });
-  //   });
-
-  //   return expandedDates;
+  //     }
+  //   );
   // }
+createChecklistBulk() {
+  const start = new Date(this.scheduleStart);
+  const end = new Date(this.scheduleEnd);
 
-
-  expandDatesToMonths(dates: Date[], months: string[]): string[] {
-  const expandedDates: string[] = [];
-
-  dates.forEach(date => {
-    // Always include the original selected date
-    expandedDates.push(this.formatDate(date));
-
-    months.forEach(month => {
-      const [monthName, year] = month.split(' '); // e.g., "Feb 2026"
-      const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth();
-      const day = date.getDate();
-
-      // ✅ Find last valid day of this month
-      const lastDayOfMonth = new Date(+year, monthIndex + 1, 0).getDate();
-
-      if (day <= lastDayOfMonth) {
-        // Only create if valid in this month
-        const newDate = new Date(+year, monthIndex, day);
-        const formatted = this.formatDate(newDate);
-
-        if (!expandedDates.includes(formatted)) {
-          expandedDates.push(formatted);
-        }
-      }
-    });
-  });
-
-  return expandedDates;
+if (!this.workflowStartDate || !this.workflowEndDate) {
+  this.alertService.showAlert("Workflow date range not found.", "error");
+  return;
 }
 
-  createChecklistBulk() {
+if (start < this.workflowStartDate || end > this.workflowEndDate) {
+  this.alertService.showAlert(
+    `Allowed schedule range is ${this.workflowStartDate.toISOString().split('T')[0]} to ${this.workflowEndDate.toISOString().split('T')[0]}`,
+    "error"
+  );
+  return;
+}
 
-    const expandedDates = this.expandDatesToMonths(this.selectedDates, this.selectedMonths);
+  const payload = {
+    workflowId: this.workflowId,
+    title: this.title,
+    description: this.description,
+    scheduleStart: this.scheduleStart,
+    scheduleEnd: this.scheduleEnd,
+    createdBy: this.createdBy
+  };
 
-    const payload = {
-      workflowId: this.workflowId,
-      title: this.title,
-      description: this.description,
-      months: this.selectedMonths,
-      //  scheduledDates: this.selectedDates.map(d => new Date(d).toISOString().split('T')[0] ),// convert to YYYY-MM-DD ),
-      scheduledDates: expandedDates,
-      createdBy: this.createdBy
-    };
-
-    this.workflowService.createBulkChecklist(payload).subscribe(
-      res => {
-        console.log('Bulk Checklist Created:', res);
-        this.hideBulkChecklistPopup();
-        this.alertService.showAlert(res.message);
-        this.refreshBulkChecklist(this.workflowId);
-      },
-      (err: any) => {
-        if ((err.status === 400 || err.status === 500) && err.error && err.error.message) {
-          // ✅ Show API-provided message for 400 & 500 errors
-          this.alertService.showAlert(err.error.message, "error");
-        } else {
-          this.alertService.showAlert("Bulk checklist creation failed.", "error");
-        }
+  this.workflowService.createBulkChecklist(payload).subscribe({
+    next: (res) => {
+      console.log('Bulk Checklist Created:', res);
+      this.hideBulkChecklistPopup();
+      this.alertService.showAlert(res.message);
+      this.refreshBulkChecklist(this.workflowId);
+    },
+    error: (err: any) => {
+      if ((err.status === 400 || err.status === 500) && err.error && err.error.message) {
+        this.alertService.showAlert(err.error.message, "error");
+      } else {
+        this.alertService.showAlert("Bulk checklist creation failed.", "error");
       }
-    );
-  }
+    }
+  });
+}
+
+
 
 
 
@@ -872,32 +776,42 @@ export class PatrolTrackingComponent implements OnInit {
   hideBulkChecklistPopup() {
 
     this.checklistBulkPopupVisible = false;
-    this.locationCode = '';
+    // this.locationCode = '';
     this.title = '';
     this.remarks = '';
-    this.assignedTo = '';
+    // this.assignedTo = '';
     // Reset date fields
-    this.scheduledDates = [];
-    this.selectedDates = [];
-    this.selectedMonths = [];
-    this.monthA = [];
+    // this.scheduledDates = [];
+    // this.selectedDates = [];
+    // this.selectedMonths = [];
+    // this.monthA = [];
 
   }
 
   showBulkChecklistPopup(workflow: any) {
     this.workflowId = workflow.workflowId;
     this.checklistBulkPopupVisible = true;
-    this.locationCode = '';
+    // this.locationCode = '';
     this.title = '';
     this.remarks = '';
-    this.assignedTo = '';
-    this.months = '';
-    this.scheduledDates = [];
+    // this.assignedTo = '';
+    // this.months = '';
+    this.scheduleStart='', 
+    this.scheduleEnd='', 
+    this.description=''
+    // this.scheduledDates = [];
 
-    if (workflow.assignedStart && workflow.assignedEnd) {
-      this.workflowStartDate = new Date(workflow.assignedStart);
-      this.workflowEndDate = new Date(workflow.assignedEnd);
-    }
+    // if (workflow.assignedStart && workflow.assignedEnd) {
+    //   this.workflowStartDate = new Date(workflow.assignedStart);
+    //   this.workflowEndDate = new Date(workflow.assignedEnd);
+
+
+    // }
+
+
+   
+  this.workflowStartDate = new Date(workflow.assignedStart);
+  this.workflowEndDate = new Date(workflow.assignedEnd);
 
   }
 
@@ -907,45 +821,45 @@ export class PatrolTrackingComponent implements OnInit {
 
 
 
-  daysSelected: string[] = [];
-  event: any;
+//   daysSelected: string[] = [];
+//   event: any;
 
-  isSelected = (date: Date): string => {
-    const formatted =
-      date.getFullYear() +
-      "-" +
-      ("00" + (date.getMonth() + 1)).slice(-2) +
-      "-" +
-      ("00" + date.getDate()).slice(-2);
+//   isSelected = (date: Date): string => {
+//     const formatted =
+//       date.getFullYear() +
+//       "-" +
+//       ("00" + (date.getMonth() + 1)).slice(-2) +
+//       "-" +
+//       ("00" + date.getDate()).slice(-2);
 
-    return this.daysSelected.includes(formatted) ? "selected" : "";
-  };
+//     return this.daysSelected.includes(formatted) ? "selected" : "";
+//   };
 
-  select(event: Date | null, calendar: any) {
-    if (!event) return;  // guard clause for null
+//   select(event: Date | null, calendar: any) {
+//     if (!event) return;  // guard clause for null
 
-    const formatted =
-      event.getFullYear() +
-      "-" +
-      ("00" + (event.getMonth() + 1)).slice(-2) +
-      "-" +
-      ("00" + event.getDate()).slice(-2);
+//     const formatted =
+//       event.getFullYear() +
+//       "-" +
+//       ("00" + (event.getMonth() + 1)).slice(-2) +
+//       "-" +
+//       ("00" + event.getDate()).slice(-2);
 
-    const index = this.daysSelected.indexOf(formatted);
-    if (index === -1) {
-      this.daysSelected.push(formatted);
-    } else {
-      this.daysSelected.splice(index, 1);
-    }
+//     const index = this.daysSelected.indexOf(formatted);
+//     if (index === -1) {
+//       this.daysSelected.push(formatted);
+//     } else {
+//       this.daysSelected.splice(index, 1);
+//     }
 
-    calendar.updateTodaysDate();
-  }
-
-
+//     calendar.updateTodaysDate();
+//   }
 
 
-  monthA: string[] = [];
-  currentDate: string = '';
+
+
+//   monthA: string[] = [];
+ 
 
 
   // Toggle Select All
@@ -980,106 +894,183 @@ export class PatrolTrackingComponent implements OnInit {
   }
 
 
-  selectedMonths: string[] = [];     // selected months
-  monthDropdownOpen = false;         // toggle state
+//   selectedMonths: string[] = [];     // selected months
+//   monthDropdownOpen = false;         // toggle state
 
-  normalizeDate(d: Date): Date {
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate()); // strip time
-  }
+//   normalizeDate(d: Date): Date {
+//     return new Date(d.getFullYear(), d.getMonth(), d.getDate()); // strip time
+//   }
 
-  selectDate(event: any) {
-    const date: Date = event.value;
-    if (!date) return;
+//   selectDate(event: any) {
+//     const date: Date = event.value;
+//     if (!date) return;
 
-    if (!this.workflowStartDate || !this.workflowEndDate) {
-      this.alertService.showAlert("Please select workflow start and end date first", "error");
-      return;
-    }
+//     if (!this.workflowStartDate || !this.workflowEndDate) {
+//       this.alertService.showAlert("Please select workflow start and end date first", "error");
+//       return;
+//     }
 
-    // ✅ Normalize all dates
-    const selected = this.normalizeDate(date);
-    const start = this.normalizeDate(this.workflowStartDate);
-    const end = this.normalizeDate(this.workflowEndDate);
+//     // ✅ Normalize all dates
+//     const selected = this.normalizeDate(date);
+//     const start = this.normalizeDate(this.workflowStartDate);
+//     const end = this.normalizeDate(this.workflowEndDate);
 
-    // 🔒 Validate
-    if (selected < start || selected > end) {
-      const startStr = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      this.alertService.showAlert(`Only date range ${startStr} to ${endStr} is allowed`, "error");
-      return;
-    }
+//     // 🔒 Validate
+//     if (selected < start || selected > end) {
+//       const startStr = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+//       const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+//       this.alertService.showAlert(`Only date range ${startStr} to ${endStr} is allowed`, "error");
+//       return;
+//     }
 
-    // ✅ Toggle selection (add/remove)
-    const exists = this.selectedDates.some(d => d.getTime() === selected.getTime());
-    if (!exists) {
-      this.selectedDates.push(selected);
-    } else {
-      this.selectedDates = this.selectedDates.filter(d => d.getTime() !== selected.getTime());
-    }
+//     // ✅ Toggle selection (add/remove)
+//     const exists = this.selectedDates.some(d => d.getTime() === selected.getTime());
+//     if (!exists) {
+//       this.selectedDates.push(selected);
+//     } else {
+//       this.selectedDates = this.selectedDates.filter(d => d.getTime() !== selected.getTime());
+//     }
 
-    // Generate next 6 months only on first valid selection
-    if (this.selectedDates.length === 1) {
-      this.monthA = this.getNextSixMonths(selected);
-      this.selectedMonths = [];
-    }
-  }
-
-
-
-  getNextSixMonths(startDate: Date): string[] {
-    const months: string[] = [];
-    const options: Intl.DateTimeFormatOptions = { month: 'short', year: 'numeric' };
-
-    for (let i = 1; i < 7; i++) {
-      const d = new Date(startDate);
-      d.setMonth(startDate.getMonth() + i);
-      months.push(d.toLocaleDateString('en-US', options));
-    }
-    return months;
-  }
+//     // Generate next 6 months only on first valid selection
+//     if (this.selectedDates.length === 1) {
+//       this.monthA = this.getNextSixMonths(selected);
+//       this.selectedMonths = [];
+//     }
+//   }
 
 
-  onCalendarBlur() {
-    // Triggered when clicking outside the calendar
-  }
+
+//   getNextSixMonths(startDate: Date): string[] {
+//     const months: string[] = [];
+//     const options: Intl.DateTimeFormatOptions = { month: 'short', year: 'numeric' };
+
+//     for (let i = 1; i < 7; i++) {
+//       const d = new Date(startDate);
+//       d.setMonth(startDate.getMonth() + i);
+//       months.push(d.toLocaleDateString('en-US', options));
+//     }
+//     return months;
+//   }
 
 
-  removeDate(index: number) {
-    this.selectedDates.splice(index, 1);
-  }
+//   onCalendarBlur() {
+//     // Triggered when clicking outside the calendar
+//   }
 
 
-  toggleMonthDropdown(event: Event) {
-    event.stopPropagation();
-    this.monthDropdownOpen = !this.monthDropdownOpen;
-  }
+//   removeDate(index: number) {
+//     this.selectedDates.splice(index, 1);
+//   }
 
-  onMonthToggle(event: any, month: string) {
-    if (event.target.checked) {
-      if (!this.selectedMonths.includes(month)) {
-        this.selectedMonths.push(month);
-      }
-    } else {
-      this.selectedMonths = this.selectedMonths.filter(m => m !== month);
-    }
-  }
 
-  removeSelectedMonth(event: Event, month: string) {
-    event.stopPropagation();
-    this.selectedMonths = this.selectedMonths.filter(m => m !== month);
-  }
+//   toggleMonthDropdown(event: Event) {
+//     event.stopPropagation();
+//     this.monthDropdownOpen = !this.monthDropdownOpen;
+//   }
 
-  toggleSelectAllMonths(event: any) {
-    if (event.target.checked) {
-      this.selectedMonths = [...this.monthA];  // ✅ FIX: use monthA
-    } else {
-      this.selectedMonths = [];
-    }
-  }
 
-  isAllMonthsSelected(): boolean {
-    return this.monthA.length > 0 && this.selectedMonths.length === this.monthA.length; // ✅ FIX
-  }
+//  onMonthToggle(event: any, month: string) {
+//   if (!this.workflowStartDate || !this.workflowEndDate) {
+//     this.alertService.showAlert("Please select workflow start and end date first", "error");
+//     event.target.checked = false;
+//     return;
+//   }
+
+//   // Parse workflow range → convert to [month, year]
+//   const start = new Date(this.workflowStartDate);
+//   const end = new Date(this.workflowEndDate);
+
+//   const startMonth = start.getMonth();
+//   const startYear = start.getFullYear();
+//   const endMonth = end.getMonth();
+//   const endYear = end.getFullYear();
+
+//   // Parse selected month string → convert to [month, year]
+//   const [selMonthStr, selYearStr] = month.split(" "); // e.g. "Oct 2025"
+//   const selDate = new Date(`${selMonthStr} 1, ${selYearStr}`);
+//   const selMonth = selDate.getMonth();
+//   const selYear = selDate.getFullYear();
+
+//   // Check if in range
+//   const inRange =
+//     (selYear > startYear || (selYear === startYear && selMonth >= startMonth)) &&
+//     (selYear < endYear || (selYear === endYear && selMonth <= endMonth));
+
+//   if (!inRange) {
+//     const startStr = start.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+//     const endStr = end.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+//     this.alertService.showAlert(`Only months between ${startStr} and ${endStr} are allowed`, "error");
+//     event.target.checked = false;
+//     return;
+//   }
+
+//   // ✅ Add/remove if valid
+//   if (event.target.checked) {
+//     if (!this.selectedMonths.includes(month)) {
+//       this.selectedMonths.push(month);
+//     }
+//   } else {
+//     this.selectedMonths = this.selectedMonths.filter(m => m !== month);
+//   }
+// }
+
+
+//   removeSelectedMonth(event: Event, month: string) {
+//     event.stopPropagation();
+//     this.selectedMonths = this.selectedMonths.filter(m => m !== month);
+//   }
+
+
+
+// toggleSelectAllMonths(event: any) {
+//   if (!this.workflowStartDate || !this.workflowEndDate) {
+//     this.alertService.showAlert("Please select workflow start and end date first", "error");
+//     event.target.checked = false;
+//     return;
+//   }
+
+//   const start = new Date(this.workflowStartDate);
+//   const end = new Date(this.workflowEndDate);
+
+//   if (event.target.checked) {
+//     // Get only valid months in range
+//     const validMonths = this.monthA.filter(month => {
+//       const [selMonthStr, selYearStr] = month.split(" ");
+//       const selDate = new Date(`${selMonthStr} 1, ${selYearStr}`);
+//       return selDate >= new Date(start.getFullYear(), start.getMonth(), 1) &&
+//              selDate <= new Date(end.getFullYear(), end.getMonth(), 1);
+//     });
+
+//     if (validMonths.length === 0) {
+//       // 🚨 No valid months
+//       this.alertService.showAlert("No valid months available in workflow date range", "error");
+//       this.selectedMonths = [];
+//       event.target.checked = false;
+//       return;
+//     }
+
+//     if (validMonths.length !== this.monthA.length) {
+//       // 🚨 Some months are out of range
+//       const startStr = start.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+//       const endStr = end.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+//       this.alertService.showAlert(`Only months between ${startStr} to ${endStr} are allowed`, "error");
+//       this.selectedMonths = []; // ⬅️ Don’t auto-select anything
+//       event.target.checked = false;
+//       return;
+//     }
+
+//     // ✅ All months valid → allow selection
+//     this.selectedMonths = validMonths;
+//   } else {
+//     this.selectedMonths = [];
+//   }
+// }
+
+
+
+//   isAllMonthsSelected(): boolean {
+//     return this.monthA.length > 0 && this.selectedMonths.length === this.monthA.length; // ✅ FIX
+//   }
 
 
 

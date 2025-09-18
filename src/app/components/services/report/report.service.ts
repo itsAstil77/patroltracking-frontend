@@ -40,4 +40,9 @@ export class ReportService {
     const url = `${this.baseUrl}reports/all?type=${type}&startDateTime=${startDate}&endDateTime=${endDate}&page=${page}&limit=${limit}`;
     return this.http.get<any>(url, { headers: this.getTokenHeaders() });
   }
+
+  getMediaConsolidatedReport(type: string, startDate: string, endDate: string,page: number, limit: number): Observable<any> {
+    const url = `${this.baseUrl}reports/all?type=${type}&startDateTime=${startDate}&endDateTime=${endDate}&page=${page}&limit=${limit}`;
+    return this.http.get<any>(url, { headers: this.getTokenHeaders() });
+}
 }

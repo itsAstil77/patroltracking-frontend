@@ -95,38 +95,42 @@ export class ReportComponent implements OnInit {
     ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type, page, limit)
     : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate, page, limit);
 
-  observable.subscribe({
-    next: (res) => {
-      console.log("API response:", res);
+observable.subscribe({
+  next: (res) => {
+    console.log("API response:", res);
 
-      this.totalItems = res.pagination?.total ?? 0; // ✅ updated here
-
-      if (this.type === 'media') {
-        if (res?.media?.length > 0) {
-          this.reportData = res;
-          this.alertService.showAlert('Media Report generated successfully!');
-          this.showTableMedia = true;
-        } else {
-          this.alertService.showAlert('No media report data found.');
-        }
+    if (this.type === 'media') {
+      this.totalItems = res.pagination?.totalMedia ?? 0;
+      if (res?.media?.length > 0) {
+        this.reportData = res;
+        this.alertService.showAlert('Media Report generated successfully!');
+        this.showTableMedia = true;
+        this.showTable = false;
       } else {
-        if (res?.completedWorkflows?.length > 0) {
-          this.reportData = res;
-          this.alertService.showAlert('Report generated successfully!');
-          this.showTable = true;
-        } else {
-          this.alertService.showAlert('No regular report data found.');
-        }
+        this.alertService.showAlert('No media report data found.');
+        this.showTableMedia = false;
       }
-    },
-    error: (err) => {
-      console.error('Error fetching report:', err);
-      const message = err.error?.message || 'Error fetching report.';
-      this.alertService.showAlert(message, "error");
+    } else {
+      // regular report
+      this.totalItems = res.pagination?.total ?? 0;
+      if (res?.completedWorkflows?.length > 0) {
+        this.reportData = res;
+        this.alertService.showAlert('Report generated successfully!');
+        this.showTable = true;
+        this.showTableMedia = false;
+      } else {
+        this.alertService.showAlert('No regular report data found.');
+        this.showTable = false;
+      }
     }
-  });
-}
-
+  },
+  error: (err) => {
+    console.error('Error fetching report:', err);
+    const message = err.error?.message || 'Error fetching report.';
+    this.alertService.showAlert(message, "error");
+  }
+});
+  }
 
 
   reportData: any = { completedWorkflows: [] };

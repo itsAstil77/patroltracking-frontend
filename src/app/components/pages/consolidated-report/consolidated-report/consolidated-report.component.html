@@ -63,7 +63,7 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let patrol of reportData.report">
+    <ng-container *ngFor="let patrol of paginatedReportList">
       <ng-container *ngFor="let workflowItem of patrol.workflows">
         <tr (click)="toggleWorkflow(workflowItem)">
           <td>
@@ -94,6 +94,7 @@
                   <th>End</th>
                   <th>ScheduledDate</th>
                   <th>ExpiryDate</th>
+                  <th>Location</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -110,6 +111,7 @@
                     <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
                     <td>{{ checklist.scheduledDate ? (checklist.scheduledDate | date: 'dd-MM-yyyy') : '-' }}</td>
                     <td>{{ checklist.expiryDate ? (checklist.expiryDate | date: 'dd-MM-yyyy') : '-' }}</td>
+                    <td>{{checklist.lastScannedLocationName}}</td>
                     <td>{{ checklist.status }}</td>
                   </tr>
 
