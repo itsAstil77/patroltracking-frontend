@@ -1,4 +1,4 @@
-<nav class="navbar">
+<!-- <nav class="navbar">
 
   <div class="navbar-left">
     <span class="navbar-title">Schedule</span>
@@ -86,13 +86,13 @@
             </div>
           </td>
           <td>
-            <!-- <div class="tab">
+            <div class="tab">
               <img src="assets/plus-small.png" (click)="showChecklistPopup(workflow) " class="tab-icon" />
               <img src="assets/edit.png" class="tab-icon" (click)="openEditWorkflowPopup(workflow)" />
               <img src="assets/delete.png" class="tab-icon" />
             </div> -->
 
-            <div class="tab">
+            <!-- <div class="tab">
               <img src="assets/plus-small.png" class="tab-icon"
                 [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
@@ -101,9 +101,9 @@
               <img src="assets/edit.png" class="tab-icon"
                 [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
-                (click)="openEditWorkflowPopup(workflow)" />
+                (click)="openEditWorkflowPopup(workflow)" /> -->
               <!-- <img src="assets/delete.png" class="tab-icon" -->
-              <img [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
+              <!-- <img [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
             </div>
 
@@ -148,7 +148,7 @@
                       </label>
                     </div>
                   </td>
-                  <td>
+                  <td> -->
                     <!-- <div class="tab">
 
                       <img src="assets/edit.png" (click)="openUpdateChecklistPopup(checklist)" class="tab-icon" />
@@ -156,20 +156,20 @@
                     </div> -->
 
 
-                    <div class="tab">
+                    <!-- <div class="tab">
                       <img src="assets/edit.png" class="tab-icon"
                         [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                         [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
                         (click)="openUpdateChecklistPopup(checklist)" />
 
                       <img [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
-                        [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" />
+                        [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'" /> -->
 
 
                       <!-- <img [src]="checklist.hasLocation ? 'assets/green.png' : 'assets/marker.png'" class="tab-icon"
                         [routerLink]="['/map', checklist.checklistId]"> -->
 
-                    </div>
+                    <!-- </div>
 
 
                   </td>
@@ -222,7 +222,7 @@
             {{ workflow.workflowId }} - {{ workflow.workflowTitle }}
           </option>
         </select>
-      </div>
+      </div> -->
 
 
       <!-- <div class="form-group">  
@@ -235,7 +235,7 @@
     </div> -->
 
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="taskDropdown">Select Task Name</label>
         <div id="taskDropdown" class="dropdown-container" (click)="toggleTaskDropdown($event)">
 
@@ -267,35 +267,24 @@
 
 
 
-      <!-- <div class="form-group">
-        <label>Assigned To:</label>
-        <select [(ngModel)]="assignedTo">
-          <option *ngFor="let user of patrolUsers" [value]="user.userId">
-            {{ user.userId }} - {{ user.patrolGuardName }}
-          </option>
-        </select>
-      </div> -->
-
-
       <div class="form-group">
         <label for="assignedToDropdown">Assigned To:</label>
 
-        <div id="assignedToDropdown" class="dropdown-container" (click)="toggleAssignDropdown($event)">
+        <div id="assignedToDropdown" class="dropdown-container" (click)="toggleAssignDropdown($event)"> -->
 
           <!-- Selected chips -->
-          <div class="selected-chips-container" *ngIf="selectedUserIds.length > 0">
+          <!-- <div class="selected-chips-container" *ngIf="selectedUserIds.length > 0">
             <span class="selected-chip" *ngFor="let id of selectedUserIds">
               {{ getUserName(id) }}
               <span class="remove-chip" (click)="removeSelectedUser($event, id)">×</span>
             </span>
           </div>
 
-          <!-- Placeholder -->
+
           <div class="dropdown-selected">
             {{ selectedUserIds.length === 0 ? 'Select users' : '' }}
           </div>
 
-          <!-- Dropdown options -->
           <div class="dropdown-options" *ngIf="assignDropdownOpen">
             <div *ngFor="let user of patrolUsers" class="checkbox-row">
               <label class="checkbox-label">
@@ -317,10 +306,10 @@
       <button class="create-btn" (click)="  assignTask()">Assign</button>
     </div>
   </div>
-</div>
+</div> -->
 
 
-
+<!-- 
 <div class="modal" *ngIf="showPopup">
   <div class="modal-content">
     <p>Create Assignment</p>
@@ -346,13 +335,7 @@
         <label>Assign End:</label>
         <input type="datetime-local" [(ngModel)]="assignedEnd">
       </div>
-      <!-- <div class="status-container">
-        <label>Active:</label>
-        <label class="switch">
-          <input type="checkbox" [(ngModel)]="isActive">
-          <span class="slider"></span>
-        </label>
-      </div> -->
+
     </div>
 
     <div class="modal-buttons">
@@ -396,13 +379,7 @@
         <input type="datetime-local" [(ngModel)]="assignedEnd" />
       </div>
 
-      <!-- <div class="status-container">
-        <label>Status:</label>
-        <label class="switch">
-          <input type="checkbox" [(ngModel)]="isActive">
-          <span class="slider"></span>
-        </label>
-      </div> -->
+
 
     </div>
 
@@ -471,7 +448,7 @@
       <div class="form-group">
         <label>Assignment ID:</label>
         <input type="text" [(ngModel)]="workflowId" readonly>
-      </div>
+      </div> -->
 
       <!-- <div class="form-group">
         <label>Location details</label>
@@ -499,20 +476,17 @@
           </option>
         </select>
       </div> -->
-
+<!-- 
       <div class="form-group">
         <label>Title:</label>
         <input type="text" [(ngModel)]="title">
       </div>
 
-      <!-- <div class="form-group">
-        <label>Description:</label>
-        <input type="text" [(ngModel)]="remarks">
-      </div> -->
+
     </div>
     <div class="modal-buttons">
       <button class="cancel-btn" (click)="hideUpdateChecklistPopup()">Cancel</button>
       <button class="create-btn" (click)="updateChecklist()">Update</button>
     </div>
   </div>
-</div>
+</div> --> 

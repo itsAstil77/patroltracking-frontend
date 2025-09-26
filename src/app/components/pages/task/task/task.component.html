@@ -1,0 +1,119 @@
+<div class="breadcrumb-wrapper">
+  <nav class="breadcrumb">
+    <a routerLink="/patrol-tracking" class="breadcrumb-link">Assignment</a>
+    <span class="breadcrumb-separator">››</span>
+    <span class="breadcrumb-current">Task</span>
+  </nav>
+</div>
+
+
+<nav class="navbar">
+
+  <div class="navbar-left">
+    <span class="navbar-title">Task</span>
+  </div>
+
+  <div class="navbar-right">
+    <div class="tooltip-container" (click)="reloadPage()">
+      <button class="icon-button"><img src="assets/refresh.png" alt="Refresh"></button>
+      <span class="tooltip-text">Refresh</span>
+    </div>
+    <div class="tooltip-container" (click)="openCreateTask()">
+      <button class="icon-button"><img src="assets/add.png" alt="Add"></button>
+      <span class="tooltip-text">Add</span>
+    </div>
+  </div>
+</nav>
+
+
+<table class="company-table">
+  <thead>
+    <tr>
+      <th>Task Name</th>
+      <th>Description</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of tasks">
+      <td>{{ task.title }}</td>
+      <td>{{ task.remarks }}</td>
+      <td>
+        <div class="tab">
+          <div class="tooltip-container" (click)="openUpdateTask(task)">
+            <img src="assets/edit.png" alt="Edit" class="tab-icon">
+            <span class="tooltip-text">Edit</span>
+          </div>
+          <div class="tooltip-container">
+            <img src="assets/delete.png" (click)="opendeleteTask(task)"alt="Delete" class="tab-icon">
+            <span class="tooltip-text">Delete</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+
+
+<div class="modal" *ngIf="createTaskPopup">
+  <div class="modal-content">
+    <p>Create Task</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Task Name:</label>
+        <input type="text" [(ngModel)]="createTask.title" />
+      </div>
+
+      <div class="form-group">
+        <label>Description:</label>
+        <input type="text" [(ngModel)]="createTask.remarks" />
+      </div>
+
+    </div>
+
+    <div class="modal-buttons">
+      <button class="cancel-btn" (click)="closeCreateTask()">Cancel</button>
+      <button class="create-btn" (click)="createNewTask()">Create</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal" *ngIf="updateTaskPopup">
+  <div class="modal-content">
+    <p>Update Task</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Task Name:</label>
+        <input type="text" [(ngModel)]="createTask.title" />
+      </div>
+
+      <div class="form-group">
+        <label>Description:</label>
+        <input type="text" [(ngModel)]="createTask.remarks" />
+      </div>
+    </div>
+
+    <div class="modal-buttons">
+      <button class="cancel-btn" (click)="closeUpdateTask()">Cancel</button>
+      <button class="create-btn" (click)="updateTask()">Update</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="delete-modal" *ngIf="deleteTaskPopup">
+  <div class="delete-modal-content">
+    <p>Are you sure you want to delete this Task?</p>
+    <div class="delete-modal-buttons">
+      <button class="delete-yes-btn" (click)="deleteTask()">Yes</button>
+      <button class="delete-no-btn" (click)="closeDeleteTask()">No</button>
+    </div>
+  </div>
+</div>

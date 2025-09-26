@@ -95,6 +95,7 @@
                   <th>ScheduledDate</th>
                   <th>ExpiryDate</th>
                   <th>Location</th>
+                  <th>ScannedBy</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -111,7 +112,8 @@
                     <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
                     <td>{{ checklist.scheduledDate ? (checklist.scheduledDate | date: 'dd-MM-yyyy') : '-' }}</td>
                     <td>{{ checklist.expiryDate ? (checklist.expiryDate | date: 'dd-MM-yyyy') : '-' }}</td>
-                    <td>{{checklist.lastScannedLocationName}}</td>
+                    <td>{{ checklist.locationName}}</td>
+                    <td>{{ checklist.scannedBy}}</td>
                     <td>{{ checklist.status }}</td>
                   </tr>
 

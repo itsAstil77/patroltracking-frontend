@@ -15,6 +15,7 @@ import { ConsolidatedReportComponent } from './components/pages/consolidated-rep
 import { RoleComponent } from './components/pages/role/role/role.component';
 import { MapComponent } from './components/pages/map/map/map.component';
 import { ScheduleComponent } from './components/pages/schedule/schedule/schedule.component';
+import { TaskComponent } from './components/pages/task/task/task.component';
 
 export const routes: Routes = [
 
@@ -50,7 +51,8 @@ export const routes: Routes = [
       { path:'license-management',component:LicenseManagementComponent},
       {path:'consolidated-report',component:ConsolidatedReportComponent},
       {path:'role',component:RoleComponent},
-      {path:'schedule',component:ScheduleComponent}
+      {path:'schedule',component:ScheduleComponent},
+      {path:'task',component:TaskComponent}
       // {path:'map/:id',component:MapComponent}
       
 

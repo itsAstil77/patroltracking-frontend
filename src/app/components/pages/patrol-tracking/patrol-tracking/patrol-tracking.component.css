@@ -274,7 +274,7 @@ img {
 .nested-table th,
 .nested-table td {
   border: 1px solid #ccc;
-  padding: 5px;
+  padding: 15px;
   font-size: 14px;
   text-align: center;
   font-family: 'RedHatDisplay-Regular';
@@ -287,6 +287,8 @@ img {
 
 
 }
+
+
 
 
 
@@ -919,6 +921,129 @@ transform: translateX(-50%);
 }
 .white-text {
   color: white !important;
+}
+
+
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 53px;
+
+  width: 80%;
+  max-height: 100%;
+  overflow-y: auto;
+  position: relative;
+  overflow: hidden;
+  border:2px solid black;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.nested-table1 {
+  width: 100%;
+  /* reduce this percentage to decrease the width */
+  min-width: 600px;
+  /* optional minimum width for better readability */
+  border-collapse: collapse;
+  /* margin-left: 6%; */
+  border-radius: 8px;
+  margin-top: 3%;
+
+}
+
+
+.nested-table1 th,
+.nested-table1 td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  font-family: 'RedHatDisplay-Regular';
+
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+
+
+}
+
+
+.table-wrapper {
+  max-height: 70vh; /* scrollable height for table */
+  overflow-y: auto;
+}
+.popup-buttons {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  display: flex;
+  gap: 10px; /* space between buttons */
+  
+}
+
+.download-btn {
+  background-color: #6a1b9a; 
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+    font-family: 'RedHatDisplay-Regular';
+}
+
+.download-btn:hover {
+  background-color: #4a148c;
+  transform: scale(1.05);
+}
+
+.download-btn:active {
+  background-color: #38006b;
+  transform: scale(0.98);
+}
+
+.dropdown-search {
+  width: 95%;
+  padding: 6px;
+  margin: 5px auto;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+/* add this in your component stylesheet */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.4s ease;
 }
 
 

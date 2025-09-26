@@ -12,6 +12,7 @@ import { RoleService } from '../../../services/role/role.service';
 
 
 
+
 @Component({
   selector: 'app-user-management',
   imports: [CommonModule, FormsModule, RouterModule],
@@ -546,7 +547,7 @@ export class UserManagementComponent {
     { label: 'Email', key: 'email', visible: true },
     { label: 'Department', key: 'department', visible: true },
     { label: 'Designation', key: 'designation', visible: true },
-    { label: 'Location', key: 'locationName', visible: true },
+    // { label: 'Location', key: 'locationName', visible: true },
     { label: 'Role', key: 'role', visible: true }
   ];
 

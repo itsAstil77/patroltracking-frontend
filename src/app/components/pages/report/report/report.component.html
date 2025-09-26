@@ -111,7 +111,7 @@
 
 
       <tr *ngIf="workflow.expanded">
-        <td colspan="7">
+        <td colspan="8">
           <table class="nested-table">
 
             <thead>
@@ -121,6 +121,8 @@
                 <th>Remarks</th>
                 <th>Start</th>
                 <th>End</th>
+                <th>Location</th>
+                <th>ScannedBy</th>
                 <th>ScheduledDate</th>
                 <th>ExpiryDate</th>
                 <th>Status</th>
@@ -137,6 +139,8 @@
                   <td>{{ checklist.scanStartDate ? (checklist.scanStartDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}
                   </td>
                   <td>{{ checklist.scanEndDate ? (checklist.scanEndDate | date: 'dd-MM-yyyy , hh:mm a') : '-' }}</td>
+                  <td>{{ checklist.locationName}}</td>
+                  <td>{{ checklist.scannedBy}}</td>
                   <td>{{ checklist.scheduledDate ? (checklist.scheduledDate | date: 'dd-MM-yyyy') : '-' }}</td>
                   <td>{{ checklist.expiryDate ? (checklist.expiryDate | date: 'dd-MM-yyyy') : '-' }}</td>
                   <td>{{ checklist.status }}</td>
@@ -145,7 +149,7 @@
 
               
                 <tr *ngIf="checklist.expanded">
-                  <td colspan="8">
+                  <td colspan="9">
                     <table class="nested-table">
 
                       <thead>

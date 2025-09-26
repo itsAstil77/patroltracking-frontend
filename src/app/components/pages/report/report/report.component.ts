@@ -293,6 +293,9 @@ nextPage() {
 }
 
 
+isValidDate(value: any): boolean {
+  return value && !isNaN(Date.parse(value));
+}
 
 
 

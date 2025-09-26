@@ -26,14 +26,28 @@ export class WorkflowService {
     return this.http.get(`${this.baseUrl}workflow?page=${page}&limit=${limit}`, { headers });
   }
 
-  getChecklistByWorkflowId(workflowId: string): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+  // getChecklistByWorkflowId(workflowId: string): Observable<any> {
+  //   const token = localStorage.getItem('token');
+  //   const headers = new HttpHeaders({
+  //     'Authorization': `Bearer ${token}`
+  //   });
 
-    return this.http.get(`${this.baseUrl}checklists/wf/${workflowId}`, { headers });
-  }
+  //   return this.http.get(`${this.baseUrl}checklists/wf/${workflowId}`, { headers });
+  // }
+
+
+  getChecklistByWorkflowId(workflowId: string, page: number, limit: number): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get(
+    `${this.baseUrl}checklists/wf/${workflowId}?page=${page}&limit=${limit}`,
+    { headers }
+  );
+}
+
 
   createWorkflow(data: any): Observable<any> {
     const token = localStorage.getItem('token');
@@ -119,14 +133,6 @@ export class WorkflowService {
   }
 
 
-// createBulkChecklist(payload: any): Observable<any> {
-//   return this.http.post(`${this.baseUrl}checklists/bulk`, payload);
-// }
-
-                                                                                                                                                            
-//   getBulkChecklistByWorkflowId(workflowId: string): Observable<any> {
-//     return this.http.get(`${this.baseUrl}checklists/is/${workflowId}`);
-//   }
 
 
 createBulkChecklist(payload: any): Observable<any> {
@@ -139,15 +145,30 @@ createBulkChecklist(payload: any): Observable<any> {
   return this.http.post(`${this.baseUrl}checklists/bulk`, payload, { headers });
 }
 
-getBulkChecklistByWorkflowId(workflowId: string): Observable<any> {
+// getBulkChecklistByWorkflowId(workflowId: string): Observable<any> {
+//   const token = localStorage.getItem('token');
+//   const headers = new HttpHeaders({
+//     'Content-Type': 'application/json',
+//     'Authorization': `Bearer ${token}`
+//   });
+
+//   return this.http.get(`${this.baseUrl}checklists/is/${workflowId}`, { headers });
+// }
+
+getBulkChecklistByWorkflowId(workflowId: string, page: number, limit: number): Observable<any> {
   const token = localStorage.getItem('token');
   const headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   });
 
-  return this.http.get(`${this.baseUrl}checklists/is/${workflowId}`, { headers });
+  // Include page & limit as query parameters
+  return this.http.get(`${this.baseUrl}checklists/is/${workflowId}?page=${page}&limit=${limit}`, { headers });
 }
+
+
+
+
 
 
 }

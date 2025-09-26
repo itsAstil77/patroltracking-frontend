@@ -74,6 +74,7 @@ export class NavbarComponent {
           event.urlAfterRedirects.includes('/configuration') ||
           event.urlAfterRedirects.includes('/license-management') ||
           event.urlAfterRedirects.includes('/user-management')
+
         ) {
           this.activeMenuItem = 'administration';
         } else if (
@@ -82,6 +83,7 @@ export class NavbarComponent {
         ) {
           this.activeMenuItem = 'report';
         }
+        
       }
     });
 
@@ -100,7 +102,8 @@ export class NavbarComponent {
     if (
       url.includes('/configuration') ||
       url.includes('/license-management') ||
-      url.includes('/user-management')
+      url.includes('/user-management')||
+      url.includes('/role')
     ) {
       this.activeMenuItem = 'administration';
     } else if (
@@ -108,7 +111,14 @@ export class NavbarComponent {
       url.includes('/consolidated-report')
     ) {
       this.activeMenuItem = 'report';
-    } else if (url.includes('/dashboard')) {
+    } 
+     else if (
+      url.includes('/patrol-tracking') ||
+      url.includes('task')
+    ) {
+      this.activeMenuItem = 'patrol-tracking';
+    } 
+    else if (url.includes('/dashboard')) {
       this.activeMenuItem = 'dashboard';
     } else if (url.includes('/events')) {
       this.activeMenuItem = 'events';

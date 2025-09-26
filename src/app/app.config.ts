@@ -12,6 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CalendarModule } from 'primeng/calendar';
+import { UserFilterPipe } from './pipes/user-filter.pipe';
+import { TaskFilterPipe } from './pipes/task-filter.pipe';
+import { LocationFilterPipe } from './pipes/location-filter.pipe';
 
 
 export const appConfig: ApplicationConfig = {
@@ -26,7 +29,10 @@ export const appConfig: ApplicationConfig = {
       MatFormFieldModule,
       MatNativeDateModule,
       CalendarModule,
-      BrowserModule
+      BrowserModule,
+      UserFilterPipe,
+      TaskFilterPipe,
+      LocationFilterPipe
     ) // ✅ <-- This is what you need
   ]
 };
