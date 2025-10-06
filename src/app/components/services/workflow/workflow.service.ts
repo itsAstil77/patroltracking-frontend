@@ -118,7 +118,7 @@ export class WorkflowService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<any>(`${this.baseUrl}locationcode`, { headers });
+    return this.http.get<any>(`${this.baseUrl}locationcode/codes`, { headers });
   }
 
 
