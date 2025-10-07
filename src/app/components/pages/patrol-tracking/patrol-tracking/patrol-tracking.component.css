@@ -229,13 +229,13 @@ img {
 
 
 /*Action icon design */
-.tab {
+.tab1 {
   display: flex;
-  justify-content: center;
   align-items: center;
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
+  gap:5px;
   color: black;
   transition: background 0.3s ease-in-out;
 }
@@ -251,7 +251,7 @@ img {
 .tab-icon {
   width: 16px;
   height: 16px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
   cursor: pointer;
 }
 
@@ -295,8 +295,7 @@ img {
 .toggle-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  /* Centers horizontally */
+  /* justify-content: center; */
   gap: 10px;
 }
 
@@ -708,6 +707,7 @@ select {
   color: #6a1b9a;
   border-bottom: 3px solid transparent;
   font-weight: 500;
+  font-size: 14px;
   font-family: 'RedHatDisplay-Regular';
 }
 

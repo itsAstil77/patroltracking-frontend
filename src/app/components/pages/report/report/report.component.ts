@@ -201,7 +201,7 @@ observable.subscribe({
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'workflow_flat.csv');
+    link.setAttribute('download', 'Patrol-Report.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -242,7 +242,7 @@ observable.subscribe({
 
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'media-report.csv';
+    anchor.download = 'Patrol_Incident-report.csv';
     anchor.click();
 
     window.URL.revokeObjectURL(url);

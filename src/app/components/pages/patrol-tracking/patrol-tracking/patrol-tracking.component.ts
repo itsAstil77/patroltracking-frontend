@@ -676,7 +676,7 @@ toggleBulkChecklist(workflowId: string): void {
 
   // scheduling
 
-  selectedRole: string = 'Assignment';
+  selectedRole: string = 'schedule';
 
 
 

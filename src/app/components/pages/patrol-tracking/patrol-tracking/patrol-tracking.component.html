@@ -309,7 +309,7 @@
               <img src="assets/edit.png" class="tab-icon" (click)="openEditWorkflowPopup(workflow)" />
             </div> -->
 
-            <div class="tab">
+            <div class="tab1">
               <img src="assets/plus-small.png" class="tab-icon"
                 [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
@@ -641,7 +641,7 @@
             </div>
           </td>
           <td>
-            <div class="tab">
+            <div class="tab1">
               <img src="assets/plus-small.png" class="tab-icon"
                 [class.disabled]="workflow.status === 'Inprogress' || workflow.status === 'Completed'"
                 [style.pointer-events]="(workflow.status === 'Inprogress' || workflow.status === 'Completed') ? 'none' : 'auto'"
