@@ -1471,6 +1471,26 @@ openScheduleChecklistPopup(workflowId: string): void {
 }
 
 // Fetch paginated data
+// fetchScheduleChecklistData(): void {
+//   if (!this.selectedWorkflowScheduleId) return;
+
+//   this.workflowService
+//     .getBulkChecklistByWorkflowId(
+//       this.selectedWorkflowScheduleId,
+//       this.scheduleChecklistCurrentPage,
+//       this.scheduleChecklistItemsPerPage
+//     )
+//     .subscribe(res => {
+//       if (res.success) {
+//         const data = res.today; // your API returns `today` object
+//         this.selectedScheduleChecklistData = data.tasks.map((checklist: any) => ({
+//           ...checklist,
+//           hasLocation: !!checklist.coordinates
+//         }));
+//         this.scheduleChecklistTotalItems = data.totalCount;
+//       }
+//     });
+// }
 fetchScheduleChecklistData(): void {
   if (!this.selectedWorkflowScheduleId) return;
 
@@ -1481,13 +1501,26 @@ fetchScheduleChecklistData(): void {
       this.scheduleChecklistItemsPerPage
     )
     .subscribe(res => {
-      if (res.success) {
-        const data = res.today; // your API returns `today` object
-        this.selectedScheduleChecklistData = data.tasks.map((checklist: any) => ({
+      if (res.success && Array.isArray(res.tasks)) {
+        this.selectedScheduleChecklistData = res.tasks.map((checklist: any) => ({
           ...checklist,
-          hasLocation: !!checklist.coordinates
+          hasLocation: !!checklist.coordinates,
+          // handle array fields gracefully
+          locationName: Array.isArray(checklist.locationName)
+            ? checklist.locationName.join(', ')
+            : checklist.locationName || '-',
+          assignedTo: Array.isArray(checklist.assignedTo)
+            ? checklist.assignedTo.join(', ')
+            : checklist.assignedTo || '-',
+          scheduledDate: Array.isArray(checklist.scheduledDate)
+            ? checklist.scheduledDate[0]
+            : checklist.scheduledDate || null,
         }));
-        this.scheduleChecklistTotalItems = data.totalCount;
+
+        this.scheduleChecklistTotalItems = res.totalCount || res.tasks.length;
+      } else {
+        this.selectedScheduleChecklistData = [];
+        this.scheduleChecklistTotalItems = 0;
       }
     });
 }
