@@ -160,7 +160,7 @@ observable.subscribe({
     let csvContent = 'data:text/csv;charset=utf-8,';
 
     // Row 1: Workflow headers
-    csvContent += 'Workflow Title,Status,Assigned Start,Assigned End,Start,End \n';
+    csvContent += 'Assignment Title,Status,Assigned Start,Assigned End,Start,End \n';
 
     for (const workflow of this.reportData.completedWorkflows) {
       const wf = workflow.workflow;
@@ -172,7 +172,7 @@ observable.subscribe({
       csvContent += '\n';
 
       // Row 4: Checklist + Media + Signature headers starting at column C
-      csvContent += ',,Checklist Title,Remarks,Checklist Status,Start,End,Media Description,Media Type,Created By,Created Date,Media URL,Signature ID,Signature URL,Created Time,Created By\n';
+      csvContent += ',,Task Title,Remarks,Task Status,Start,End,Media Description,Media Type,Created By,Created Date,Media URL,Signature ID,Signature URL,Created Time,Created By\n';
 
       // Row 5+: Data rows
       for (const checklist of workflow.checklists) {

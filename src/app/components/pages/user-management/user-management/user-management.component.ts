@@ -541,7 +541,7 @@ export class UserManagementComponent {
 
   adminColumns = [
     { label: 'User ID', key: 'userId', visible: true },
-    { label: 'Name', key: 'patrolGuardName', visible: true },
+    { label: 'Admin/Patrol', key: 'patrolGuardName', visible: true },
     { label: 'Username', key: 'username', visible: true },
     { label: 'Mobile', key: 'mobileNumber', visible: true },
     { label: 'Email', key: 'email', visible: true },

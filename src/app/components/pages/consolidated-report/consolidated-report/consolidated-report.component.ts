@@ -115,7 +115,7 @@ export class ConsolidatedReportComponent {
     let csvContent = 'data:text/csv;charset=utf-8,';
 
     // Row 1: Workflow headers
-    csvContent += 'Workflow Title,Status,Assigned Start,Assigned End,Start,End\n';
+    csvContent += 'assignment Title,Status,Assigned Start,Assigned End,Start,End\n';
 
     for (const patrol of this.reportData.report) {
       for (const workflowItem of patrol.workflows) {
@@ -128,7 +128,7 @@ export class ConsolidatedReportComponent {
         csvContent += '\n';
 
         // Row 4: Checklist + Media + Signature headers (starts at column C)
-        csvContent += ',,Checklist Title,Remarks,Checklist Status,Checklist Start,Checklist End,' +
+        csvContent += ',,Task Title,Remarks,Task Status,Task Start,Task End,' +
           'Media Description,Media Type,Media Created By,Media Created Date,Media URL,' +
           'Signature ID,Signature URL,Signature Created Time,Signature Created By\n';
 
