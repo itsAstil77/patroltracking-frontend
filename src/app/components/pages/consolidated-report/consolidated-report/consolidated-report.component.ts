@@ -111,73 +111,143 @@ export class ConsolidatedReportComponent {
 
     window.URL.revokeObjectURL(url);
   }
-  downloadCSV(): void {
-    let csvContent = 'data:text/csv;charset=utf-8,';
+  // downloadCSV(): void {
+  //   let csvContent = 'data:text/csv;charset=utf-8,';
 
-    // Row 1: Workflow headers
-    csvContent += 'assignment Title,Status,Assigned Start,Assigned End,Start,End\n';
+  //   // Row 1: Workflow headers
+  //   csvContent += 'assignment Title,Status,Assigned Start,Assigned End,Start,End\n';
 
-    for (const patrol of this.reportData.report) {
-      for (const workflowItem of patrol.workflows) {
-        const wf = workflowItem.workflow;
+  //   for (const patrol of this.reportData.report) {
+  //     for (const workflowItem of patrol.workflows) {
+  //       const wf = workflowItem.workflow;
 
-        // Row 2: Workflow data
-        csvContent += `${wf.workflowTitle},${wf.status},${wf.assignedStart || ''},${wf.assignedEnd || ''},${wf.startDateTime || ''},${wf.endDateTime || ''}\n`;
+  //       // Row 2: Workflow data
+  //       csvContent += `${wf.workflowTitle},${wf.status},${wf.assignedStart || ''},${wf.assignedEnd || ''},${wf.startDateTime || ''},${wf.endDateTime || ''}\n`;
 
-        // Row 3: Blank row
-        csvContent += '\n';
+  //       // Row 3: Blank row
+  //       csvContent += '\n';
 
-        // Row 4: Checklist + Media + Signature headers (starts at column C)
-        csvContent += ',,Task Title,Remarks,Task Status,Task Start,Task End,' +
-          'Media Description,Media Type,Media Created By,Media Created Date,Media URL,' +
-          'Signature ID,Signature URL,Signature Created Time,Signature Created By\n';
+  //       // Row 4: Checklist + Media + Signature headers (starts at column C)
+  //       csvContent += ',,Task Title,Remarks,Task Status,Task Start,Task End,' +
+  //         'Media Description,Media Type,Media Created By,Media Created Date,Media URL,' +
+  //         'Signature ID,Signature URL,Signature Created Time,Signature Created By\n';
 
-        // Row 5+: Data rows
-        for (const checklist of workflowItem.checklists || []) {
-          const mediaList = checklist.media?.length ? checklist.media : [null];
-          const sigList = checklist.signatures?.length ? checklist.signatures : [null];
-          const maxLength = Math.max(mediaList.length, sigList.length);
+  //       // Row 5+: Data rows
+  //       for (const checklist of workflowItem.checklists || []) {
+  //         const mediaList = checklist.media?.length ? checklist.media : [null];
+  //         const sigList = checklist.signatures?.length ? checklist.signatures : [null];
+  //         const maxLength = Math.max(mediaList.length, sigList.length);
 
-          for (let i = 0; i < maxLength; i++) {
-            const media = mediaList[i] || {};
-            const sig = sigList[i] || {};
+  //         for (let i = 0; i < maxLength; i++) {
+  //           const media = mediaList[i] || {};
+  //           const sig = sigList[i] || {};
 
-            const chkTitle = i === 0 ? checklist.title : '';
-            const chkRemarks = i === 0 ? checklist.remarks : '';
-            const chkStatus = i === 0 ? checklist.status : '';
-            const chkStart = i === 0 ? checklist.scanStartDate : '';
-            const chkEnd = i === 0 ? checklist.scanEndDate : '';
+  //           const chkTitle = i === 0 ? checklist.title : '';
+  //           const chkRemarks = i === 0 ? checklist.remarks : '';
+  //           const chkStatus = i === 0 ? checklist.status : '';
+  //           const chkStart = i === 0 ? checklist.scanStartDate : '';
+  //           const chkEnd = i === 0 ? checklist.scanEndDate : '';
 
-            const mediaDesc = media?.description || '';
-            const mediaType = media?.mediaType || '';
-            const mediaBy = media?.createdBy || '';
-            const mediaDate = media?.createdDate || '';
-            const mediaUrl = media?.mediaUrl || '';
+  //           const mediaDesc = media?.description || '';
+  //           const mediaType = media?.mediaType || '';
+  //           const mediaBy = media?.createdBy || '';
+  //           const mediaDate = media?.createdDate || '';
+  //           const mediaUrl = media?.mediaUrl || '';
 
-            const sigId = sig?.signatureId || '';
-            const sigUrl = sig?.signatureUrl || '';
-            const sigCreated = sig?.createdDate || '';
-            const sigBy = sig?.patrolId || '';
+  //           const sigId = sig?.signatureId || '';
+  //           const sigUrl = sig?.signatureUrl || '';
+  //           const sigCreated = sig?.createdDate || '';
+  //           const sigBy = sig?.userId || '';
 
-            // Columns A and B are blank, data starts from column C
-            csvContent += `,,${chkTitle},${chkRemarks},${chkStatus},${chkStart},${chkEnd},` +
-              `${mediaDesc},${mediaType},${mediaBy},${mediaDate},${mediaUrl},` +
-              `${sigId},${sigUrl},${sigCreated},${sigBy}\n`;
-          }
+  //           // Columns A and B are blank, data starts from column C
+  //           csvContent += `,,${chkTitle},${chkRemarks},${chkStatus},${chkStart},${chkEnd},` +
+  //             `${mediaDesc},${mediaType},${mediaBy},${mediaDate},${mediaUrl},` +
+  //             `${sigId},${sigUrl},${sigCreated},${sigBy}\n`;
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   // Trigger download
+  //   const encodedUri = encodeURI(csvContent);
+  //   const link = document.createElement('a');
+  //   link.setAttribute('href', encodedUri);
+  //   link.setAttribute('download', 'Consolidated_report.csv');
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // }
+
+downloadCSV(): void {
+  let csvContent = 'data:text/csv;charset=utf-8,';
+
+  // Row 1: Workflow headers
+  csvContent += 'Assignment Title,Status,Assigned Start,Assigned End,Start,End\n';
+
+  for (const patrol of this.reportData.report) {
+    for (const workflowItem of patrol.workflows) {
+      const wf = workflowItem.workflow;
+
+      // Row 2: Workflow data
+      csvContent += `${wf.workflowTitle},${wf.status},${wf.assignedStart || ''},${wf.assignedEnd || ''},${wf.startDateTime || ''},${wf.endDateTime || ''}\n`;
+
+      // Row 3: Blank row
+      csvContent += '\n';
+
+      // Row 4: Checklist + Media + Signature headers (starts at column C)
+      csvContent += ',,Task Title,Remarks,Task Status,Task Start,Task End,ScheduledDate,ExpiryDate,Location,ScannedBy,' +
+        'Media Description,Media Type,Media Created By,Media Created Date,Media URL,' +
+        'Signature ID,Signature URL,Signature Created Time,Signature Created By\n';
+
+      // Row 5+: Data rows
+      for (const checklist of workflowItem.checklists || []) {
+        const mediaList = checklist.media?.length ? checklist.media : [null];
+        const sigList = checklist.signatures?.length ? checklist.signatures : [null];
+        const maxLength = Math.max(mediaList.length, sigList.length);
+
+        for (let i = 0; i < maxLength; i++) {
+          const media = mediaList[i] || {};
+          const sig = sigList[i] || {};
+
+          const chkTitle = i === 0 ? checklist.title : '';
+          const chkRemarks = i === 0 ? checklist.remarks : '';
+          const chkStatus = i === 0 ? checklist.status : '';
+          const chkStart = i === 0 ? checklist.scanStartDate : '';
+          const chkEnd = i === 0 ? checklist.scanEndDate : '';
+          const chkScheduledDate = i === 0 ? checklist.scheduledDate : '';
+          const chkExpiryDate = i === 0 ? checklist.expiryDate : '';
+          const chkLocation = i === 0 ? checklist.locationName : '';
+          const chkScannedBy = i === 0 ? checklist.scannedBy : '';
+
+          const mediaDesc = media?.description || '';
+          const mediaType = media?.mediaType || '';
+          const mediaBy = media?.createdBy || '';
+          const mediaDate = media?.createdDate || '';
+          const mediaUrl = media?.mediaUrl || '';
+
+          const sigId = sig?.signatureId || '';
+          const sigUrl = sig?.signatureUrl || '';
+          const sigCreated = sig?.createdDate || '';
+          const sigBy = sig?.userId || '';
+
+          // Columns A and B are blank, data starts from column C
+          csvContent += `,,${chkTitle},${chkRemarks},${chkStatus},${chkStart},${chkEnd},${chkScheduledDate},${chkExpiryDate},${chkLocation},${chkScannedBy},` +
+            `${mediaDesc},${mediaType},${mediaBy},${mediaDate},${mediaUrl},` +
+            `${sigId},${sigUrl},${sigCreated},${sigBy}\n`;
         }
       }
     }
-
-    // Trigger download
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Consolidated_report.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   }
 
+  // Trigger download
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', 'Consolidated_report.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 
   mediaList: any[] = [];

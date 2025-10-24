@@ -15,7 +15,7 @@ import { ReportService } from '../../../services/report/report.service';
 export class ReportComponent implements OnInit {
 
   ngOnInit(): void {
-    this. loadPatrolUsers() ;
+    this.loadPatrolUsers();
   }
 
   constructor(private workflowService: WorkflowService, private alertService: AlertService, private reportService: ReportService) {
@@ -78,58 +78,58 @@ export class ReportComponent implements OnInit {
 
 
   applyReport(event: Event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  if (!this.assignedTo) {
-    this.alertService.showAlert('Please select a Patrol User.');
-    return;
-  }
-
-  this.showTable = false;
-  this.showTableMedia = false;
-
-  const page = this.currentPage;
-  const limit = this.itemsPerPage;
-
-  const observable = this.startDate && this.endDate
-    ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type, page, limit)
-    : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate, page, limit);
-
-observable.subscribe({
-  next: (res) => {
-    console.log("API response:", res);
-
-    if (this.type === 'media') {
-      this.totalItems = res.pagination?.totalMedia ?? 0;
-      if (res?.media?.length > 0) {
-        this.reportData = res;
-        this.alertService.showAlert('Media Report generated successfully!');
-        this.showTableMedia = true;
-        this.showTable = false;
-      } else {
-        this.alertService.showAlert('No media report data found.');
-        this.showTableMedia = false;
-      }
-    } else {
-      // regular report
-      this.totalItems = res.pagination?.total ?? 0;
-      if (res?.completedWorkflows?.length > 0) {
-        this.reportData = res;
-        this.alertService.showAlert('Report generated successfully!');
-        this.showTable = true;
-        this.showTableMedia = false;
-      } else {
-        this.alertService.showAlert('No regular report data found.');
-        this.showTable = false;
-      }
+    if (!this.assignedTo) {
+      this.alertService.showAlert('Please select a Patrol User.');
+      return;
     }
-  },
-  error: (err) => {
-    console.error('Error fetching report:', err);
-    const message = err.error?.message || 'Error fetching report.';
-    this.alertService.showAlert(message, "error");
-  }
-});
+
+    this.showTable = false;
+    this.showTableMedia = false;
+
+    const page = this.currentPage;
+    const limit = this.itemsPerPage;
+
+    const observable = this.startDate && this.endDate
+      ? this.reportService.getFilteredReportByPatrolId(this.assignedTo, this.startDate, this.endDate, this.type, page, limit)
+      : this.reportService.getReportByPatrolId(this.assignedTo, this.type, this.startDate, this.endDate, page, limit);
+
+    observable.subscribe({
+      next: (res) => {
+        console.log("API response:", res);
+
+        if (this.type === 'media') {
+          this.totalItems = res.pagination?.totalMedia ?? 0;
+          if (res?.media?.length > 0) {
+            this.reportData = res;
+            this.alertService.showAlert('Media Report generated successfully!');
+            this.showTableMedia = true;
+            this.showTable = false;
+          } else {
+            this.alertService.showAlert('No media report data found.');
+            this.showTableMedia = false;
+          }
+        } else {
+          // regular report
+          this.totalItems = res.pagination?.total ?? 0;
+          if (res?.completedWorkflows?.length > 0) {
+            this.reportData = res;
+            this.alertService.showAlert('Report generated successfully!');
+            this.showTable = true;
+            this.showTableMedia = false;
+          } else {
+            this.alertService.showAlert('No regular report data found.');
+            this.showTable = false;
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching report:', err);
+        const message = err.error?.message || 'Error fetching report.';
+        this.alertService.showAlert(message, "error");
+      }
+    });
   }
 
 
@@ -156,56 +156,119 @@ observable.subscribe({
 
 
 
+  // downloadCSV(): void {
+  //   let csvContent = 'data:text/csv;charset=utf-8,';
+
+  //   // Row 1: Workflow headers
+  //   csvContent += 'Assignment Title,Status,Assigned Start,Assigned End,Start,End \n';
+
+  //   for (const workflow of this.reportData.completedWorkflows) {
+  //     const wf = workflow.workflow;
+
+  //     // Row 2: Workflow data
+  //     csvContent += `${wf.workflowTitle},${wf.status},${wf.assignedStart},${wf.assignedEnd},${wf.startDateTime},${wf.endDateTime}\n`;
+
+  //     // Row 3: Blank row
+  //     csvContent += '\n';
+
+  //     // Row 4: Checklist + Media + Signature headers starting at column C
+  //     csvContent += ',,Task Title,Remarks,Task Status,Start,End,ScheduledDate,ExpiryDate,Location,ScannedBy,Media Description,Media Type,Created By,Created Date,Media URL,Signature ID,Signature URL,Created Time,Created By\n';
+
+  //     // Row 5+: Data rows
+  //     for (const checklist of workflow.checklists) {
+  //       const mediaList = checklist.media?.length ? checklist.media : [null];
+  //       const sigList = checklist.signatures?.length ? checklist.signatures : [null];
+
+  //       const maxLength = Math.max(mediaList.length, sigList.length);
+
+  //       for (let i = 0; i < maxLength; i++) {
+  //         const media = mediaList[i] || {};
+  //         const sig = sigList[i] || {};
+
+  //         const chkTitle = i === 0 ? checklist.title : '';
+  //         const chkRemarks = i === 0 ? checklist.remarks : '';
+  //         const chkStatus = i === 0 ? checklist.status : '';
+  //         const chkscanStartDate = i === 0 ? checklist.scanStartDate : '';
+  //         const chkscanEndDate = i === 0 ? checklist.scanEndDate : '';
+  //         const chkscheduledDate = i === 0 ? checklist.scheduledDate : '';
+  //         const chkexpiryDate = i === 0 ? checklist.expiryDate : '';
+  //          const chklocationName = i === 0 ? checklist.locationName : '';
+  //           const chkscannedBy = i === 0 ? checklist.scannedBy : '';
+
+
+  //         // Columns A and B left blank, data starts from column C
+  //         csvContent += `,,${chkTitle},${chkRemarks},${chkStatus},${chkscanStartDate},${chkscanEndDate},${chkscheduledDate},
+  //         ${chkexpiryDate},${chklocationName},${chkscannedBy},${media.description || ''},${media.mediaType || ''},${media.createdBy || ''},${media.createdDate || ''},${media.mediaUrl || ''},${sig.signatureId || ''},${sig.signatureUrl || ''},${sig.createdDate || ''},${sig.patrolId || ''}\n`;
+  //       }
+  //     }
+  //   }
+
+  //   // Trigger download
+  //   const encodedUri = encodeURI(csvContent);
+  //   const link = document.createElement('a');
+  //   link.setAttribute('href', encodedUri);
+  //   link.setAttribute('download', 'Patrol-Report.csv');
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // }
+
+
   downloadCSV(): void {
-    let csvContent = 'data:text/csv;charset=utf-8,';
+  let csvContent = 'data:text/csv;charset=utf-8,';
 
-    // Row 1: Workflow headers
-    csvContent += 'Assignment Title,Status,Assigned Start,Assigned End,Start,End \n';
+  // Row 1: Workflow headers
+  csvContent += 'Assignment Title,Status,Assigned Start,Assigned End,Start,End\n';
 
-    for (const workflow of this.reportData.completedWorkflows) {
-      const wf = workflow.workflow;
+  const safe = (val: any) => `"${(val ?? '').toString().replace(/"/g, '""')}"`;
 
-      // Row 2: Workflow data
-      csvContent += `${wf.workflowTitle},${wf.status},${wf.assignedStart},${wf.assignedEnd},${wf.startDateTime},${wf.endDateTime}\n`;
+  for (const workflow of this.reportData.completedWorkflows) {
+    const wf = workflow.workflow;
 
-      // Row 3: Blank row
-      csvContent += '\n';
+    // Row 2: Workflow data
+    csvContent += `${safe(wf.workflowTitle)},${safe(wf.status)},${safe(wf.assignedStart)},${safe(wf.assignedEnd)},${safe(wf.startDateTime)},${safe(wf.endDateTime)}\n`;
 
-      // Row 4: Checklist + Media + Signature headers starting at column C
-      csvContent += ',,Task Title,Remarks,Task Status,Start,End,Media Description,Media Type,Created By,Created Date,Media URL,Signature ID,Signature URL,Created Time,Created By\n';
+    // Blank row
+    csvContent += '\n';
 
-      // Row 5+: Data rows
-      for (const checklist of workflow.checklists) {
-        const mediaList = checklist.media?.length ? checklist.media : [null];
-        const sigList = checklist.signatures?.length ? checklist.signatures : [null];
+    // Checklist + Media + Signature headers
+    csvContent += ',,Task Title,Remarks,Task Status,Start,End,ScheduledDate,ExpiryDate,Location,ScannedBy,Media Description,Media Type,Created By,Created Date,Media URL,Signature ID,Signature URL,Created Time,Created By\n';
 
-        const maxLength = Math.max(mediaList.length, sigList.length);
+    // Data rows
+    for (const checklist of workflow.checklists) {
+      const mediaList = checklist.media?.length ? checklist.media : [null];
+      const sigList = checklist.signatures?.length ? checklist.signatures : [null];
+      const maxLength = Math.max(mediaList.length, sigList.length);
 
-        for (let i = 0; i < maxLength; i++) {
-          const media = mediaList[i] || {};
-          const sig = sigList[i] || {};
+      for (let i = 0; i < maxLength; i++) {
+        const media = mediaList[i] || {};
+        const sig = sigList[i] || {};
 
-          const chkTitle = i === 0 ? checklist.title : '';
-          const chkRemarks = i === 0 ? checklist.remarks : '';
-          const chkStatus = i === 0 ? checklist.status : '';
-          const chkscanStartDate = i === 0 ? checklist.scanStartDate : '';
-          const chkscanEndDate = i === 0 ? checklist.scanEndDate : '';
+        const chkTitle = i === 0 ? checklist.title : '';
+        const chkRemarks = i === 0 ? checklist.remarks : '';
+        const chkStatus = i === 0 ? checklist.status : '';
+        const chkscanStartDate = i === 0 ? checklist.scanStartDate : '';
+        const chkscanEndDate = i === 0 ? checklist.scanEndDate : '';
+        const chkscheduledDate = i === 0 ? checklist.scheduledDate : '';
+        const chkexpiryDate = i === 0 ? checklist.expiryDate : '';
+        const chklocationName = i === 0 ? checklist.locationName : '';
+        const chkscannedBy = i === 0 ? checklist.scannedBy : '';
 
-          // Columns A and B left blank, data starts from column C
-          csvContent += `,,${chkTitle},${chkRemarks},${chkStatus},${chkscanStartDate},${chkscanEndDate},${media.description || ''},${media.mediaType || ''},${media.createdBy || ''},${media.createdDate || ''},${media.mediaUrl || ''},${sig.signatureId || ''},${sig.signatureUrl || ''},${sig.createdDate || ''},${sig.patrolId || ''}\n`;
-        }
+        csvContent += `,,${safe(chkTitle)},${safe(chkRemarks)},${safe(chkStatus)},${safe(chkscanStartDate)},${safe(chkscanEndDate)},${safe(chkscheduledDate)},${safe(chkexpiryDate)},${safe(chklocationName)},${safe(chkscannedBy)},${safe(media.description)},${safe(media.mediaType)},${safe(media.createdBy)},${safe(media.createdDate)},${safe(media.mediaUrl)},${safe(sig.signatureId)},${safe(sig.signatureUrl)},${safe(sig.createdDate)},${safe(sig.userId)}\n`;
       }
     }
-
-    // Trigger download
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Patrol-Report.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   }
+
+  // Trigger download
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', 'Patrol-Report.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 
 
   downloadMediaCSV(): void {
@@ -255,47 +318,47 @@ observable.subscribe({
 
 
 
-currentPage: number = 1;
-itemsPerPage: number = 10;
-totalItems: number = 0;
-pageSizeOptions: number[] = [5, 10, 20, 50, 100];
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
+  pageSizeOptions: number[] = [5, 10, 20, 50, 100];
 
-get startItem(): number {
-  return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
-}
+  get startItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
 
-get endItem(): number {
-  const possibleEnd = this.currentPage * this.itemsPerPage;
-  return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
-}
+  get endItem(): number {
+    const possibleEnd = this.currentPage * this.itemsPerPage;
+    return possibleEnd > this.totalItems ? this.totalItems : possibleEnd;
+  }
 
-get totalPages(): number {
-  return Math.ceil(this.totalItems / this.itemsPerPage);
-}
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
 
-onItemsPerPageChange() {
-  this.currentPage = 1;
-  this.applyReport(new Event('submit'));
-}
-
-prevPage() {
-  if (this.currentPage > 1) {
-    this.currentPage--;
+  onItemsPerPageChange() {
+    this.currentPage = 1;
     this.applyReport(new Event('submit'));
   }
-}
 
-nextPage() {
-  if (this.currentPage < this.totalPages) {
-    this.currentPage++;
-    this.applyReport(new Event('submit'));
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.applyReport(new Event('submit'));
+    }
   }
-}
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.applyReport(new Event('submit'));
+    }
+  }
 
 
-isValidDate(value: any): boolean {
-  return value && !isNaN(Date.parse(value));
-}
+  isValidDate(value: any): boolean {
+    return value && !isNaN(Date.parse(value));
+  }
 
 
 
