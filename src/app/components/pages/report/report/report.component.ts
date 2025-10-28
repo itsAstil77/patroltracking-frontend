@@ -4,6 +4,9 @@ import { AlertService } from '../../../services/alert/alert.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReportService } from '../../../services/report/report.service';
+import * as ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
+
 
 
 @Component({
@@ -156,86 +159,103 @@ export class ReportComponent implements OnInit {
 
 
 
-  // downloadCSV(): void {
-  //   let csvContent = 'data:text/csv;charset=utf-8,';
 
-  //   // Row 1: Workflow headers
-  //   csvContent += 'Assignment Title,Status,Assigned Start,Assigned End,Start,End \n';
+//   downloadCSV(): void {
+//   let csvContent = 'data:text/csv;charset=utf-8,';
 
-  //   for (const workflow of this.reportData.completedWorkflows) {
-  //     const wf = workflow.workflow;
+//   // Row 1: Workflow headers
+//   csvContent += 'Assignment Title,Status,Assigned Start,Assigned End,Start,End\n';
 
-  //     // Row 2: Workflow data
-  //     csvContent += `${wf.workflowTitle},${wf.status},${wf.assignedStart},${wf.assignedEnd},${wf.startDateTime},${wf.endDateTime}\n`;
+//   const safe = (val: any) => `"${(val ?? '').toString().replace(/"/g, '""')}"`;
 
-  //     // Row 3: Blank row
-  //     csvContent += '\n';
+//   for (const workflow of this.reportData.completedWorkflows) {
+//     const wf = workflow.workflow;
 
-  //     // Row 4: Checklist + Media + Signature headers starting at column C
-  //     csvContent += ',,Task Title,Remarks,Task Status,Start,End,ScheduledDate,ExpiryDate,Location,ScannedBy,Media Description,Media Type,Created By,Created Date,Media URL,Signature ID,Signature URL,Created Time,Created By\n';
+//     // Row 2: Workflow data
+//     csvContent += `${safe(wf.workflowTitle)},${safe(wf.status)},${safe(wf.assignedStart)},${safe(wf.assignedEnd)},${safe(wf.startDateTime)},${safe(wf.endDateTime)}\n`;
 
-  //     // Row 5+: Data rows
-  //     for (const checklist of workflow.checklists) {
-  //       const mediaList = checklist.media?.length ? checklist.media : [null];
-  //       const sigList = checklist.signatures?.length ? checklist.signatures : [null];
+//     // Blank row
+//     csvContent += '\n';
 
-  //       const maxLength = Math.max(mediaList.length, sigList.length);
+//     // Checklist + Media + Signature headers
+//     csvContent += ',,Task Title,Remarks,Task Status,Start,End,ScheduledDate,ExpiryDate,Location,ScannedBy,Media Description,Media Type,Created By,Created Date,Media URL,Signature ID,Signature URL,Created Time,Created By\n';
 
-  //       for (let i = 0; i < maxLength; i++) {
-  //         const media = mediaList[i] || {};
-  //         const sig = sigList[i] || {};
+//     // Data rows
+//     for (const checklist of workflow.checklists) {
+//       const mediaList = checklist.media?.length ? checklist.media : [null];
+//       const sigList = checklist.signatures?.length ? checklist.signatures : [null];
+//       const maxLength = Math.max(mediaList.length, sigList.length);
 
-  //         const chkTitle = i === 0 ? checklist.title : '';
-  //         const chkRemarks = i === 0 ? checklist.remarks : '';
-  //         const chkStatus = i === 0 ? checklist.status : '';
-  //         const chkscanStartDate = i === 0 ? checklist.scanStartDate : '';
-  //         const chkscanEndDate = i === 0 ? checklist.scanEndDate : '';
-  //         const chkscheduledDate = i === 0 ? checklist.scheduledDate : '';
-  //         const chkexpiryDate = i === 0 ? checklist.expiryDate : '';
-  //          const chklocationName = i === 0 ? checklist.locationName : '';
-  //           const chkscannedBy = i === 0 ? checklist.scannedBy : '';
+//       for (let i = 0; i < maxLength; i++) {
+//         const media = mediaList[i] || {};
+//         const sig = sigList[i] || {};
 
+//         const chkTitle = i === 0 ? checklist.title : '';
+//         const chkRemarks = i === 0 ? checklist.remarks : '';
+//         const chkStatus = i === 0 ? checklist.status : '';
+//         const chkscanStartDate = i === 0 ? checklist.scanStartDate : '';
+//         const chkscanEndDate = i === 0 ? checklist.scanEndDate : '';
+//         const chkscheduledDate = i === 0 ? checklist.scheduledDate : '';
+//         const chkexpiryDate = i === 0 ? checklist.expiryDate : '';
+//         const chklocationName = i === 0 ? checklist.locationName : '';
+//         const chkscannedBy = i === 0 ? checklist.scannedBy : '';
 
-  //         // Columns A and B left blank, data starts from column C
-  //         csvContent += `,,${chkTitle},${chkRemarks},${chkStatus},${chkscanStartDate},${chkscanEndDate},${chkscheduledDate},
-  //         ${chkexpiryDate},${chklocationName},${chkscannedBy},${media.description || ''},${media.mediaType || ''},${media.createdBy || ''},${media.createdDate || ''},${media.mediaUrl || ''},${sig.signatureId || ''},${sig.signatureUrl || ''},${sig.createdDate || ''},${sig.patrolId || ''}\n`;
-  //       }
-  //     }
-  //   }
+//         csvContent += `,,${safe(chkTitle)},${safe(chkRemarks)},${safe(chkStatus)},${safe(chkscanStartDate)},${safe(chkscanEndDate)},${safe(chkscheduledDate)},${safe(chkexpiryDate)},${safe(chklocationName)},${safe(chkscannedBy)},${safe(media.description)},${safe(media.mediaType)},${safe(media.createdBy)},${safe(media.createdDate)},${safe(media.mediaUrl)},${safe(sig.signatureId)},${safe(sig.signatureUrl)},${safe(sig.createdDate)},${safe(sig.userId)}\n`;
+//       }
+//     }
+//   }
 
-  //   // Trigger download
-  //   const encodedUri = encodeURI(csvContent);
-  //   const link = document.createElement('a');
-  //   link.setAttribute('href', encodedUri);
-  //   link.setAttribute('download', 'Patrol-Report.csv');
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // }
+//   // Trigger download
+//   const encodedUri = encodeURI(csvContent);
+//   const link = document.createElement('a');
+//   link.setAttribute('href', encodedUri);
+//   link.setAttribute('download', 'Patrol-Report.csv');
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
+// }
 
+downloadXLSX(): void {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Patrol Report');
 
-  downloadCSV(): void {
-  let csvContent = 'data:text/csv;charset=utf-8,';
+  // === Row 1: Workflow headers ===
+  const headerRow1 = ['Assignment Title', 'Status', 'Assigned Start', 'Assigned End', 'Start', 'End'];
+  const row1 = worksheet.addRow(headerRow1);
+  row1.font = { bold: true, color: { argb: '000000' } };
+  row1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D9D9D9' } };
+  row1.alignment = { vertical: 'middle', horizontal: 'center' };
 
-  // Row 1: Workflow headers
-  csvContent += 'Assignment Title,Status,Assigned Start,Assigned End,Start,End\n';
-
-  const safe = (val: any) => `"${(val ?? '').toString().replace(/"/g, '""')}"`;
-
-  for (const workflow of this.reportData.completedWorkflows) {
+  // === Add workflow + checklist data ===
+  this.reportData.completedWorkflows.forEach((workflow: any) => {
     const wf = workflow.workflow;
 
-    // Row 2: Workflow data
-    csvContent += `${safe(wf.workflowTitle)},${safe(wf.status)},${safe(wf.assignedStart)},${safe(wf.assignedEnd)},${safe(wf.startDateTime)},${safe(wf.endDateTime)}\n`;
+    // Workflow data
+    worksheet.addRow([
+      wf.workflowTitle,
+      wf.status,
+      wf.assignedStart || '',
+      wf.assignedEnd || '',
+      wf.startDateTime || '',
+      wf.endDateTime || '',
+    ]);
 
-    // Blank row
-    csvContent += '\n';
+    worksheet.addRow([]); // Blank row for spacing
 
-    // Checklist + Media + Signature headers
-    csvContent += ',,Task Title,Remarks,Task Status,Start,End,ScheduledDate,ExpiryDate,Location,ScannedBy,Media Description,Media Type,Created By,Created Date,Media URL,Signature ID,Signature URL,Created Time,Created By\n';
+    // === Checklist headers ===
+    const headerRow2 = [
+      '', '', 'Task Title', 'Remarks', 'Task Status', 'Start', 'End',
+      'Scheduled Date', 'Expiry Date', 'Location', 'Scanned By',
+      'Media Description', 'Media Type', 'Created By', 'Created Date',
+      'Media URL', 'Signature ID', 'Signature URL', 'Created Time', 'Created By'
+    ];
+    const row2 = worksheet.addRow(headerRow2);
+    row2.font = { bold: true, color: { argb: '000000' } };
+    row2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D9D9D9' } };
+    row2.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    // Data rows
-    for (const checklist of workflow.checklists) {
+    // === Checklist data ===
+    for (const checklist of workflow.checklists || []) {
       const mediaList = checklist.media?.length ? checklist.media : [null];
       const sigList = checklist.signatures?.length ? checklist.signatures : [null];
       const maxLength = Math.max(mediaList.length, sigList.length);
@@ -244,73 +264,168 @@ export class ReportComponent implements OnInit {
         const media = mediaList[i] || {};
         const sig = sigList[i] || {};
 
-        const chkTitle = i === 0 ? checklist.title : '';
-        const chkRemarks = i === 0 ? checklist.remarks : '';
-        const chkStatus = i === 0 ? checklist.status : '';
-        const chkscanStartDate = i === 0 ? checklist.scanStartDate : '';
-        const chkscanEndDate = i === 0 ? checklist.scanEndDate : '';
-        const chkscheduledDate = i === 0 ? checklist.scheduledDate : '';
-        const chkexpiryDate = i === 0 ? checklist.expiryDate : '';
-        const chklocationName = i === 0 ? checklist.locationName : '';
-        const chkscannedBy = i === 0 ? checklist.scannedBy : '';
+        // ✅ Convert array fields to plain text (remove square brackets)
+        const cleanValue = (val: any) => {
+          if (Array.isArray(val)) return val.join(', '); // flatten arrays
+          return val || ''; // return value or empty string
+        };
 
-        csvContent += `,,${safe(chkTitle)},${safe(chkRemarks)},${safe(chkStatus)},${safe(chkscanStartDate)},${safe(chkscanEndDate)},${safe(chkscheduledDate)},${safe(chkexpiryDate)},${safe(chklocationName)},${safe(chkscannedBy)},${safe(media.description)},${safe(media.mediaType)},${safe(media.createdBy)},${safe(media.createdDate)},${safe(media.mediaUrl)},${safe(sig.signatureId)},${safe(sig.signatureUrl)},${safe(sig.createdDate)},${safe(sig.userId)}\n`;
+        worksheet.addRow([
+          '', '',
+          i === 0 ? checklist.title : '',
+          i === 0 ? checklist.remarks : '',
+          i === 0 ? checklist.status : '',
+          i === 0 ? checklist.scanStartDate : '',
+          i === 0 ? checklist.scanEndDate : '',
+          i === 0 ? cleanValue(checklist.scheduledDate) : '',
+          i === 0 ? cleanValue(checklist.expiryDate) : '',
+          i === 0 ? cleanValue(checklist.locationName) : '',
+          i === 0 ? cleanValue(checklist.scannedBy) : '',
+          media.description || '',
+          media.mediaType || '',
+          media.createdBy || '',
+          media.createdDate || '',
+          media.mediaUrl || '',
+          sig.signatureId || '',
+          sig.signatureUrl || '',
+          sig.createdDate || '',
+          sig.userId || ''
+        ]);
       }
     }
-  }
 
-  // Trigger download
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement('a');
-  link.setAttribute('href', encodedUri);
-  link.setAttribute('download', 'Patrol-Report.csv');
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+    worksheet.addRow([]); // spacing between workflows
+  });
+
+  // === Borders + alignment ===
+  worksheet.eachRow((row) => {
+    row.eachCell((cell) => {
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+      cell.alignment = { vertical: 'middle', wrapText: true };
+    });
+  });
+
+  // === Auto-adjust column widths ===
+  worksheet.columns.forEach((column: any) => {
+    let maxLength = 10;
+    column.eachCell({ includeEmpty: true }, (cell: any) => {
+      const length = cell.value ? cell.value.toString().length : 0;
+      if (length > maxLength) maxLength = length;
+    });
+    column.width = maxLength + 5;
+  });
+
+  // === Save Excel file ===
+  workbook.xlsx.writeBuffer().then((buffer: ArrayBuffer) => {
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+    saveAs(blob, 'Patrol-Report.xlsx');
+  });
 }
 
 
 
-  downloadMediaCSV(): void {
-    const mediaData = this.reportData?.media;
 
-    if (!mediaData || mediaData.length === 0) {
-      alert('No media data available to download.');
-      return;
-    }
+  // downloadMediaCSV(): void {
+  //   const mediaData = this.reportData?.media;
 
-    const csvRows = [];
+  //   if (!mediaData || mediaData.length === 0) {
+  //     alert('No media data available to download.');
+  //     return;
+  //   }
 
-    // Header
-    const headers = ['#', 'Type', 'Description', 'Created By', 'Media URL', 'Created Date'];
-    csvRows.push(headers.join(','));
+  //   const csvRows = [];
 
-    // Data rows
-    mediaData.forEach((item: any, index: number) => {
-      const row = [
-        index + 1,
-        item.mediaType || '',
-        item.description || '',
-        item.createdBy || '',
-        item.mediaUrl || '',
-        item.createdDate ? new Date(item.createdDate).toLocaleString('en-GB') : ''
-      ];
-      csvRows.push(row.map(val => `"${val}"`).join(','));
-    });
+  //   // Header
+  //   const headers = ['#', 'Type', 'Description', 'Created By', 'Media URL', 'Created Date'];
+  //   csvRows.push(headers.join(','));
 
-    // Generate Blob and download
-    const csvContent = csvRows.join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
+  //   // Data rows
+  //   mediaData.forEach((item: any, index: number) => {
+  //     const row = [
+  //       index + 1,
+  //       item.mediaType || '',
+  //       item.description || '',
+  //       item.createdBy || '',
+  //       item.mediaUrl || '',
+  //       item.createdDate ? new Date(item.createdDate).toLocaleString('en-GB') : ''
+  //     ];
+  //     csvRows.push(row.map(val => `"${val}"`).join(','));
+  //   });
 
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = 'Patrol_Incident-report.csv';
-    anchor.click();
+  //   // Generate Blob and download
+  //   const csvContent = csvRows.join('\n');
+  //   const blob = new Blob([csvContent], { type: 'text/csv' });
+  //   const url = window.URL.createObjectURL(blob);
 
-    window.URL.revokeObjectURL(url);
+  //   const anchor = document.createElement('a');
+  //   anchor.href = url;
+  //   anchor.download = 'Patrol_Incident-report.csv';
+  //   anchor.click();
+
+  //   window.URL.revokeObjectURL(url);
+  // }
+downloadMediaXLSX(): void {
+  const mediaData = this.reportData?.media;
+
+  if (!mediaData || mediaData.length === 0) {
+    alert('No media data available to download.');
+    return;
   }
 
+  // Create a new workbook and worksheet
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Media Report');
+
+  // Define headers
+  const headers = ['#', 'Type', 'Description', 'Created By', 'Media URL', 'Created Date'];
+
+  // Add header row
+  const headerRow = worksheet.addRow(headers);
+  headerRow.font = { bold: true }; // ✅ Make headers bold
+
+  // Optional: Adjust column widths for better visibility
+  const columnWidths = [6, 15, 30, 20, 40, 25];
+  columnWidths.forEach((width, i) => (worksheet.getColumn(i + 1).width = width));
+
+  // Add data rows
+  mediaData.forEach((item: any, index: number) => {
+    worksheet.addRow([
+      index + 1,
+      item.mediaType || '',
+      item.description || '',
+      item.createdBy || '',
+      item.mediaUrl || '',
+      item.createdDate ? new Date(item.createdDate).toLocaleString('en-GB') : ''
+    ]);
+  });
+
+  // Optional: Add borders to all cells
+  worksheet.eachRow((row) => {
+    row.eachCell((cell) => {
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+  });
+
+  // Save Excel file
+  workbook.xlsx.writeBuffer().then((buffer) => {
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+    saveAs(blob, 'Patrol_Incident-Report.xlsx');
+  });
+}
 
   reloadPage() {
     window.location.reload();

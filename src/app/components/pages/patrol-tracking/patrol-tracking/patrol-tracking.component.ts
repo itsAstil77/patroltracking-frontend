@@ -942,6 +942,8 @@ refreshBulkChecklist(workflowId: string): void {
     } else {
       this.selectedUserIds = [];
     }
+     this.assignDropdownOpen = false;
+
   }
 
   // Check if all users are selected
@@ -1195,6 +1197,7 @@ refreshBulkChecklist(workflowId: string): void {
     } else {
       this.selectedTaskIds = [];
     }
+    this.taskDropdownOpen=false;
   }
 
 
@@ -1244,6 +1247,7 @@ refreshBulkChecklist(workflowId: string): void {
     } else {
       this.selectedLocationIds = [];
     }
+    this.isLocationDropdownOpen=false;
   }
 
 
