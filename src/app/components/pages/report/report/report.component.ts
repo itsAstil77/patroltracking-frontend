@@ -26,6 +26,9 @@ export class ReportComponent implements OnInit {
     this.currentDate = today.toISOString().split('T')[0];
   }
 
+
+  loading: boolean = false;
+
   currentDate: string = '';
   assignedTo: string = '';
   type: string = '';
@@ -90,6 +93,7 @@ export class ReportComponent implements OnInit {
 
     this.showTable = false;
     this.showTableMedia = false;
+     this.loading = true; // <-- show loader
 
     const page = this.currentPage;
     const limit = this.itemsPerPage;
@@ -101,6 +105,7 @@ export class ReportComponent implements OnInit {
     observable.subscribe({
       next: (res) => {
         console.log("API response:", res);
+
 
         if (this.type === 'media') {
           this.totalItems = res.pagination?.totalMedia ?? 0;
@@ -126,11 +131,13 @@ export class ReportComponent implements OnInit {
             this.showTable = false;
           }
         }
+        this.loading = false; // ✅ hide loader after processing both types
       },
       error: (err) => {
         console.error('Error fetching report:', err);
         const message = err.error?.message || 'Error fetching report.';
         this.alertService.showAlert(message, "error");
+         this.loading = false; // ✅ hide loader even on error
       }
     });
   }

@@ -55,7 +55,7 @@
   </form>
 </div>
 
-<nav class="navbar" *ngIf="showTable ">
+ <nav class="navbar" *ngIf="showTable ">
   <div class="navbar-left">
     <span class="navbar-title">View Report</span>
   </div>
@@ -415,4 +415,9 @@
     <img *ngIf="mediaType === 'image'" [src]="mediaUrl" alt="Signature Image" class="signature-img" />
     <button class="close-btn" (click)="closeMediaPopup()">Close</button>
   </div>
+</div>
+
+
+<div *ngIf="loading" class="loader-overlay">
+  <div class="spinner"></div>
 </div>

@@ -43,6 +43,7 @@ export class PatrolTrackingComponent implements OnInit {
 
 
   showPopupAssign = false;
+  loading: boolean = false;
 
 
   ngOnInit() {
@@ -169,7 +170,7 @@ export class PatrolTrackingComponent implements OnInit {
 
   // toggleChecklist(workflowId: string): void {
 
-    
+
   //   this.expandedRowsAssignment[workflowId] = !this.expandedRowsAssignment[workflowId];
 
   //   if (this.expandedRowsAssignment[workflowId] && !this.checklistDataAssignment[workflowId]) {
@@ -185,23 +186,23 @@ export class PatrolTrackingComponent implements OnInit {
   // }
 
   toggleChecklist(workflowId: string): void {
-  this.expandedRowsAssignment[workflowId] = !this.expandedRowsAssignment[workflowId];
+    this.expandedRowsAssignment[workflowId] = !this.expandedRowsAssignment[workflowId];
 
-  if (this.expandedRowsAssignment[workflowId] && !this.checklistDataAssignment[workflowId]) {
-    this.workflowService
-      .getChecklistByWorkflowId(workflowId, this.checklistCurrentPage, this.checklistItemsPerPage) // 👈 pass page & limit
-      .subscribe((res) => {
-        if (res.success) {
-          this.checklistDataAssignment[workflowId] = res.checklists.map((checklist: any) => ({
-            ...checklist,
-            hasLocation: !!checklist.geoCoordinates,
-          }));
-          this.checklistTotalItems = res.totalCount ?? 0; // keep total count for pagination
-          this.checklistCurrentPage = 1; // reset page to 1 when first opening
-        }
-      });
+    if (this.expandedRowsAssignment[workflowId] && !this.checklistDataAssignment[workflowId]) {
+      this.workflowService
+        .getChecklistByWorkflowId(workflowId, this.checklistCurrentPage, this.checklistItemsPerPage) // 👈 pass page & limit
+        .subscribe((res) => {
+          if (res.success) {
+            this.checklistDataAssignment[workflowId] = res.checklists.map((checklist: any) => ({
+              ...checklist,
+              hasLocation: !!checklist.geoCoordinates,
+            }));
+            this.checklistTotalItems = res.totalCount ?? 0; // keep total count for pagination
+            this.checklistCurrentPage = 1; // reset page to 1 when first opening
+          }
+        });
+    }
   }
-}
 
 
   // toggleBulkChecklist(workflowId: string): void {
@@ -219,26 +220,26 @@ export class PatrolTrackingComponent implements OnInit {
   //   }
   // }
 
-toggleBulkChecklist(workflowId: string): void {
-  this.expandedRowsSchedule[workflowId] = !this.expandedRowsSchedule[workflowId];
+  toggleBulkChecklist(workflowId: string): void {
+    this.expandedRowsSchedule[workflowId] = !this.expandedRowsSchedule[workflowId];
 
-  if (this.expandedRowsSchedule[workflowId] && !this.checklistDataSchedule[workflowId]) {
-    this.workflowService
-      .getBulkChecklistByWorkflowId(
-        workflowId,
-        this.scheduleChecklistCurrentPage,
-        this.scheduleChecklistItemsPerPage
-      )
-      .subscribe(res => {
-        if (res.success) {
-          this.checklistDataSchedule[workflowId] = res.today.tasks.map((checklist: any) => ({
-            ...checklist,
-            hasLocation: !!checklist.coordinates
-          }));
-        }
-      });
+    if (this.expandedRowsSchedule[workflowId] && !this.checklistDataSchedule[workflowId]) {
+      this.workflowService
+        .getBulkChecklistByWorkflowId(
+          workflowId,
+          this.scheduleChecklistCurrentPage,
+          this.scheduleChecklistItemsPerPage
+        )
+        .subscribe(res => {
+          if (res.success) {
+            this.checklistDataSchedule[workflowId] = res.today.tasks.map((checklist: any) => ({
+              ...checklist,
+              hasLocation: !!checklist.coordinates
+            }));
+          }
+        });
+    }
   }
-}
 
 
 
@@ -520,16 +521,16 @@ toggleBulkChecklist(workflowId: string): void {
   // }
 
   refreshChecklist(workflowId: string): void {
-  this.workflowService
-    .getChecklistByWorkflowId(workflowId, this.checklistCurrentPage, this.checklistItemsPerPage)
-    .subscribe((res) => {
-      if (res.success) {
-        this.checklistData[workflowId] = res.checklists;
-        this.expandedRows[workflowId] = true;
-        this.checklistTotalItems = res.totalCount ?? 0; // update total
-      }
-    });
-}
+    this.workflowService
+      .getChecklistByWorkflowId(workflowId, this.checklistCurrentPage, this.checklistItemsPerPage)
+      .subscribe((res) => {
+        if (res.success) {
+          this.checklistData[workflowId] = res.checklists;
+          this.expandedRows[workflowId] = true;
+          this.checklistTotalItems = res.totalCount ?? 0; // update total
+        }
+      });
+  }
 
   locationList: any[] = []
   loadLocation() {
@@ -693,20 +694,20 @@ toggleBulkChecklist(workflowId: string): void {
   // }
 
 
-refreshBulkChecklist(workflowId: string): void {
-  this.workflowService
-    .getBulkChecklistByWorkflowId(
-      workflowId,
-      this.scheduleChecklistCurrentPage,
-      this.scheduleChecklistItemsPerPage
-    )
-    .subscribe(res => {
-      if (res.success) {
-        this.checklistData[workflowId] = res.today.tasks;
-        this.expandedRows[workflowId] = true; // Keep it expanded
-      }
-    });
-}
+  refreshBulkChecklist(workflowId: string): void {
+    this.workflowService
+      .getBulkChecklistByWorkflowId(
+        workflowId,
+        this.scheduleChecklistCurrentPage,
+        this.scheduleChecklistItemsPerPage
+      )
+      .subscribe(res => {
+        if (res.success) {
+          this.checklistData[workflowId] = res.today.tasks;
+          this.expandedRows[workflowId] = true; // Keep it expanded
+        }
+      });
+  }
 
 
   //   months = '';
@@ -823,13 +824,15 @@ refreshBulkChecklist(workflowId: string): void {
       scheduleEnd: this.scheduleEnd,
       createdBy: this.createdBy
     };
+    this.loading = true; 
 
     this.workflowService.createBulkChecklist(payload).subscribe({
       next: (res) => {
         console.log('Bulk Checklist Created:', res);
         this.hideBulkChecklistPopup();
         this.alertService.showAlert(res.message);
-       this.refreshBulkChecklist(this.workflowId);
+        this.loading = false; 
+        this.refreshBulkChecklist(this.workflowId);
       },
       error: (err: any) => {
         if ((err.status === 400 || err.status === 500) && err.error && err.error.message) {
@@ -942,7 +945,7 @@ refreshBulkChecklist(workflowId: string): void {
     } else {
       this.selectedUserIds = [];
     }
-     this.assignDropdownOpen = false;
+    this.assignDropdownOpen = false;
 
   }
 
@@ -1197,7 +1200,7 @@ refreshBulkChecklist(workflowId: string): void {
     } else {
       this.selectedTaskIds = [];
     }
-    this.taskDropdownOpen=false;
+    this.taskDropdownOpen = false;
   }
 
 
@@ -1247,340 +1250,340 @@ refreshBulkChecklist(workflowId: string): void {
     } else {
       this.selectedLocationIds = [];
     }
-    this.isLocationDropdownOpen=false;
+    this.isLocationDropdownOpen = false;
   }
 
 
-showChecklistModal = false;
-selectedChecklistData: any[] = [];
+  showChecklistModal = false;
+  selectedChecklistData: any[] = [];
 
 
 
-// openChecklistPopup(workflowId: string): void {
+  // openChecklistPopup(workflowId: string): void {
 
-//   if (!this.checklistDataAssignment[workflowId]) {
-//     this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
-//       if (res.success) {
-//         this.checklistDataAssignment[workflowId] = res.checklists.map((checklist: any) => ({
-//           ...checklist,
-//           hasLocation: !!checklist.geoCoordinates
-//         }));
-//         this.selectedChecklistData = this.checklistDataAssignment[workflowId];
-//         this.showChecklistModal = true;
-//       }
-//     });
-//   } else {
+  //   if (!this.checklistDataAssignment[workflowId]) {
+  //     this.workflowService.getChecklistByWorkflowId(workflowId).subscribe(res => {
+  //       if (res.success) {
+  //         this.checklistDataAssignment[workflowId] = res.checklists.map((checklist: any) => ({
+  //           ...checklist,
+  //           hasLocation: !!checklist.geoCoordinates
+  //         }));
+  //         this.selectedChecklistData = this.checklistDataAssignment[workflowId];
+  //         this.showChecklistModal = true;
+  //       }
+  //     });
+  //   } else {
 
-//     this.selectedChecklistData = this.checklistDataAssignment[workflowId];
-//     this.showChecklistModal = true;
-//   }
-// }
+  //     this.selectedChecklistData = this.checklistDataAssignment[workflowId];
+  //     this.showChecklistModal = true;
+  //   }
+  // }
 
-closeChecklistPopup(): void {
-  this.showChecklistModal = false;
-  this.selectedChecklistData = [];
-}
-
-
-downloadTask() {
-  if (!this.selectedChecklistData || this.selectedChecklistData.length === 0) {
-    alert('No tasks available to download.');
-    return;
+  closeChecklistPopup(): void {
+    this.showChecklistModal = false;
+    this.selectedChecklistData = [];
   }
 
-  const headers = ['Checklist ID', 'Title', 'Remarks', 'Assigned To', 'Created By', 'Status', 'Active'];
-  const rows = this.selectedChecklistData.map(item => [
-    item.checklistId,
-    item.title,
-    item.remarks,
-    item.assignedTo?.join(', '),
-    item.createdBy,
-    item.status,
-    item.isActive ? 'Yes' : 'No'
-  ]);
 
-  let csvContent = '';
-  csvContent += headers.join(',') + '\n';
-  rows.forEach(row => {
-    csvContent += row.map(val => `"${val}"`).join(',') + '\n';
-  });
+  downloadTask() {
+    if (!this.selectedChecklistData || this.selectedChecklistData.length === 0) {
+      alert('No tasks available to download.');
+      return;
+    }
 
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
+    const headers = ['Checklist ID', 'Title', 'Remarks', 'Assigned To', 'Created By', 'Status', 'Active'];
+    const rows = this.selectedChecklistData.map(item => [
+      item.checklistId,
+      item.title,
+      item.remarks,
+      item.assignedTo?.join(', '),
+      item.createdBy,
+      item.status,
+      item.isActive ? 'Yes' : 'No'
+    ]);
 
-  const link = document.createElement('a');
-  link.setAttribute('href', url);
-  link.setAttribute('download', 'checklist_tasks.csv');
-  link.click();
-  URL.revokeObjectURL(url);
-}
-
-
-
-showScheduleChecklistModal = false;
-selectedScheduleChecklistData: any[] = [];
-
-// openScheduleChecklistPopup(workflowId: string): void {
-//   if (!workflowId) {
-//     console.error('Invalid workflowId for schedule:', workflowId);
-//     return;
-//   }
-
-//   if (!this.checklistDataSchedule[workflowId]) {
-//     this.workflowService.getBulkChecklistByWorkflowId(workflowId).subscribe(res => {
-//       if (res.success) {
-//         this.checklistDataSchedule[workflowId] = res.checklists.map((checklist: any) => ({
-//           ...checklist,
-//           hasLocation: !!checklist.geoCoordinates
-//         }));
-//         this.selectedScheduleChecklistData = this.checklistDataSchedule[workflowId];
-//         this.showScheduleChecklistModal = true;
-//       }
-//     });
-//   } else {
-//     this.selectedScheduleChecklistData = this.checklistDataSchedule[workflowId];
-//     this.showScheduleChecklistModal = true;
-//   }
-// }
-
-closeScheduleChecklistPopup(): void {
-  this.showScheduleChecklistModal = false;
-  this.selectedScheduleChecklistData = [];
-}
-
-downloadScheduleTask() {
-  if (!this.selectedScheduleChecklistData || this.selectedScheduleChecklistData.length === 0) {
-    alert('No schedule tasks available to download.');
-    return;
-  }
-
-  const headers = ['Task ID','Title','Description','Assigned To','Assigned By','Start','End','Scheduled Date','Expiry Date','Status','Active'];
-  const rows = this.selectedScheduleChecklistData.map(item => [
-    item.checklistId,
-    item.title,
-    item.remarks,
-    item.assignedTo,
-    item.createdBy,
-    item.scanStartDate ? new Date(item.scanStartDate).toLocaleString() : '-',
-    item.scanEndDate ? new Date(item.scanEndDate).toLocaleString() : '-',
-    item.scheduledDate ? new Date(item.scheduledDate).toLocaleDateString() : '-',
-    item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : '-',
-    item.status,
-    item.isActive ? 'Yes' : 'No'
-  ]);
-
-  let csvContent = headers.join(',') + '\n';
-  rows.forEach(row => {
-    csvContent += row.map(val => `"${val}"`).join(',') + '\n';
-  });
-
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement('a');
-  link.setAttribute('href', url);
-  link.setAttribute('download', 'schedule_tasks.csv');
-  link.click();
-  URL.revokeObjectURL(url);
-}
-
-
-
-// Checklist pagination state
-checklistItemsPerPage = 10;
-checklistCurrentPage = 1;
-checklistPageSizeOptions = [5, 10, 20, 50];
-checklistTotalItems = 0;
-
-
-get checklistStartItem(): number {
-  return (this.checklistCurrentPage - 1) * this.checklistItemsPerPage + 1;
-}
-
-get checklistEndItem(): number {
-  const end = this.checklistCurrentPage * this.checklistItemsPerPage;
-  return end > this.checklistTotalItems ? this.checklistTotalItems : end;
-}
-
-// 🔹 Open popup & fetch first page
-openChecklistPopup(workflowId: string): void {
-  this.selectedWorkflowId = workflowId;
-  this.checklistCurrentPage = 1;
-  this.fetchChecklistData();
-  this.showChecklistModal = true;
-}
-
-fetchChecklistData(): void {
-  if (!this.selectedWorkflowId) return;
-
-  this.workflowService
-    .getChecklistByWorkflowId(
-      this.selectedWorkflowId,
-      this.checklistCurrentPage,
-      this.checklistItemsPerPage
-    )
-    .subscribe((res) => {
-      if (res.success) {
-        this.selectedChecklistData = res.checklists.map((c: any) => ({
-          ...c,
-          hasLocation: !!c.geoCoordinates
-        }));
-        this.checklistTotalItems = res.totalCount ?? 0;
-      }
-
+    let csvContent = '';
+    csvContent += headers.join(',') + '\n';
+    rows.forEach(row => {
+      csvContent += row.map(val => `"${val}"`).join(',') + '\n';
     });
-}
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'checklist_tasks.csv');
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+
+
+  showScheduleChecklistModal = false;
+  selectedScheduleChecklistData: any[] = [];
+
+  // openScheduleChecklistPopup(workflowId: string): void {
+  //   if (!workflowId) {
+  //     console.error('Invalid workflowId for schedule:', workflowId);
+  //     return;
+  //   }
+
+  //   if (!this.checklistDataSchedule[workflowId]) {
+  //     this.workflowService.getBulkChecklistByWorkflowId(workflowId).subscribe(res => {
+  //       if (res.success) {
+  //         this.checklistDataSchedule[workflowId] = res.checklists.map((checklist: any) => ({
+  //           ...checklist,
+  //           hasLocation: !!checklist.geoCoordinates
+  //         }));
+  //         this.selectedScheduleChecklistData = this.checklistDataSchedule[workflowId];
+  //         this.showScheduleChecklistModal = true;
+  //       }
+  //     });
+  //   } else {
+  //     this.selectedScheduleChecklistData = this.checklistDataSchedule[workflowId];
+  //     this.showScheduleChecklistModal = true;
+  //   }
+  // }
+
+  closeScheduleChecklistPopup(): void {
+    this.showScheduleChecklistModal = false;
+    this.selectedScheduleChecklistData = [];
+  }
+
+  downloadScheduleTask() {
+    if (!this.selectedScheduleChecklistData || this.selectedScheduleChecklistData.length === 0) {
+      alert('No schedule tasks available to download.');
+      return;
+    }
+
+    const headers = ['Task ID', 'Title', 'Description', 'Assigned To', 'Assigned By', 'Start', 'End', 'Scheduled Date', 'Expiry Date', 'Status', 'Active'];
+    const rows = this.selectedScheduleChecklistData.map(item => [
+      item.checklistId,
+      item.title,
+      item.remarks,
+      item.assignedTo,
+      item.createdBy,
+      item.scanStartDate ? new Date(item.scanStartDate).toLocaleString() : '-',
+      item.scanEndDate ? new Date(item.scanEndDate).toLocaleString() : '-',
+      item.scheduledDate ? new Date(item.scheduledDate).toLocaleDateString() : '-',
+      item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : '-',
+      item.status,
+      item.isActive ? 'Yes' : 'No'
+    ]);
+
+    let csvContent = headers.join(',') + '\n';
+    rows.forEach(row => {
+      csvContent += row.map(val => `"${val}"`).join(',') + '\n';
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'schedule_tasks.csv');
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+
+
+  // Checklist pagination state
+  checklistItemsPerPage = 10;
+  checklistCurrentPage = 1;
+  checklistPageSizeOptions = [5, 10, 20, 50];
+  checklistTotalItems = 0;
+
+
+  get checklistStartItem(): number {
+    return (this.checklistCurrentPage - 1) * this.checklistItemsPerPage + 1;
+  }
+
+  get checklistEndItem(): number {
+    const end = this.checklistCurrentPage * this.checklistItemsPerPage;
+    return end > this.checklistTotalItems ? this.checklistTotalItems : end;
+  }
+
+  // 🔹 Open popup & fetch first page
+  openChecklistPopup(workflowId: string): void {
+    this.selectedWorkflowId = workflowId;
+    this.checklistCurrentPage = 1;
+    this.fetchChecklistData();
+    this.showChecklistModal = true;
+  }
+
+  fetchChecklistData(): void {
+    if (!this.selectedWorkflowId) return;
+
+    this.workflowService
+      .getChecklistByWorkflowId(
+        this.selectedWorkflowId,
+        this.checklistCurrentPage,
+        this.checklistItemsPerPage
+      )
+      .subscribe((res) => {
+        if (res.success) {
+          this.selectedChecklistData = res.checklists.map((c: any) => ({
+            ...c,
+            hasLocation: !!c.geoCoordinates
+          }));
+          this.checklistTotalItems = res.totalCount ?? 0;
+        }
+
+      });
+  }
 
 
 
 
-// 🔹 Pagination actions
-onChecklistItemsPerPageChange(): void {
-  this.checklistCurrentPage = 1;
-  this.fetchChecklistData();
-}
-
-checklistPrevPage(): void {
-  if (this.checklistCurrentPage > 1) {
-    this.checklistCurrentPage--;
+  // 🔹 Pagination actions
+  onChecklistItemsPerPageChange(): void {
+    this.checklistCurrentPage = 1;
     this.fetchChecklistData();
   }
-}
 
-checklistNextPage(): void {
-  if (this.checklistEndItem < this.checklistTotalItems) {
-    this.checklistCurrentPage++;
+  checklistPrevPage(): void {
+    if (this.checklistCurrentPage > 1) {
+      this.checklistCurrentPage--;
+      this.fetchChecklistData();
+    }
+  }
+
+  checklistNextPage(): void {
+    if (this.checklistEndItem < this.checklistTotalItems) {
+      this.checklistCurrentPage++;
+      this.fetchChecklistData();
+    }
+  }
+
+
+
+  // Pagination config for schedule checklist popup
+  scheduleChecklistItemsPerPage = 10;
+  scheduleChecklistCurrentPage = 1;
+  scheduleChecklistTotalItems = 0;
+  scheduleChecklistPageSizeOptions = [5, 10, 20, 50];
+  selectedWorkflowScheduleId: string | null = null;
+
+
+  // Open popup
+  openScheduleChecklistPopup(workflowId: string): void {
+    if (!workflowId) return;
+
+    this.selectedWorkflowScheduleId = workflowId;
+    this.scheduleChecklistCurrentPage = 1; // reset page
+    this.fetchScheduleChecklistData();
+    this.showScheduleChecklistModal = true;
+  }
+
+  // Fetch paginated data
+  // fetchScheduleChecklistData(): void {
+  //   if (!this.selectedWorkflowScheduleId) return;
+
+  //   this.workflowService
+  //     .getBulkChecklistByWorkflowId(
+  //       this.selectedWorkflowScheduleId,
+  //       this.scheduleChecklistCurrentPage,
+  //       this.scheduleChecklistItemsPerPage
+  //     )
+  //     .subscribe(res => {
+  //       if (res.success) {
+  //         const data = res.today; // your API returns `today` object
+  //         this.selectedScheduleChecklistData = data.tasks.map((checklist: any) => ({
+  //           ...checklist,
+  //           hasLocation: !!checklist.coordinates
+  //         }));
+  //         this.scheduleChecklistTotalItems = data.totalCount;
+  //       }
+  //     });
+  // }
+  fetchScheduleChecklistData(): void {
+    if (!this.selectedWorkflowScheduleId) return;
+
+    this.workflowService
+      .getBulkChecklistByWorkflowId(
+        this.selectedWorkflowScheduleId,
+        this.scheduleChecklistCurrentPage,
+        this.scheduleChecklistItemsPerPage
+      )
+      .subscribe(res => {
+        if (res.success && Array.isArray(res.tasks)) {
+          this.selectedScheduleChecklistData = res.tasks.map((checklist: any) => ({
+            ...checklist,
+            hasLocation: !!checklist.coordinates,
+            // handle array fields gracefully
+            locationName: Array.isArray(checklist.locationName)
+              ? checklist.locationName.join(', ')
+              : checklist.locationName || '-',
+            assignedTo: Array.isArray(checklist.assignedTo)
+              ? checklist.assignedTo.join(', ')
+              : checklist.assignedTo || '-',
+            scheduledDate: Array.isArray(checklist.scheduledDate)
+              ? checklist.scheduledDate[0]
+              : checklist.scheduledDate || null,
+          }));
+
+          this.scheduleChecklistTotalItems = res.totalCount || res.tasks.length;
+        } else {
+          this.selectedScheduleChecklistData = [];
+          this.scheduleChecklistTotalItems = 0;
+        }
+      });
+  }
+
+  // Pagination actions
+  onScheduleChecklistItemsPerPageChange(): void {
+    this.scheduleChecklistCurrentPage = 1;
+    this.fetchScheduleChecklistData();
+  }
+
+  scheduleChecklistPrevPage(): void {
+    if (this.scheduleChecklistCurrentPage > 1) {
+      this.scheduleChecklistCurrentPage--;
+      this.fetchScheduleChecklistData();
+    }
+  }
+
+  scheduleChecklistNextPage(): void {
+    if (this.scheduleChecklistEndItem < this.scheduleChecklistTotalItems) {
+      this.scheduleChecklistCurrentPage++;
+      this.fetchScheduleChecklistData();
+    }
+  }
+
+  get scheduleChecklistStartItem(): number {
+    return (this.scheduleChecklistCurrentPage - 1) * this.scheduleChecklistItemsPerPage + 1;
+  }
+
+  get scheduleChecklistEndItem(): number {
+    const end = this.scheduleChecklistCurrentPage * this.scheduleChecklistItemsPerPage;
+    return end > this.scheduleChecklistTotalItems ? this.scheduleChecklistTotalItems : end;
+  }
+
+  userSearchTerm: string = '';
+  taskSearchTerm: string = '';
+  locationSearchTerm: string = '';
+
+
+  reloadSchedulePage() {
+    this.fetchScheduleChecklistData();
+
+    const popup = document.querySelector('.popup-content');
+    if (popup) {
+      popup.classList.add('shake');
+      setTimeout(() => popup.classList.remove('shake'), 400); // remove after animation
+    }
+  }
+
+  reloadAssPage() {
     this.fetchChecklistData();
+
+    const popup = document.querySelector('.popup-content');
+    if (popup) {
+      popup.classList.add('shake');
+      setTimeout(() => popup.classList.remove('shake'), 400); // remove after animation
+    }
   }
-}
-
-
-
-// Pagination config for schedule checklist popup
-scheduleChecklistItemsPerPage = 10;
-scheduleChecklistCurrentPage = 1;
-scheduleChecklistTotalItems = 0;
-scheduleChecklistPageSizeOptions = [5, 10, 20, 50];
-selectedWorkflowScheduleId: string | null = null;
-
-
-// Open popup
-openScheduleChecklistPopup(workflowId: string): void {
-  if (!workflowId) return;
-
-  this.selectedWorkflowScheduleId = workflowId;
-  this.scheduleChecklistCurrentPage = 1; // reset page
-  this.fetchScheduleChecklistData();
-  this.showScheduleChecklistModal = true;
-}
-
-// Fetch paginated data
-// fetchScheduleChecklistData(): void {
-//   if (!this.selectedWorkflowScheduleId) return;
-
-//   this.workflowService
-//     .getBulkChecklistByWorkflowId(
-//       this.selectedWorkflowScheduleId,
-//       this.scheduleChecklistCurrentPage,
-//       this.scheduleChecklistItemsPerPage
-//     )
-//     .subscribe(res => {
-//       if (res.success) {
-//         const data = res.today; // your API returns `today` object
-//         this.selectedScheduleChecklistData = data.tasks.map((checklist: any) => ({
-//           ...checklist,
-//           hasLocation: !!checklist.coordinates
-//         }));
-//         this.scheduleChecklistTotalItems = data.totalCount;
-//       }
-//     });
-// }
-fetchScheduleChecklistData(): void {
-  if (!this.selectedWorkflowScheduleId) return;
-
-  this.workflowService
-    .getBulkChecklistByWorkflowId(
-      this.selectedWorkflowScheduleId,
-      this.scheduleChecklistCurrentPage,
-      this.scheduleChecklistItemsPerPage
-    )
-    .subscribe(res => {
-      if (res.success && Array.isArray(res.tasks)) {
-        this.selectedScheduleChecklistData = res.tasks.map((checklist: any) => ({
-          ...checklist,
-          hasLocation: !!checklist.coordinates,
-          // handle array fields gracefully
-          locationName: Array.isArray(checklist.locationName)
-            ? checklist.locationName.join(', ')
-            : checklist.locationName || '-',
-          assignedTo: Array.isArray(checklist.assignedTo)
-            ? checklist.assignedTo.join(', ')
-            : checklist.assignedTo || '-',
-          scheduledDate: Array.isArray(checklist.scheduledDate)
-            ? checklist.scheduledDate[0]
-            : checklist.scheduledDate || null,
-        }));
-
-        this.scheduleChecklistTotalItems = res.totalCount || res.tasks.length;
-      } else {
-        this.selectedScheduleChecklistData = [];
-        this.scheduleChecklistTotalItems = 0;
-      }
-    });
-}
-
-// Pagination actions
-onScheduleChecklistItemsPerPageChange(): void {
-  this.scheduleChecklistCurrentPage = 1;
-  this.fetchScheduleChecklistData();
-}
-
-scheduleChecklistPrevPage(): void {
-  if (this.scheduleChecklistCurrentPage > 1) {
-    this.scheduleChecklistCurrentPage--;
-    this.fetchScheduleChecklistData();
-  }
-}
-
-scheduleChecklistNextPage(): void {
-  if (this.scheduleChecklistEndItem < this.scheduleChecklistTotalItems) {
-    this.scheduleChecklistCurrentPage++;
-    this.fetchScheduleChecklistData();
-  }
-}
-
-get scheduleChecklistStartItem(): number {
-  return (this.scheduleChecklistCurrentPage - 1) * this.scheduleChecklistItemsPerPage + 1;
-}
-
-get scheduleChecklistEndItem(): number {
-  const end = this.scheduleChecklistCurrentPage * this.scheduleChecklistItemsPerPage;
-  return end > this.scheduleChecklistTotalItems ? this.scheduleChecklistTotalItems : end;
-}
-
-userSearchTerm: string = '';
-taskSearchTerm: string = '';
-locationSearchTerm: string = '';
-
-
-reloadSchedulePage(){
-   this.fetchScheduleChecklistData();
-
-   const popup = document.querySelector('.popup-content');
-  if (popup) {
-    popup.classList.add('shake');
-    setTimeout(() => popup.classList.remove('shake'), 400); // remove after animation
-  }
-}
-
-reloadAssPage(){
-this.fetchChecklistData();
-
-   const popup = document.querySelector('.popup-content');
-  if (popup) {
-    popup.classList.add('shake');
-    setTimeout(() => popup.classList.remove('shake'), 400); // remove after animation
-  }
-}
 }
 
