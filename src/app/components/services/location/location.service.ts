@@ -77,6 +77,7 @@ deleteLocation(locationId: string, deletedBy: string): Observable<any> {
 
     return this.http.get(`${this.apiUrl}/drop`, { headers });
   }
+
 }
 
 

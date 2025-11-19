@@ -202,7 +202,7 @@ export class NavbarComponent {
       }
     };
 
-    this.http.post("http://172.16.100.68:5000/signup/change-password", payload, headers)
+    this.http.post("http://172.19.9.152:5000/signup/change-password", payload, headers)
       .subscribe({
         next: (res: any) => {
           console.log("Password change response:", res);
